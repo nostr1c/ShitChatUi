@@ -1,0 +1,87 @@
+.Sidebar {
+
+    h1 {
+        // color: #ced100;
+        color: #dddddd;
+        text-align: center;
+        margin: 15px 0 10px 0;
+    }
+
+    &--User {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        border-top: 1px solid #ffffff0d;
+        border-bottom: 1px solid #ffffff0d;
+        user-select: none;
+        transition: all 0.3s;
+        
+        &--Avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ced100;
+            object-fit: cover;
+        }
+
+        &--Text {
+            overflow: hidden;
+            word-wrap: break-word;
+            
+            h3 {
+                color: #dddddd;
+
+            }
+
+            h4 {
+                color: #9b9b9b;
+            }
+        }
+
+        &--Btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+
+            & svg {
+                font-size: 25px;
+            }
+
+            &--Modal {
+                display: none;
+                position: absolute;
+                right: 100%;
+                top: 0;
+                height: 100%;
+                height: max-content;
+                width: max-content;
+                box-shadow: 0 0 4px rgba(131, 130, 130, 0.112);
+                border: 1px solid #ffffff0d;
+                background-color: #1a181a;
+                z-index: 100000;
+
+                &--Link {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px 15px;
+                    gap: 10px;
+                    transition: all 0.3s;
+
+                    &:hover {
+                        background-color: rgb(255,255,255,0.02);
+                    }
+                }
+
+                &.Active {
+                    display: block;
+                }
+            }
+        }
+    }
+}
