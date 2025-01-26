@@ -35,11 +35,7 @@ function Login() {
     }
   };
 
-  if (isAuthenticated) {
-    return <Navigate to="/" />;
-  }
-
-  if (redirect) {
+  if (isAuthenticated || redirect) {
     return <Navigate to="/" />;
   }
 
