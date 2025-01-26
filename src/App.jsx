@@ -9,6 +9,8 @@ import "./scss/App.scss"
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./features/auth/authThunks";
+import EditProfile from "./pages/EditProfile";
+import ToastParent from "./components/ToastParent";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,34 +27,39 @@ function App() {
   }
 
   return (
-    <div className="Main">
-      <div className={`Sidebar-Wrapper ${sidebarOpen ? 'open' : ''}`}>
-        <Sidebar />
-      </div>
-
-      <div className="Mobile-Top">
-        <button 
-          className="Sidebar-toggle" 
-          onClick={toggleSidebar}
-          aria-label="Toggle Sidebar"
-        >
-          <RxHamburgerMenu />
-        </button>
+    <>
+      <ToastParent />
+      <div className="Main">
+        <div className={`Sidebar-Wrapper ${sidebarOpen ? 'open' : ''}`}>
+          <Sidebar />
         </div>
+        <div className="Mobile-Top">
+          <button 
+            className="Sidebar-toggle" 
+            onClick={toggleSidebar}
+            aria-label="Toggle Sidebar"
+          >
+            <RxHamburgerMenu />
+          </button>
+          </div>
+        <main className="Content">
+          <Routes>
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/edit" element={
+              <ProtectedRoute>
+                <EditProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+      </div>
+    </>
 
-      <main className="Content">
-        <Routes>
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </main>
-
-      
-    </div>
   )
 }
 

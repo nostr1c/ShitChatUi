@@ -10,3 +10,26 @@
 body {
   background-color: #17161a;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #212121; 
+}
+
+$light: #c0c0c0;
+$main: #1d1d1d;
+$secondary: #181818;

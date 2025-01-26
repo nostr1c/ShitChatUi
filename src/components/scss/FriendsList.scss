@@ -1,0 +1,80 @@
+@use "/src/scss/index.scss" as constants;
+
+.Friends {
+    margin-top: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.0509803922);
+    position: relative;
+
+    h3 {
+        text-align: center;
+        color: #dddddd;
+        margin: 15px 0 5px 0;
+    }
+
+    &--List {
+        padding: 5px 15px 15px 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        position: relative;
+
+        &--Item {
+            background-color: constants.$main;
+            color: #dddddd;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-radius: 4px;
+            outline: none;
+            border: none;
+
+            & img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                object-fit: cover;
+                box-shadow: 0 0 3px white;
+            }
+
+            &:hover {
+                background-color: constants.$secondary;
+                cursor: pointer;
+
+                & img {
+                    box-shadow: 0 0 3px #ced100
+                }
+            }
+        }
+    }
+
+    &--None {
+        text-align: center;
+        color: #9b9b9b;
+        margin: 10px 0;
+        font-style: italic;
+    }
+
+    &--Modal  {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: max-content;
+        background-color: rgb(37, 37, 37);
+        transform: translate(0, -100%);
+
+        img {
+            width: 50px;
+        }
+    }
+}
+
+@media (max-width: 780px) {
+    .Friends--Modal {
+        left: 50% !important;
+        transform: translate(-50%, -100%);
+        width: 80%
+    }
+}

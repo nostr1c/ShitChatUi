@@ -1,17 +1,27 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import './scss/Sidebar.scss';
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { CiLogout, CiEdit  } from "react-icons/ci";
-import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { clearUser } from "../features/auth/authSlice";
+import { Link } from 'react-router-dom';
 import { useApi } from "../services/useApi";
+import { CiLogout, CiEdit  } from "react-icons/ci";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { clearUser } from "../features/auth/authSlice";
+import { GetImageUrl } from '../utils/general';
+import FriendsList from './FriendsList';
+import './scss/Sidebar.scss';
 
 function Sidebar() {
   const api = useApi();
   const dispatch = useDispatch();
-  const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading } = useSelector((state) => state.auth);
   const [modalOpen, setModalOpen] = useState(false);
+  const [avatar, setAvatar] = useState(user?.data?.avatar);
+
+
+  useEffect(() => {
+    setAvatar(user?.data?.avatar)
+  }, [user]);
+
 
   const toggleModal = () => {
     setModalOpen(prevState => !prevState);
@@ -29,19 +39,21 @@ function Sidebar() {
 
   return (
     <div className="Sidebar">
-      <h1>ShitChat</h1>
+      <Link to="/"><h1>ShitChat</h1></Link>
       {
         !isAuthenticated ?
         <p>Not logged in</p>
         : (
+          <>
           <div className='Sidebar--User'>
             <img
-              src="https://www.looper.com/img/gallery/the-hunger-games-how-old-is-katniss-everdeen-when-the-series-begins-ends/l-intro-1693256055.jpg"
+              src={GetImageUrl(avatar)}
               alt=""
               className='Sidebar--User--Avatar'
+              key={user?.data?.avatar}
             />
             <div className='Sidebar--User--Text'>
-              <h3>Filip Siri</h3>
+              <h3>{user?.data?.username}</h3>
               <h4>Senior developer</h4>
             </div>
             <div
@@ -50,10 +62,10 @@ function Sidebar() {
             >
               <BsThreeDotsVertical />
               <div className={`Sidebar--User--Btn--Modal ${modalOpen ? "Active" : null}`}>
-                <div className='Sidebar--User--Btn--Modal--Link'>
+                <Link to={"/profile/edit"} className='Sidebar--User--Btn--Modal--Link'>
                   <CiEdit />
                   <p>Edit profile</p>
-                </div>
+                </Link>
                 <div onClick={logout} className='Sidebar--User--Btn--Modal--Link'>
                   <CiLogout />
                   <p>Logout</p>
@@ -61,6 +73,9 @@ function Sidebar() {
               </div>
             </div>
           </div>
+
+          <FriendsList />
+        </>
         )
       }
 

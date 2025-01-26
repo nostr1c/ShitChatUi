@@ -1,10 +1,15 @@
+@import "/src/scss/index.scss";
+
 .Sidebar {
 
-    h1 {
-        // color: #ced100;
-        color: #dddddd;
-        text-align: center;
-        margin: 15px 0 10px 0;
+    a {
+      text-decoration: none;
+      text-align: center;
+      
+      h1 {
+            margin: 15px 0 10px 0;
+            color: $light;
+        }
     }
 
     &--User {
@@ -21,7 +26,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            box-shadow: 0 0 6px #ced100;
+            box-shadow: 0 0 6px $light;
             object-fit: cover;
         }
 
@@ -66,12 +71,18 @@
                 background-color: #1a181a;
                 z-index: 100000;
 
+                & a {
+                    color: #fff;
+                    text-decoration: none;
+                }
+                
                 &--Link {
                     display: flex;
                     align-items: center;
                     padding: 10px 15px;
                     gap: 10px;
                     transition: all 0.3s;
+                    
 
                     &:hover {
                         background-color: rgb(255,255,255,0.02);
