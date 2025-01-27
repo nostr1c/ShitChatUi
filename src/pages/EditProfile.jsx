@@ -6,7 +6,6 @@ import { showToast } from "../features/toast/toastThunks";
 function EditProfile() {
     const api = useApi();
     const dispatch = useDispatch();
-    // const { user } = useSelector((state) => state.auth);
     
     const triggerToast = () => {
       dispatch(showToast("success", "This is a success message!"));
