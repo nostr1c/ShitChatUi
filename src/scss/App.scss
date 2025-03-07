@@ -1,14 +1,18 @@
+@import "/src/scss/index.scss";
+
 .Main {
     display: flex;
     height: 100vh;
     height: 100dvh;
 
     .Sidebar-Wrapper {
-        background-color: #17161a;
-        width: 300px;
+        background-color: $secondary;
+        min-width: 350px;
+        max-width: 350px;
         transition: all 0.3s;
         border-right: 1px solid #ffffff0d;
         z-index: 100;
+        overflow-y: auto;
     }
 
     .Content {
@@ -45,15 +49,13 @@
             width: 100%;
             padding-top: 50px;
             transform: translateX(-100%);
+            max-width: unset;
+            background-color: $sidebar;
 
             &.open {
                 transform: translateX(0);
                 opacity: 1;
             }
-        }
-
-        .Content {
-            padding: 10px 25px;
         }
 
         .Mobile-Top {

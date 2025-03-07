@@ -8,6 +8,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { clearUser } from "../features/auth/authSlice";
 import { GetImageUrl } from '../utils/general';
 import FriendsList from './FriendsList';
+import GroupChats from './GroupChats';
 import './scss/Sidebar.scss';
 
 function Sidebar() {
@@ -73,7 +74,7 @@ function Sidebar() {
               </div>
             </div>
           </div>
-
+          <GroupChats /> 
           <FriendsList />
         </>
         )

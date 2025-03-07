@@ -17,6 +17,7 @@
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.2",
+    "react-signalr": "^0.2.24",
     "sass": "^1.83.4"
   },
   "devDependencies": {

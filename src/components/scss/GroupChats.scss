@@ -1,0 +1,52 @@
+@import "/src/scss/index.scss";
+
+.GroupChats {
+    margin-top: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.0509803922);
+    position: relative;
+
+    h3 {
+        text-align: center;
+        color: #dddddd;
+        margin: 15px 0 5px 0;
+    }
+
+    &--Parent {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    &--Child {
+        background-color: $main;
+        padding: 10px;
+        text-decoration: none;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        &--Avatar {
+            background-color: $secondary;
+            color: $light;
+            min-width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 26px;
+        }
+
+        &--Content {
+            color: #fff;
+            overflow: hidden;
+            text-wrap: nowrap;
+
+            & .Latest {
+                color: #949494;
+            }
+        }
+    }
+}

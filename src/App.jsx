@@ -11,9 +11,12 @@ import { useDispatch } from "react-redux";
 import { fetchUser } from "./features/auth/authThunks";
 import EditProfile from "./pages/EditProfile";
 import ToastParent from "./components/ToastParent";
+import Chat from "./pages/Chat";
+import useSignalR from "./services/useSignalR";
 
 function App() {
   const dispatch = useDispatch();
+  useSignalR();
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -52,6 +55,11 @@ function App() {
             <Route path="/profile/edit" element={
               <ProtectedRoute>
                 <EditProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/:id" element={
+              <ProtectedRoute>
+                <Chat />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />
