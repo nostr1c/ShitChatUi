@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembersToRoom, addMessage } from "../features/chat/chatSlice";
+import { addMembersToRoom, addMessage, setRoomInfo } from "../features/chat/chatSlice";
+import ChatSidebar from "../components/ChatSidebar";
 import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
 
@@ -16,7 +17,7 @@ function Chat() {
   const [error, setError] = useState(null);
 
   const { user } = useSelector((state) => state.auth);
-  const { messages, roomMembers } = useSelector((state) => state.chat)
+  const { messages, roomMembers, roomInfo } = useSelector((state) => state.chat)
 
   const messagesEndRef = useRef(null);
 
@@ -46,10 +47,19 @@ function Chat() {
     const fetchRoomMembers = async () => {
       try {
         const { data }  = await api.get(`group/${params.id}/members`);
-
         dispatch(addMembersToRoom({ room: params.id, members: data.data }));
       } catch (error) {
         console.error("Error fetching room members: ", error)
+      }
+    }
+
+    const fetchRoomInfo = async () => {
+      try {
+        const { data }  = await api.get(`group/${params.id}`);
+
+        dispatch(setRoomInfo({ room: params.id, data: data.data }));
+      } catch (error) {
+        console.error("Error fetching room data: ", error)
       }
     }
 
@@ -57,9 +67,12 @@ function Chat() {
       fetchMessages();
     }
 
-    console.log(roomMembers[params.id])
     if (params.id && !roomMembers[params.id]) {
       fetchRoomMembers();
+    }
+
+    if (params.id && !roomInfo[params.id]) {
+      fetchRoomInfo();
     }
     
   }, [params]);
@@ -78,14 +91,16 @@ function Chat() {
       weekday: "short",
       day: "numeric",
       month: "short",
-      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      year: "numeric"
     }).format(date);
   };
 
   return (
     <div className="Chat">
       <div className="Chat--Top">
-        <h1>Group chat name</h1>
+        <h1>{roomInfo[params.id] ? roomInfo[params.id].name : "Loading..."}</h1>
       </div>
       <div className="Chat--Content">
         <div className="Chat--Content--Main">
@@ -133,11 +148,10 @@ function Chat() {
           </div>
         </div>
         <div className="Chat--Content--Sidebar">
-          {roomMembers[params.id] && roomMembers[params.id].length > 0 ? (
-              roomMembers[params.id].map((member) => (
-                <p>{member.username}</p>
-              ))
-            ) : null}
+          <ChatSidebar
+            members={roomMembers[params.id]}
+            room={roomInfo[params.id]}
+          />
         </div>
       </div>
     </div>

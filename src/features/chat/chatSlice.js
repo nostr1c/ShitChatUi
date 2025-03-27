@@ -4,6 +4,7 @@ const initialState = {
   rooms: [],  // []
   messages: {}, // { roomId: [messages] }
   roomMembers: {}, // { roomId:  [users]} - Yes i wish i went with typescript....
+  roomInfo: {} // { roomId: {data}}
 };
 
 const chatSlice = createSlice({
@@ -36,9 +37,20 @@ const chatSlice = createSlice({
     addMembersToRoom: (state, action) => {
       const { room, members } = action.payload;
       state.roomMembers[room] = (members);
+    },
+    setRoomInfo: (state, action) => {
+      const { room, data } = action.payload;
+      state.roomInfo[room] = (data);
     }
   },
 });
 
-export const { setRooms, addMessage, pushMesage, addMembersToRoom } = chatSlice.actions;
+export const { 
+  setRooms,
+  addMessage,
+  pushMesage,
+  addMembersToRoom,
+  setRoomInfo
+} = chatSlice.actions;
+
 export default chatSlice.reducer;

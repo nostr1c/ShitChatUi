@@ -55,7 +55,7 @@ function Sidebar() {
             />
             <div className='Sidebar--User--Text'>
               <h3>{user?.data?.username}</h3>
-              <h4>Senior developer</h4>
+              <h4>Some description i guess</h4>
             </div>
             <div
               className='Sidebar--User--Btn'
