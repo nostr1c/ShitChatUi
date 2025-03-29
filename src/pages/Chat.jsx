@@ -72,8 +72,10 @@ function Chat() {
 
   const fetchMoreMessages = async () => {
     try {
-      setLoading(true);
-      const { data } = await api.get(`group/v2/${params.id}/messages?lastMessageId=${messages[params.id]?.[messages[params.id].length - 1]?.id}`);
+
+      const lastMessage = messages[params.id]?.[messages[params.id].length - 1];
+
+      const { data } = await api.get(`group/v2/${params.id}/messages?lastMessageId=${lastMessage.id}`);
       
       if (data.data.length < 20) {
         setHasMore(false);
@@ -84,8 +86,6 @@ function Chat() {
     } catch (error) {
       setError(error.message);
       console.error("Error fetching messages:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
