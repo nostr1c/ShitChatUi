@@ -33,7 +33,8 @@
                 & .Chat--Messages {
                     overflow: auto;
                     display: flex;
-                    flex-direction: column;
+                    // flex-direction: column;
+                    flex-direction: column-reverse;
                     padding: 10px;
                     height: calc(100vh - 137px);
 

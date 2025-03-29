@@ -50,7 +50,7 @@ function GroupChats() {
                 <p>{group.name}</p>
                 <p className="Latest">
                   {messages[group.id] && messages[group.id].length > 0 ? 
-                    messages[group.id][messages[group.id].length - 1].content : 
+                    messages[group.id][0].content : 
                     group.latest ? group.latest :
                     "No messages"
                   }

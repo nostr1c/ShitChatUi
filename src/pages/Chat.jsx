@@ -11,29 +11,22 @@ function Chat() {
   const api = useApi();
   const dispatch = useDispatch();
   const params = useParams();
-  const [content, setMessage] = useState("");
-  
-  const [loading, setLoading] = useState(false);
+  const messageRef = useRef();
+
+  const [loading, setLoading] = useState(false);  
   const [error, setError] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
 
   const { user } = useSelector((state) => state.auth);
   const { messages, roomMembers, roomInfo } = useSelector((state) => state.chat)
 
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView();
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, params.id]);
-  
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         setLoading(true);
-        const { data } = await api.get(`group/${params.id}/messages`);
+        const { data } = await api.get(`group/v2/${params.id}/messages`);
 
         dispatch(addMessage({ room: params.id, message: data.data }));
       } catch (error) {
@@ -74,13 +67,33 @@ function Chat() {
     if (params.id && !roomInfo[params.id]) {
       fetchRoomInfo();
     }
-    
-  }, [params]);
+
+  }, [params.id]);
+
+  const fetchMoreMessages = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get(`group/v2/${params.id}/messages?lastMessageId=${messages[params.id]?.[messages[params.id].length - 1]?.id}`);
+      
+      if (data.data.length < 20) {
+        setHasMore(false);
+      }
+
+      dispatch(addMessage({ room: params.id, message: data.data }));  
+      
+    } catch (error) {
+      setError(error.message);
+      console.error("Error fetching messages:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSend = async () => {
+    const content = messageRef.current.value
     if (content.trim()) {
       await api.post(`/group/${params.id}/messages`, { content });
-      setMessage("");
+      messageRef.current.value = "";
     }
   };
 
@@ -107,10 +120,10 @@ function Chat() {
           <div className="Chat--Messages">
             {messages[params.id] && messages[params.id].length > 0 ? (
               messages[params.id].map((message) => ( 
-              <div 
+                <div 
                 className={`Message ${user.data.id == message.user.id ? "Self" : null}`}
                 key={message.id}
-              >
+                >
                 <img className="Message--Avatar" src={GetImageUrl(message.user.avatar)}/>
                 <div className="Message--Content">
                   <div className="Message--Content--Top">
@@ -128,14 +141,16 @@ function Chat() {
             ) : (
               <p style={{ color: "white" }}>No messages found</p>
             )}
+            {messages[params.id] && messages[params.id].length >= 20 && hasMore ? (
+              <button onClick={() => {fetchMoreMessages()}}>Ladda mer</button>
+            ) : null}
             <div ref={messagesEndRef} />
           </div>
           <div className="Chat--Send">
             <div className="Send">
               <input
                 type="text"
-                value={content}
-                onChange={(e) => setMessage(e.target.value)} 
+                ref={messageRef}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();

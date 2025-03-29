@@ -8,7 +8,7 @@ function ChatSidebar(props) {
     <div className="Members">
      {props.members && props.members.length > 0 ? (
         props.members.map((member) => (
-          <div className="Members--Child">
+          <div key={member.user.id} className="Members--Child">
             <img 
               src={GetImageUrl(member.user.avatar)}
             />

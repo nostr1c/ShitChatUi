@@ -18,21 +18,19 @@ const chatSlice = createSlice({
       const { room, message } = action.payload;
       if (!state.messages[room]) state.messages[room] = [];
       
-      const messageExists = state.messages[room].some((existingMessage) => existingMessage.id === message.id);
-      
-      if (!messageExists) {
+      if (state.messages[room].length > 0) {
+        const existingMessageIds = new Set(state.messages[room].map((msg) => msg.id));
+        const newMessages = message.filter((msg) => !existingMessageIds.has(msg.id));
+
+        state.messages[room] = [ ...state.messages[room], ...newMessages ]
+      } else {
         state.messages[room] = (message);
       }
     },
     pushMesage: (state, action) => {
       const { room, message } = action.payload;
       if (!state.messages[room]) state.messages[room] = [];
-      
-      const messageExists = state.messages[room].some((existingMessage) => existingMessage.id === message.id);
-      
-      if (!messageExists) {
-        state.messages[room].push(message);
-      }
+      state.messages[room].unshift(message);
     },
     addMembersToRoom: (state, action) => {
       const { room, members } = action.payload;
