@@ -7,21 +7,40 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { useState } from "react";
 import "./scss/App.scss"
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./features/auth/authThunks";
 import EditProfile from "./pages/EditProfile";
 import ToastParent from "./components/ToastParent";
 import Chat from "./pages/Chat";
-import useSignalR from "./services/useSignalR";
+import { signalRService } from "./services/signalRService";
+import { pushMesage, setUserTyping } from "./features/chat/chatSlice";
 
 function App() {
   const dispatch = useDispatch();
-  useSignalR();
+  const rooms = useSelector((state) => state.chat.rooms);
 
   useEffect(() => {
-    dispatch(fetchUser());
+     dispatch(fetchUser());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (rooms && rooms.length > 0) {
+      signalRService.startConnection(rooms).then(() => {
+        if (signalRService.connection.state === "Connected") {
+
+          signalRService.on("ReceiveMessage", (message, room) => {
+            console.log("New message received:", message);
+            dispatch(pushMesage({ room: room, message }));
+          });
+
+          signalRService.on("ReceiveUserTyping", (room, user, isTyping) => {
+            console.log("Typing:", room, user, isTyping);
+            dispatch(setUserTyping({ room, user, isTyping }))
+          });
+        }
+      });
+    }
+  }, [rooms]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

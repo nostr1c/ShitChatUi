@@ -12,8 +12,13 @@ function ChatSidebar(props) {
             <img 
               src={GetImageUrl(member.user.avatar)}
             />
-             <p>{member.user.username}</p>  
-             {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+            <div>
+              <div className="Members--Child--Name">
+                <p>{member.user.username}</p>
+                {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+              </div>
+              {member.isTyping ? (<span>typing...</span>) : null}
+            </div>
           </div> 
          ))
        ) : null}

@@ -39,6 +39,17 @@ const chatSlice = createSlice({
     setRoomInfo: (state, action) => {
       const { room, data } = action.payload;
       state.roomInfo[room] = (data);
+    },
+    setUserTyping: (state, action) => {
+      const {room, user, isTyping} = action.payload;
+
+      console.log(room);
+      if (state.roomMembers[room]) {
+        const member = state.roomMembers[room].find(member => member.user.id === user);
+        if (member) {
+          member.isTyping = isTyping;
+        }
+      }
     }
   },
 });
@@ -48,7 +59,8 @@ export const {
   addMessage,
   pushMesage,
   addMembersToRoom,
-  setRoomInfo
+  setRoomInfo,
+  setUserTyping
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -6,21 +6,25 @@ import { addMembersToRoom, addMessage, setRoomInfo } from "../features/chat/chat
 import ChatSidebar from "../components/ChatSidebar";
 import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
+import { signalRService } from "../services/signalRService";
+
 
 function Chat() {
   const api = useApi();
   const dispatch = useDispatch();
   const params = useParams();
   const messageRef = useRef();
+  const messagesEndRef = useRef(null);  
+  const typingTimeoutRef = useRef(null);
 
   const [loading, setLoading] = useState(false);  
   const [error, setError] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [typing, setTyping] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
   const { messages, roomMembers, roomInfo } = useSelector((state) => state.chat)
 
-  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -56,31 +60,16 @@ function Chat() {
       }
     }
 
-    if (params.id && !messages[params.id]) {
-      fetchMessages();
-    }
-
-    if (params.id && !roomMembers[params.id]) {
-      fetchRoomMembers();
-    }
-
-    if (params.id && !roomInfo[params.id]) {
-      fetchRoomInfo();
-    }
-
+    if (params.id && !messages[params.id]) fetchMessages();
+    if (params.id && !roomMembers[params.id]) fetchRoomMembers();
+    if (params.id && !roomInfo[params.id]) fetchRoomInfo();
   }, [params.id]);
 
   const fetchMoreMessages = async () => {
     try {
-
       const lastMessage = messages[params.id]?.[messages[params.id].length - 1];
-
       const { data } = await api.get(`group/v2/${params.id}/messages?lastMessageId=${lastMessage.id}`);
-      
-      if (data.data.length < 20) {
-        setHasMore(false);
-      }
-
+      if (data.data.length < 20)  setHasMore(false);
       dispatch(addMessage({ room: params.id, message: data.data }));  
       
     } catch (error) {
@@ -94,6 +83,8 @@ function Chat() {
     if (content.trim()) {
       await api.post(`/group/${params.id}/messages`, { content });
       messageRef.current.value = "";
+      setTyping(false);
+      sendTypingSignal(false);
     }
   };
 
@@ -108,6 +99,28 @@ function Chat() {
       minute: "2-digit",
       year: "numeric"
     }).format(date);
+  };
+
+  const handleInputChange = () => {
+    if (!typing) {
+      setTyping(true);
+      sendTypingSignal(true);
+    }
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(() => {
+      setTyping(false);
+      sendTypingSignal(false);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
+
+  const sendTypingSignal = (isTyping) => {
+    signalRService.invoke("TypeIndicator", params.id, user.data.id, isTyping);
   };
 
   return (
@@ -151,6 +164,7 @@ function Chat() {
               <input
                 type="text"
                 ref={messageRef}
+                onChange={handleInputChange}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();

@@ -11,6 +11,7 @@ const useSignalR = () => {
     const connectionRef = useRef(null);
 
     useEffect(() => {
+
         const connection = new HubConnectionBuilder()
             .withUrl(SIGNALR_URL)
             .withAutomaticReconnect()
@@ -33,9 +34,13 @@ const useSignalR = () => {
             })
             .catch((error) => console.error("SignalR connection error:", error));
 
-        connection.on("ReceiveMessage", (message, room) => {
-            console.log("New message received:", message);
-            dispatch(pushMesage({ room: room, message }));
+          // connection.on("ReceiveMessage", (message, room) => {
+          //     console.log("New message received:", message);
+          //     dispatch(pushMesage({ room: room, message }));
+          // });
+
+        connection.on("UserTyping", (userName, room) => {
+            console.log("New typing received:", userName, room);
         });
 
         return () => {
@@ -51,6 +56,8 @@ const useSignalR = () => {
             }
         };
     }, [dispatch, rooms]);
+
+    return connectionRef.current;
 };
 
 export default useSignalR;
