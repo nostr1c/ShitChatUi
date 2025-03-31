@@ -1,0 +1,53 @@
+.MemberModal {
+    z-index: 1200;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2e2e31;
+    box-shadow: -2px 2px 10px 1px #0000006c;
+    border-radius: 8px;
+    width: 300px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.0509803922);
+    transform: translateX(calc(-100% - 5px));
+    animation: SlideIn 0.2s;
+
+    & .ModalHeader {
+        background-color: rgb(70, 109, 226);
+        position: relative;
+        height: 100px;
+        margin-bottom: 60px;
+        border-radius: 8px 8px 0 0;
+
+        &--Avatar {
+            background-color: #2e2e31;
+            padding: 7px;
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            
+            & img {
+                user-select: none;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    & .ModalContent {
+        padding: 7px 10px;
+    }
+}
+
+@keyframes SlideIn {
+    from {
+        transform: translateX(calc(-100% - 15px));
+    }
+    to {
+        transform: translateX(calc(-100% - 5px));
+    }
+}

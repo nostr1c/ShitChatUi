@@ -10,7 +10,7 @@ function GroupChats() {
   const [groupChats, setGroupChats] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const {messages, rooms} = useSelector((state) => state.chat)
+  const {messages} = useSelector((state) => state.chat)
 
   const dispatch = useDispatch()
 
