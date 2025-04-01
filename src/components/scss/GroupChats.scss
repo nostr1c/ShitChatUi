@@ -5,10 +5,39 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.0509803922);
     position: relative;
 
-    h3 {
-        text-align: center;
-        color: #dddddd;
-        margin: 15px 0 5px 0;
+
+
+    &--Header {
+        position: relative;
+        // background-color: blue;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h3 {
+            text-align: center;
+            color: #dddddd;
+        }
+
+        &--Link {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            background: none;
+            outline: none;
+            border: none;
+
+            & svg {
+                font-size: 20px;
+                color: #fff;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: #c5c5c5;
+                }
+            }
+        }
     }
 
     &--Parent {
@@ -16,6 +45,8 @@
         flex-direction: column;
         padding: 15px;
         gap: 10px;
+
+        // background-color: red;
     }
 
     &--Child {

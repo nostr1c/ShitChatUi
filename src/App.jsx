@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./features/auth/authThunks";
 import EditProfile from "./pages/EditProfile";
 import ToastParent from "./components/ToastParent";
+import CreateChat from "./pages/CreateChat";
 import Chat from "./pages/Chat";
 import { signalRService } from "./services/signalRService";
 import { pushMesage, setUserTyping } from "./features/chat/chatSlice";
@@ -79,6 +80,11 @@ function App() {
             <Route path="/chat/:id" element={
               <ProtectedRoute>
                 <Chat />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/create" element={
+              <ProtectedRoute>
+                <CreateChat />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />

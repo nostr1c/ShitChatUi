@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { pushMesage, setRooms } from "../features/chat/chatSlice";
+import { setRooms } from "../features/chat/chatSlice";
 import { Link } from "react-router-dom";
+import { BiMessageSquareAdd } from "react-icons/bi";
 import "./scss/GroupChats.scss"
 
 function GroupChats() {
@@ -34,7 +35,15 @@ function GroupChats() {
 
   return (
     <div className="GroupChats">
-      <h3>Conversations</h3>
+      <div className="GroupChats--Header">
+        <h3>Conversations</h3>
+        <Link
+          className="GroupChats--Header--Link"
+          to={"/chat/create"}
+        >
+          <BiMessageSquareAdd/>
+        </Link>
+      </div>
       {groupChats && groupChats.length > 0 ? (
         <div className="GroupChats--Parent">
           {groupChats.map((group) => (
