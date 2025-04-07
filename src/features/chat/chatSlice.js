@@ -14,18 +14,21 @@ const chatSlice = createSlice({
     setRooms: (state, action) => {
       state.rooms = action.payload;
     },
+    pushRoom: (state, action) => {
+      state.rooms.unshift(action.payload);
+    },
     addMessage: (state, action) => {
       const { room, message } = action.payload;
-      if (!state.messages[room]) state.messages[room] = [];
-      
-      if (state.messages[room].length > 0) {
-        const existingMessageIds = new Set(state.messages[room].map((msg) => msg.id));
-        const newMessages = message.filter((msg) => !existingMessageIds.has(msg.id));
-
-        state.messages[room] = [ ...state.messages[room], ...newMessages ]
-      } else {
-        state.messages[room] = (message);
+      const incomingMessages = Array.isArray(message) ? message : [message];
+    
+      if (!state.messages[room]) {
+        state.messages[room] = [];
       }
+    
+      const existingMessageIds = new Set(state.messages[room].map((msg) => msg.id));
+      const newMessages = incomingMessages.filter((msg) => !existingMessageIds.has(msg.id));
+    
+      state.messages[room] = [...state.messages[room], ...newMessages];
     },
     pushMesage: (state, action) => {
       const { room, message } = action.payload;
@@ -42,8 +45,6 @@ const chatSlice = createSlice({
     },
     setUserTyping: (state, action) => {
       const {room, user, isTyping} = action.payload;
-
-      console.log(room);
       if (state.roomMembers[room]) {
         const member = state.roomMembers[room].find(member => member.user.id === user);
         if (member) {
@@ -56,6 +57,7 @@ const chatSlice = createSlice({
 
 export const { 
   setRooms,
+  pushRoom,
   addMessage,
   pushMesage,
   addMembersToRoom,

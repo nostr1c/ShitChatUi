@@ -9,24 +9,17 @@ import "./scss/GroupChats.scss"
 function GroupChats() {
   const api = useApi();
   const [groupChats, setGroupChats] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const {messages} = useSelector((state) => state.chat)
-
+  const {messages, rooms} = useSelector((state) => state.chat)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchGroupChats = async () => {
       try {
-        setLoading(true);
         const { data } = await api.get("user/groups");
         setGroupChats(data.data);
         dispatch(setRooms(data.data))
       } catch (error) {
-        setError(error.message);
         console.error("Error fetching groups:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -44,9 +37,9 @@ function GroupChats() {
           <BiMessageSquareAdd/>
         </Link>
       </div>
-      {groupChats && groupChats.length > 0 ? (
+      {rooms && rooms.length > 0 ? (
         <div className="GroupChats--Parent">
-          {groupChats.map((group) => (
+          {rooms.map((group) => (
             <Link
             to={`chat/${group.id}`}
             className="GroupChats--Child"
