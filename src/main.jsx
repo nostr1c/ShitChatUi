@@ -7,11 +7,11 @@ import App from './App.jsx'
 import store from './stores/store.js'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
-  </StrictMode>,
+  // </StrictMode>,
 )
