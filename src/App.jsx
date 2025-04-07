@@ -14,7 +14,6 @@ import ToastParent from "./components/ToastParent";
 import CreateChat from "./pages/CreateChat";
 import Chat from "./pages/Chat";
 import { signalRService } from "./services/signalRService";
-import { pushMesage, setUserTyping } from "./features/chat/chatSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,16 +27,7 @@ function App() {
     if (rooms && rooms.length > 0) {
       signalRService.startConnection(rooms).then(() => {
         if (signalRService.connection.state === "Connected") {
-
-          signalRService.on("ReceiveMessage", (message, room) => {
-            console.log("New message received:", message);
-            dispatch(pushMesage({ room: room, message }));
-          });
-
-          signalRService.on("ReceiveUserTyping", (room, user, isTyping) => {
-            console.log("Typing:", room, user, isTyping);
-            dispatch(setUserTyping({ room, user, isTyping }))
-          });
+          signalRService.attachListeners(dispatch);
         }
       });
     }

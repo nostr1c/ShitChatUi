@@ -1,10 +1,12 @@
 import * as signalR from "@microsoft/signalr";
+import { pushMesage, setUserTyping } from "../features/chat/chatSlice";
 
 const SIGNALR_URL = "https://localhost:7061/chatHub";
 
 class SignalRService {
   constructor() {
     this.connection = null;
+    this.listenersAttached = false;
   }
 
   async startConnection(rooms) {
@@ -44,6 +46,20 @@ class SignalRService {
     if (this.connection) {
       this.connection.on(eventName, callback);
     }
+  }
+
+  attachListeners(dispatch) {
+    if (this.listenersAttached) return;
+
+    this.on("ReceiveMessage", (message, room) => {
+      dispatch(pushMesage({ room, message }));
+    });
+
+    this.on("ReceiveUserTyping", (room, user, isTyping) => {
+      dispatch(setUserTyping({ room, user, isTyping }));
+    });
+
+    this.listenersAttached = true;
   }
 }
 
