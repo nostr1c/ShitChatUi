@@ -19,7 +19,19 @@ function SidebarUserModal(props) {
           </div>
         </div>
         <div className="ModalContent">
-            <h3>@{props?.member?.user.username}</h3>
+            <h3>
+              @{props?.member?.user.username}
+            </h3>
+            <div className="ModalContent--Roles">
+              {
+                props?.member?.roles.map((role) => (
+                  <div className="ModalContent--Roles--Child">
+                    <div style={{backgroundColor: `#${role.color}`}}></div>
+                    <p>{role.name}</p>
+                  </div>
+                ))
+              }
+            </div>
         </div>
     </div>
   )

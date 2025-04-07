@@ -8,7 +8,7 @@
     border-radius: 8px;
     width: 300px;
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.0509803922);
+    border: 1px solid #ffffff0d;
     transform: translateX(calc(-100% - 5px));
     animation: SlideIn 0.2s;
 
@@ -40,6 +40,39 @@
 
     & .ModalContent {
         padding: 7px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &--Roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            
+            &--Child {
+                background-color: #ffffff11;
+                padding: 5px 10px;
+                box-sizing: border-box;
+                user-select: none;
+                border-radius: 50px;
+                text-align: center;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+
+                & div {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background-color: #a5a5a5;
+                }
+
+                & p {
+                    font-size: 12px;
+                }
+            }
+        }
     }
 }
 

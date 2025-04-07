@@ -4,11 +4,13 @@ import { useApi } from "../services/useApi";
 import { showToast } from "../features/toast/toastThunks";
 import { pushRoom } from "../features/chat/chatSlice";
 import { signalRService } from "../services/signalRService";
+import { useNavigate } from "react-router-dom";
 
 function CreateChat() {
   const [formBody, setFormBody] = useState({ name: "" });
   const dispatch = useDispatch()
   const api = useApi();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +21,13 @@ function CreateChat() {
 
       await signalRService.invoke("JoinGroup", newRoom.id);
       console.log(`Joined room: ${newRoom.id}`);  
-
+      
       if (result.data.message) {
         dispatch(showToast("success", result.data.message))
       }
+
+      navigate(`/chat/${newRoom.id}`);
+
     } catch (error) {
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;

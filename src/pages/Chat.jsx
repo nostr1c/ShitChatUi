@@ -7,6 +7,7 @@ import ChatSidebar from "../components/ChatSidebar";
 import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
+import { FaUserFriends } from "react-icons/fa";
 
 
 function Chat() {
@@ -21,6 +22,7 @@ function Chat() {
   const [error, setError] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [typing, setTyping] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
   const { messages, roomMembers, roomInfo } = useSelector((state) => state.chat)
@@ -127,6 +129,10 @@ function Chat() {
     <div className="Chat">
       <div className="Chat--Top">
         <h1>{roomInfo[params.id] ? roomInfo[params.id].name : "Loading..."}</h1>
+        <button
+          className="Chat--Top--Btn"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        ><FaUserFriends /></button>
       </div>
       <div className="Chat--Content">
         <div className="Chat--Content--Main">
@@ -176,7 +182,7 @@ function Chat() {
             </div>
           </div>
         </div>
-        <div className="Chat--Content--Sidebar">
+        <div className={`Chat--Content--Sidebar ${sidebarOpen ? "Open" : null}`}>
           <ChatSidebar
             members={roomMembers[params.id]}
             room={roomInfo[params.id]}
