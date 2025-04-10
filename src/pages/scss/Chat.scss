@@ -22,14 +22,12 @@
 
         &--Btn {
             position: absolute;
-            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             outline: none;
             border: none;
-            display: none;
-            padding-top: 2px;
+            padding-top: 3px;
             
             & svg {
                 font-size: 22px;
@@ -39,6 +37,20 @@
 
                 &:hover {
                     filter: brightness(70%);
+                }
+            }
+
+            &.Sidebar {
+                display: none;
+                right: 15px;
+            }
+
+            &.Settings {
+                left: 15px;
+
+                & svg:hover {
+                    transform: rotate(23deg);
+                    transition: all 0.1s;
                 }
             }
         }
@@ -191,7 +203,7 @@
         }
     }
 
-    .Chat--Top--Btn {
+    .Chat--Top--Btn.Sidebar {
         display: block;
     }
 }

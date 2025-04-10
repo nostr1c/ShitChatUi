@@ -1,5 +1,5 @@
 import * as signalR from "@microsoft/signalr";
-import { pushMesage, setUserTyping } from "../features/chat/chatSlice";
+import { pushMesage, setUserTyping, pushInvite } from "../features/chat/chatSlice";
 
 const SIGNALR_URL = "https://localhost:7061/chatHub";
 
@@ -57,6 +57,10 @@ class SignalRService {
 
     this.on("ReceiveUserTyping", (room, user, isTyping) => {
       dispatch(setUserTyping({ room, user, isTyping }));
+    });
+
+    this.on("ReceiveInvite", (invite, room) => {
+      dispatch(pushInvite({invite, room}));
     });
 
     this.listenersAttached = true;

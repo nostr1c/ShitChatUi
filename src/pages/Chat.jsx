@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
 import { FaUserFriends } from "react-icons/fa";
-
+import { IoIosSettings } from "react-icons/io";
 
 function Chat() {
   const api = useApi();
@@ -25,7 +25,11 @@ function Chat() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
-  const { messages, roomMembers, roomInfo } = useSelector((state) => state.chat)
+  const { 
+    messages,
+    roomMembers,
+    roomInfo
+  } = useSelector((state) => state.chat)
 
 
   useEffect(() => {
@@ -55,12 +59,12 @@ function Chat() {
     const fetchRoomInfo = async () => {
       try {
         const { data }  = await api.get(`group/${params.id}`);
-
         dispatch(setRoomInfo({ room: params.id, data: data.data }));
       } catch (error) {
         console.error("Error fetching room data: ", error)
       }
     }
+
 
     if (params.id && !messages[params.id]) fetchMessages();
     if (params.id && !roomMembers[params.id]) fetchRoomMembers();
@@ -128,11 +132,21 @@ function Chat() {
   return (
     <div className="Chat">
       <div className="Chat--Top">
-        <h1>{roomInfo[params.id] ? roomInfo[params.id].name : "Loading..."}</h1>
+        <Link
+          className="Chat--Top--Btn Settings"
+          to={"settings"}
+        >
+          <IoIosSettings />
+        </Link>
+        <h1>
+          {roomInfo[params.id] ? roomInfo[params.id].name : "Loading..."}
+        </h1>
         <button
-          className="Chat--Top--Btn"
+          className="Chat--Top--Btn Sidebar"
           onClick={() => setSidebarOpen(!sidebarOpen)}
-        ><FaUserFriends /></button>
+        >
+          <FaUserFriends />
+        </button>
       </div>
       <div className="Chat--Content">
         <div className="Chat--Content--Main">

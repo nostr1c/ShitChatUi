@@ -14,6 +14,8 @@ import ToastParent from "./components/ToastParent";
 import CreateChat from "./pages/CreateChat";
 import Chat from "./pages/Chat";
 import { signalRService } from "./services/signalRService";
+import ChatSettings from "./pages/ChatSettings";
+import Join from "./pages/Join";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +77,16 @@ function App() {
             <Route path="/chat/create" element={
               <ProtectedRoute>
                 <CreateChat />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/:id/settings" element={
+              <ProtectedRoute>
+                <ChatSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="/:id" element={
+              <ProtectedRoute>
+                <Join />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />

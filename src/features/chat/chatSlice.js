@@ -4,7 +4,8 @@ const initialState = {
   rooms: [],  // []
   messages: {}, // { roomId: [messages] }
   roomMembers: {}, // { roomId:  [users]} - Yes i wish i went with typescript....
-  roomInfo: {} // { roomId: {data}}
+  roomInfo: {}, // { roomId: {data}}
+  roomInvites: {} // { roomId: {data} }
 };
 
 const chatSlice = createSlice({
@@ -43,6 +44,15 @@ const chatSlice = createSlice({
       const { room, data } = action.payload;
       state.roomInfo[room] = (data);
     },
+    setRoomInvites: (state, action) => {
+      const { room, data } = action.payload;
+      state.roomInvites[room] = (data);
+    },
+    pushInvite: (state, action) => {
+      const { room, invite } = action.payload;
+      if (!state.roomInvites[room]) state.roomInvites[room] = [];
+      state.roomInvites[room].unshift(invite);
+    },
     setUserTyping: (state, action) => {
       const {room, user, isTyping} = action.payload;
       if (state.roomMembers[room]) {
@@ -62,7 +72,9 @@ export const {
   pushMesage,
   addMembersToRoom,
   setRoomInfo,
-  setUserTyping
+  setRoomInvites,
+  setUserTyping,
+  pushInvite
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

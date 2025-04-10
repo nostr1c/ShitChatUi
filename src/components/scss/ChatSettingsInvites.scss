@@ -1,0 +1,124 @@
+.Invites {
+    width: max-content;
+    margin: 0 auto;
+    
+
+    &--Title {
+        text-align: center;
+        margin: 15px 0,
+    }
+
+    &--New {
+        background-color: rgba(20, 20, 20, 0.349);
+        padding: 10px;
+        border-bottom: 1px solid #ffffff0d;
+        border-top: 1px solid #ffffff0d;
+
+        &--Form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            gap: 5px;
+
+            & label {
+                font-size: 16px;
+            }
+
+            & input {
+                display: block;
+                width: 200px;
+                padding: 5px;
+                background: none;
+                outline: none;
+                color: #fff;
+                border: 1px solid #ffffff0d;
+            }
+
+            & button {
+                margin-top: 10px;
+                width: max-content;
+                padding: 5px 20px;
+                cursor: pointer;
+                border: none;
+                outline: none;
+            }
+        }
+    }
+
+    .InviteTable {
+        border-spacing: 0px;;
+        border-collapse: seperate;
+    
+        thead  {
+            tr {
+                th {
+                    text-align: left;
+                    border-bottom: 1px solid #ffffff0d;;
+                    padding: 10px;
+                    background-color: rgba(20, 20, 20, 0.349);
+    
+                    &.Creator {
+                        width: 300px;
+                        // background-color:  red;
+                    }
+                    &.Code {
+                        width: 100px;
+                        // background-color: green;
+                    }
+                    &.Valid {
+                        width: 80px;
+                        // background-color: blue;
+                    }
+                }
+            }
+        }
+    
+        tbody {
+            tr {
+                background-color: #7e7e7e14;        
+    
+                
+                td {
+                    padding: 10px;
+    
+                    &.Creator {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+                        padding-left: 10px;
+    
+                        img {
+                            width: 30px;
+                            border-radius: 50%;
+                        }
+                    }
+    
+                    & .Code {
+                        width: min-content;
+                        padding: 2px 5px;
+                        border: 1px solid #ffffff0d;
+                        user-select: all;
+                    }
+                }
+    
+                &:nth-child(even) {
+                    background-color: #ffffff05 !important;
+                }
+    
+                &:hover  {
+                    filter: brightness(0.7);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1600px) {
+    .Invites {
+        width: 100%;
+        
+        .InviteTable {
+            width: 100%;
+        }
+    }
+}
