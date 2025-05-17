@@ -15,6 +15,7 @@ function Join() {
       try {
         const { data } = await api.post(`invite/join/${params.id}`);
 
+        await signalRService.waitUntilConnected();
         await signalRService.invoke("JoinGroup", data.data.group);
         console.log(`Joined room: ${data.data.group}`);  
 

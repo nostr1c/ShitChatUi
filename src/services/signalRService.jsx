@@ -65,6 +65,19 @@ class SignalRService {
 
     this.listenersAttached = true;
   }
+
+  waitUntilConnected() {
+    return new Promise((resolve) => {
+      const check = () => {
+        if (this.connection && this.connection.state === signalR.HubConnectionState.Connected) {
+          resolve();
+        } else {
+          setTimeout(check, 100);
+        }
+      };
+      check();
+    });
+  }
 }
 
 export const signalRService = new SignalRService();

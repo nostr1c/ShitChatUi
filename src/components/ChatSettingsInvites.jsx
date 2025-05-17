@@ -15,6 +15,7 @@ function ChatSettingsInvites({params}) {
   const fetchRoomInvites = async () => {
     try {
       const { data }  = await api.get(`invite/${params.id}`);
+      console.log(data);
       if (data.data.length > 0) {
         dispatch(setRoomInvites({ room: params.id, data: data.data }));
       }
@@ -42,8 +43,12 @@ function ChatSettingsInvites({params}) {
   }
 
   const formatDay = (date) => {
-    const diff = new Date(date) - new Date();
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    const now = new Date();
+    const target = new Date(date);
+    const diff = target - now;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    if (days < 0) return "Invalid";
+    return days + " d";
   }
 
   return (
@@ -91,7 +96,7 @@ function ChatSettingsInvites({params}) {
                   </div>
                 </td>
                 <td>
-                  {formatDay(invite.validThrough)}d
+                  {formatDay(invite.validThrough)}
                 </td>
               </tr>
               ))

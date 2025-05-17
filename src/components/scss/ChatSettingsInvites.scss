@@ -1,5 +1,5 @@
 .Invites {
-    width: max-content;
+    width: 100%;
     margin: 0 auto;
     
 
@@ -10,7 +10,7 @@
 
     &--New {
         background-color: rgba(20, 20, 20, 0.349);
-        padding: 10px;
+        padding: 20px;
         border-bottom: 1px solid #ffffff0d;
         border-top: 1px solid #ffffff0d;
 
@@ -48,6 +48,7 @@
     .InviteTable {
         border-spacing: 0px;;
         border-collapse: seperate;
+        width: 100%;
     
         thead  {
             tr {
@@ -57,18 +58,18 @@
                     padding: 10px;
                     background-color: rgba(20, 20, 20, 0.349);
     
-                    &.Creator {
-                        width: 300px;
-                        // background-color:  red;
-                    }
-                    &.Code {
-                        width: 100px;
-                        // background-color: green;
-                    }
-                    &.Valid {
-                        width: 80px;
-                        // background-color: blue;
-                    }
+                    // &.Creator {
+                    //     width: 200px;
+                    //     // background-color:  red;
+                    // }
+                    // &.Code {
+                    //     width: 100px;
+                    //     // background-color: green;
+                    // }
+                    // &.Valid {
+                    //     width: 80px;
+                    //     // background-color: blue;
+                    // }
                 }
             }
         }
@@ -109,16 +110,6 @@
                     filter: brightness(0.7);
                 }
             }
-        }
-    }
-}
-
-@media (max-width: 1600px) {
-    .Invites {
-        width: 100%;
-        
-        .InviteTable {
-            width: 100%;
         }
     }
 }
