@@ -16,6 +16,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          password: ${{ secrets.VPS_SSH_PASS }}
           script: |
             cd /opt/shitshatui
             git pull origin main
