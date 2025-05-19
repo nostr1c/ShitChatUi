@@ -11,7 +11,7 @@ class SignalRService {
 
   async startConnection(rooms) {
     if (this.connection && this.connection.state !== signalR.HubConnectionState.Disconnected) {
-      // console.warn("SignalR is already connected or connecting.");
+      // console.warn("SignalR is already connected or connecting.");  
       return;
     }
 
