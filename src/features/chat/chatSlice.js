@@ -51,7 +51,7 @@ const chatSlice = createSlice({
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
       console.log(userId, imageName);
-      
+
       for (const room of Object.values(state.roomMembers)) {
         for (const member of Object.values(room)) {
           if (member.user.id === userId) {
@@ -76,11 +76,10 @@ const chatSlice = createSlice({
     },
     setUserTyping: (state, action) => {
       const {room, user, isTyping} = action.payload;
-      if (state.roomMembers[room]) {
-        const member = state.roomMembers[room].find(member => member.user.id === user);
-        if (member) {
-          member.isTyping = isTyping;
-        }
+      
+      const roomMembers = state.roomMembers[room];
+      if (roomMembers && roomMembers[user]) {
+        roomMembers[user].isTyping = isTyping;
       }
     }
   },

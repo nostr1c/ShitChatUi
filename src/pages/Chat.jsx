@@ -126,7 +126,7 @@ function Chat() {
   }, []);
 
   const sendTypingSignal = (isTyping) => {
-    signalRService.invoke("TypeIndicator", params.id, user.data.id, isTyping);
+    signalRService.invoke("TypeIndicator", params?.id, user?.id, isTyping);
   };
 
   return (
