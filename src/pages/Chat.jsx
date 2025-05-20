@@ -154,14 +154,14 @@ function Chat() {
             {messages[params.id] && messages[params.id].length > 0 ? (
               messages[params.id].map((message) => ( 
                 <div 
-                className={`Message ${user.data.id == message.user.id ? "Self" : null}`}
+                className={`Message ${user.id == message.userId ? "Self" : null}`}
                 key={message.id}
                 >
-                <img className="Message--Avatar" src={GetImageUrl(message.user.avatar)}/>
+                <img className="Message--Avatar" src={GetImageUrl(roomMembers[params.id]?.[message.userId]?.user?.avatar)}/>
                 <div className="Message--Content">
                   <div className="Message--Content--Top">
-                    {user.data.id != message.user.id ? (
-                      <p className="Message--Content--Top--Name">{message.user.username}</p>
+                    {user.id != message?.user?.id ? (
+                      <p className="Message--Content--Top--Name">{message?.user?.username}</p>
                     ) : null}
                     <p className="Message--Content--Top--Date">{formatDate(message.createdAt)}</p>
                   </div>

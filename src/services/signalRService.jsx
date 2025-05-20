@@ -1,5 +1,5 @@
 import * as signalR from "@microsoft/signalr";
-import { pushMesage, setUserTyping, pushInvite } from "../features/chat/chatSlice";
+import { pushMesage, setUserTyping, pushInvite, updateUserAvatar } from "../features/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
 
@@ -61,6 +61,10 @@ class SignalRService {
 
     this.on("ReceiveInvite", (invite, room) => {
       dispatch(pushInvite({invite, room}));
+    });
+
+    this.on("ReceiveChangedAvatar", (userId, imageName) => {
+      dispatch(updateUserAvatar({ userId, imageName} ));
     });
 
     this.listenersAttached = true;

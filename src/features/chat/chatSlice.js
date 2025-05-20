@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const normalizeRoomMembers = (members) => {
+  const normalized = {};
+  members.forEach((member) => {
+    normalized[member.user.id] = member;
+  });
+  return normalized;
+};
+
 const initialState = {
   rooms: [],  // []
   messages: {}, // { roomId: [messages] }
@@ -38,7 +46,20 @@ const chatSlice = createSlice({
     },
     addMembersToRoom: (state, action) => {
       const { room, members } = action.payload;
-      state.roomMembers[room] = (members);
+      state.roomMembers[room] = normalizeRoomMembers(members);
+    },
+    updateUserAvatar: (state, action) => {
+      const { userId, imageName } = action.payload;
+      console.log(userId, imageName);
+      
+      for (const room of Object.values(state.roomMembers)) {
+        for (const member of Object.values(room)) {
+          if (member.user.id === userId) {
+            member.user.avatar = imageName;
+            console.log("updated 1")
+          }
+        }
+      }
     },
     setRoomInfo: (state, action) => {
       const { room, data } = action.payload;
@@ -74,7 +95,8 @@ export const {
   setRoomInfo,
   setRoomInvites,
   setUserTyping,
-  pushInvite
+  pushInvite,
+  updateUserAvatar
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
