@@ -3,11 +3,16 @@ import { GetImageUrl } from "../utils/general";
 import "./scss/ChatSidebar.scss"
 import { FaCrown } from "react-icons/fa6";
 import SidebarUserModal from "./SidebarUserModal";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 function ChatSidebar(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalPosition, setModalPositionn] = useState({ x: 0, y: 0 })
   const [modalUser, setModalUser] = useState(null);
+  const params = useParams();
+  const { roomMembers } = useSelector((state) => state.chat)
 
   const setModalPosition = (element) => {
     let parent = element.offsetParent;
@@ -26,29 +31,30 @@ function ChatSidebar(props) {
 
   return (
     <div className="Members">
-      {props.members && props.members.length > 0 ? (
-      props.members.map((member) => (
-        <div
-          key={member.user.id}
-          className="Members--Child"
-          onClick={(e) => {
-            setModalUser(member)
-            toggleModal(e);
-          }}
-        >
-          <img 
-            src={GetImageUrl(member.user.avatar)}
-          />
-          <div className="Members--Child--Text">
-            <div className="Members--Child--Text--Name">
-              <p>{member.user.username}</p>
-              {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+      {roomMembers[params.id] ? (
+        Object.values(roomMembers[params.id]).map((member) => (
+          <div
+            key={member.user.id}
+            className="Members--Child"
+            onClick={(e) => {
+              setModalUser(member)
+              toggleModal(e);
+            }}
+          >
+            <img 
+              src={GetImageUrl(member.user.avatar)}
+            />
+            <div className="Members--Child--Text">
+              <div className="Members--Child--Text--Name">
+                <p>{member.user.username}</p>
+                {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+              </div>
+              {member.isTyping ? (<span>typing...</span>) : null}
             </div>
-            {member.isTyping ? (<span>typing...</span>) : null}
-          </div>
-        </div> 
-        ))
+          </div> 
+          ))
       ) : null}
+
       {showModal && modalUser ? (
         <>
           <div

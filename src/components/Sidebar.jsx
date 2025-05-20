@@ -16,13 +16,6 @@ function Sidebar() {
   const dispatch = useDispatch();
   const { isAuthenticated, user, isLoading } = useSelector((state) => state.auth);
   const [modalOpen, setModalOpen] = useState(false);
-  const [avatar, setAvatar] = useState(user?.data?.avatar);
-
-
-  useEffect(() => {
-    setAvatar(user?.data?.avatar)
-  }, [user]);
-
 
   const toggleModal = () => {
     setModalOpen(prevState => !prevState);
@@ -48,13 +41,12 @@ function Sidebar() {
           <>
           <div className='Sidebar--User'>
             <img
-              src={GetImageUrl(avatar)}
+              src={GetImageUrl(user?.avatar)}
               alt=""
               className='Sidebar--User--Avatar'
-              key={user?.data?.avatar}
             />
             <div className='Sidebar--User--Text'>
-              <h3>{user?.data?.username}</h3>
+              <h3>{user?.username}</h3>
               <h4>Some description i guess</h4>
             </div>
             <div
