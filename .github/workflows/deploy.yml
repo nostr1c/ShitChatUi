@@ -18,6 +18,15 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /opt/shitshatui
+
+            echo "Pulling updates..."
             git pull origin main
+
+            echo "Stopping current containers..."
             docker compose down
+
+            echo "Rebuilding and starting containers..."
             docker compose up --build -d
+
+            echo "Cleaning up older images (>12h)..."
+            docker image prune -a -f --filter "until=12h"
