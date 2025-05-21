@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import Sidebar from "./components/Sidebar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -20,10 +20,16 @@ import Join from "./pages/Join";
 function App() {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.chat.rooms);
+  const location = useLocation();
 
   useEffect(() => {
      dispatch(fetchUser());
   }, [dispatch]);
+
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location])
 
   useEffect(() => {
     if (rooms && rooms.length > 0) {

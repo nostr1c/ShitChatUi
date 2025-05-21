@@ -66,7 +66,7 @@ function Sidebar() {
               </div>
             </div>
           </div>
-          <GroupChats /> 
+          <GroupChats closeModal={() => setModalOpen(false)} /> 
           <FriendsList />
         </>
         )
