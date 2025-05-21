@@ -72,7 +72,8 @@
                 display: flex;
                 flex-direction: column-reverse;
                 padding: 10px;
-                height: calc(100vh - 137px);
+                // height: calc(100vh - 137px);
+                height: calc(var(--vh, 1vh) * 100 - 137px);
 
                 & .Message {
                     display: flex;
@@ -179,17 +180,17 @@
 }
 
 @media (max-width: 780px) {
-    .Chat {
-        height: calc(100vh - 57px);
+  .Chat {
+    height: calc(var(--vh, 1vh) * 100 - 57px);
 
-        & .Chat--Messages {
-            height: calc(100vh - 192px);
-        }
-
-        &--Content--Sidebar {
-            height: calc(100% - 109px) !important;
-        }
+    & .Chat--Messages {
+      height: calc(var(--vh, 1vh) * 100 - 192px);
     }
+
+    &--Content--Sidebar {
+      height: calc(100% - 109px) !important;
+    }
+  }
 }
 
 @media (max-width: 1030px) {
