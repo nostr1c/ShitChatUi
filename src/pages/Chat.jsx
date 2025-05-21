@@ -193,6 +193,11 @@ function Chat() {
                 }} 
                 placeholder="Type a message..." 
               />
+              <button
+                onClick={handleSend}
+              >
+                Send
+              </button>
             </div>
           </div>
         </div>

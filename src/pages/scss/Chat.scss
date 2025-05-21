@@ -140,10 +140,12 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    gap: 10px;
+                    width: 80%;
 
                     & input {
-                        width: 400px;
-                        background-color: rgba(255, 255, 255, 0.044);
+                        width: 100%;
+                        background-color: #ffffff0b;
                         border: none;
                         outline: none;
                         height: 40px;
@@ -151,6 +153,22 @@
                         padding: 0 15px;
                         color: #e5e5e5;
                         font-size: 16px;
+                    }
+
+                    & button {
+                        height: 40px;
+                        padding: 0 20px;
+                        background-color: #ffffff0b;
+
+                        border: none;
+                        outline: none;
+                        color: #a1a1a1;
+                        border-radius: 20px;
+
+                        &:hover {
+                            filter: opacity(0.7);
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -188,16 +206,16 @@
     }
 
     &--Content--Sidebar {
-      height: calc(100% - 109px) !important;
+      height: calc(100% - 171px) !important;
     }
   }
 }
 
-@media (max-width: 1030px) {
+@media (max-width: 1130px) {
     .Chat--Content--Sidebar  {
         position: fixed;
         background-color: #1a191b !important;
-        height: calc(100% - 41px);
+        height: calc(100% - 116px);
         right: 0;
         transform: translateX(100%);
 
