@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Build and Deploy
 
 on:
   push:
@@ -6,27 +6,47 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH and Git Pull
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/shitshatui:latest
+
+      - name: Deploy on VPS via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /opt/shitshatui
-
-            echo "Pulling updates..."
-            git pull origin main
-
-            echo "Stopping current containers..."
-            docker compose down
-
-            echo "Rebuilding and starting containers..."
-            docker compose up --build -d
-
-            echo "Cleaning up older images (>12h)..."
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_PAT }}
+            docker pull ghcr.io/${{ github.repository_owner }}/shitshatui:latest
+            docker stop shitshatui || true
+            docker rm shitshatui || true
+            docker run -d --name shitshatui -p 3000:3000 ghcr.io/${{ github.repository_owner }}/shitshatui:latest
             docker image prune -a -f --filter "until=12h"
