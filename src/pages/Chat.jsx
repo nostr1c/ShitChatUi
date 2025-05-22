@@ -8,7 +8,8 @@ import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
 import { FaUserFriends } from "react-icons/fa";
-import { IoIosSettings } from "react-icons/io";
+import { IoIosSettings, IoMdChatboxes } from "react-icons/io";
+
 
 function Chat() {
   const api = useApi();
@@ -172,7 +173,11 @@ function Chat() {
               </div>
               ))
             ) : (
-              <p style={{ color: "white" }}>No messages found</p>
+              <div className="Messages--Not-Found">
+                <IoMdChatboxes />
+                <h4>No messages.</h4>
+                <p>Be the first one to be social.</p>
+              </div>
             )}
             {messages[params.id] && messages[params.id].length >= 20 && hasMore ? (
               <button onClick={() => {fetchMoreMessages()}}>Ladda mer</button>

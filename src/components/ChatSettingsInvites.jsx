@@ -92,7 +92,7 @@ function ChatSettingsInvites({params}) {
                 </td>
                 <td>
                   <div className="Code">
-                    {invite.inviteString}
+                    https://filipsiri.se/{invite.inviteString}
                   </div>
                 </td>
                 <td>

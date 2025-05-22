@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import "./scss/Home.scss";
 
 
 function Home() {
@@ -6,16 +7,11 @@ function Home() {
 
   return (
     <>
-      <h1>Home</h1>
-      {
-        isAuthenticated && 
-        <p>Logged in</p>
-      }
-
-      {
-        isAuthenticated &&
-        <p>{user?.data?.username}</p>
-      }
+      <div className="Home">
+        <h1>
+          Welcome, {user?.username}! 
+        </h1>
+      </div>
     </>
   );
 }
