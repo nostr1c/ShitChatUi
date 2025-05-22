@@ -2,6 +2,7 @@ import * as signalR from "@microsoft/signalr";
 import { pushMesage, setUserTyping, pushInvite, updateUserAvatar } from "../features/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
+// const SIGNALR_URL = "http://localhost:8080/chatHub";
 
 class SignalRService {
   constructor() {

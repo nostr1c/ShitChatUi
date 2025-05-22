@@ -16,6 +16,7 @@ import Chat from "./pages/Chat";
 import { signalRService } from "./services/signalRService";
 import ChatSettings from "./pages/ChatSettings";
 import Join from "./pages/Join";
+import Register from "./pages/Register";
 
 function App() {
   const dispatch = useDispatch();
@@ -110,6 +111,7 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
       </div>
