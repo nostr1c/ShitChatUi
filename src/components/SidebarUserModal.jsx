@@ -6,8 +6,7 @@ function SidebarUserModal(props) {
       <div
         className="MemberModal"
         style={{ 
-          left: `${props.modalPosition.x}px`,
-          top: `${props.modalPosition.y}px`
+          top: `${props.modalPosition}px`
         }}
       >
         <div className="ModalHeader">
@@ -25,7 +24,7 @@ function SidebarUserModal(props) {
             <div className="ModalContent--Roles">
               {
                 props?.member?.roles.map((role) => (
-                  <div className="ModalContent--Roles--Child">
+                  <div key={role.id} className="ModalContent--Roles--Child">
                     <div style={{backgroundColor: `#${role.color}`}}></div>
                     <p>{role.name}</p>
                   </div>

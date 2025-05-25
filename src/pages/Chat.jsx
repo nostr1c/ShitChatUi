@@ -149,7 +149,7 @@ function Chat() {
           <FaUserFriends />
         </button>
       </div>
-      <div className="Chat--Content">
+      <div className="Chat--Content" id="Chat-Content">
         <div className="Chat--Content--Main">
           <div className="Chat--Messages">
             {messages[params.id] && messages[params.id].length > 0 ? (

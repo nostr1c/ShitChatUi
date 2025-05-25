@@ -5,22 +5,18 @@ import { FaCrown } from "react-icons/fa6";
 import SidebarUserModal from "./SidebarUserModal";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { createPortal } from "react-dom";
 
 function ChatSidebar(props) {
   const [showModal, setShowModal] = useState(false);
-  const [modalPosition, setModalPositionn] = useState({ x: 0, y: 0 })
+  const [modalY, setModalY] = useState(0);
   const [modalUser, setModalUser] = useState(null);
   const params = useParams();
   const { roomMembers } = useSelector((state) => state.chat)
 
   const setModalPosition = (element) => {
-    let parent = element.offsetParent;
     let rect = element.getBoundingClientRect();
-    let parentRect = parent ? parent.getBoundingClientRect() : { left: 0, top: 0 };
-    let relativeX = rect.left - parentRect.left;
-    let relativeY = rect.top - parentRect.top;
-    setModalPositionn({ x: relativeX, y: relativeY })
+    setModalY(rect.top)
   }
 
   const toggleModal = (e) => {
@@ -30,44 +26,46 @@ function ChatSidebar(props) {
   }
 
   return (
-    <div className="Members">
-      {roomMembers[params.id] ? (
-        Object.values(roomMembers[params.id]).map((member) => (
-          <div
-            key={member.user.id}
-            className="Members--Child"
-            onClick={(e) => {
-              setModalUser(member)
-              toggleModal(e);
-            }}
-          >
-            <img 
-              src={GetImageUrl(member.user.avatar)}
-            />
-            <div className="Members--Child--Text">
-              <div className="Members--Child--Text--Name">
-                <p>{member.user.username}</p>
-                {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+    <>
+      <div className="Members">
+        {roomMembers[params.id] ? (
+          Object.values(roomMembers[params.id]).map((member) => (
+            <div
+              key={member.user.id}
+              className="Members--Child"
+              onClick={(e) => {
+                setModalUser(member)
+                toggleModal(e);
+              }}
+            >
+              <img 
+                src={GetImageUrl(member.user.avatar)}
+              />
+              <div className="Members--Child--Text">
+                <div className="Members--Child--Text--Name">
+                  <p>{member.user.username}</p>
+                  {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+                </div>
+                {member.isTyping ? (<span>typing...</span>) : null}
               </div>
-              {member.isTyping ? (<span>typing...</span>) : null}
-            </div>
-          </div> 
-          ))
-      ) : null}
-
-      {showModal && modalUser ? (
+            </div> 
+            ))
+        ) : null}
+      </div>
+      {showModal && modalUser ? createPortal(
         <>
           <div
             className="SidebarOverlay"
             onClick={() => setShowModal(false)}
           />
           <SidebarUserModal
-            modalPosition={modalPosition}
+            modalPosition={modalY}
             member={modalUser}
           />
-        </>
-      ) : null}
-    </div>
+        </>,
+        document.getElementById("Chat-Content")
+        ) : null}
+    </>
   )
 }
 
