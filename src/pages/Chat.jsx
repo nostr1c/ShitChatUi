@@ -180,7 +180,7 @@ function Chat() {
               </div>
             )}
             {messages[params.id] && messages[params.id].length >= 20 && hasMore ? (
-              <button onClick={() => {fetchMoreMessages()}}>Ladda mer</button>
+              <button className="Load-More" onClick={() => {fetchMoreMessages()}}>Ladda mer</button>
             ) : null}
             <div ref={messagesEndRef} />
           </div>

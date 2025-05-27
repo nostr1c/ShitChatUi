@@ -71,21 +71,39 @@
                 overflow: auto;
                 display: flex;
                 flex-direction: column-reverse;
-                padding: 10px;
                 // height: calc(100vh - 137px);
                 height: calc(var(--vh, 1vh) * 100 - 137px);
                 position: relative;
 
+                .Load-More {
+                    margin-bottom: 10px;
+                    background-color: #1d1d1d71;
+                    border: 1px solid #ffffff0d;
+                    padding: 10px 0;
+                    color: #e4e4e4;
+                    cursor: pointer;
+                    width: 100%;
+
+                    &:hover {
+                        filter: opacity(70%)
+                    }
+                }
+
                 & .Message {
                     display: flex;
                     gap: 10px;
-                    padding: 10px 5px;
+                    padding: 10px 20px;
+                    align-items: center;
 
                     &.Self {
                         flex-direction: row-reverse;
 
                         & .Message--Content--Top {
                             flex-direction: row-reverse;
+                        }
+
+                        & .Message--Content--Text {
+                            margin-left: auto;
                         }
                     }
 
@@ -96,10 +114,13 @@
                     }
 
                     &--Content {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+
                         &--Top {
                             display: flex;
                             flex-direction: row;
-                            gap: 15px;
 
                             &--Name {
                                 color: #e5e5e5;
