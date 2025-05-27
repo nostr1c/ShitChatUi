@@ -230,7 +230,7 @@
 
 @media (max-width: 1130px) {
     .Chat--Content--Sidebar  {
-        position: fixed;
+        position: absolute;
         background-color: #1a191b !important;
         height: calc(100% - 116px);
         right: 0;
