@@ -3,7 +3,7 @@ import { pushMesage, setUserTyping, pushInvite, updateUserAvatar } from "../feat
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
 // const SIGNALR_URL = "http://localhost:8080/chatHub";
-
+ 
 class SignalRService {
   constructor() {
     this.connection = null;
