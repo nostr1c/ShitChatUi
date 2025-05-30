@@ -37,7 +37,7 @@ function Chat() {
     const fetchMessages = async () => {
       try {
         setLoading(true);
-        const { data } = await api.get(`group/v2/${params.id}/messages`);
+        const { data } = await api.get(`group/${params.id}/messages`);
 
         dispatch(addMessage({ room: params.id, message: data.data }));
       } catch (error) {
@@ -75,8 +75,8 @@ function Chat() {
   const fetchMoreMessages = async () => {
     try {
       const lastMessage = messages[params.id]?.[messages[params.id].length - 1];
-      const { data } = await api.get(`group/v2/${params.id}/messages?lastMessageId=${lastMessage.id}`);
-      if (data.data.length < 20)  setHasMore(false);
+      const { data } = await api.get(`group/${params.id}/messages?lastMessageId=${lastMessage.id}`);
+      if (data.data.length < 40) setHasMore(false);
       dispatch(addMessage({ room: params.id, message: data.data }));  
       
     } catch (error) {
@@ -179,7 +179,7 @@ function Chat() {
                 <p>Be the first one to be social.</p>
               </div>
             )}
-            {messages[params.id] && messages[params.id].length >= 20 && hasMore ? (
+            {messages[params.id] && messages[params.id].length >= 40 && hasMore ? (
               <button className="Load-More" onClick={() => {fetchMoreMessages()}}>Ladda mer</button>
             ) : null}
             <div ref={messagesEndRef} />
