@@ -12,7 +12,7 @@ function ChatSidebar(props) {
   const [modalY, setModalY] = useState(0);
   const [modalUser, setModalUser] = useState(null);
   const params = useParams();
-  const { roomMembers } = useSelector((state) => state.chat)
+  const { roomMembers, roomPresence } = useSelector((state) => state.chat)
 
   const setModalPosition = (element) => {
     let rect = element.getBoundingClientRect();
@@ -28,8 +28,9 @@ function ChatSidebar(props) {
   return (
     <>
       <div className="Members">
-        {roomMembers[params.id] ? (
-          Object.values(roomMembers[params.id]).map((member) => (
+      {roomMembers[params.id] ? (
+        Object.values(roomMembers[params.id]).map((member) => {
+          return (
             <div
               key={member.user.id}
               className="Members--Child"
@@ -38,19 +39,23 @@ function ChatSidebar(props) {
                 toggleModal(e);
               }}
             >
-              <img 
-                src={GetImageUrl(member.user.avatar)}
-              />
+              <div className="Members--Child--Avatar">
+                <img src={GetImageUrl(member.user.avatar)} />
+                {roomPresence[params.id] && roomPresence[params.id].includes(member.user.id) && (
+                  <div className="Members--Child--Avatar--Presence"></div>
+                )}
+              </div>
               <div className="Members--Child--Text">
                 <div className="Members--Child--Text--Name">
                   <p>{member.user.username}</p>
-                  {member.user.id == props.room?.ownerId ? (<FaCrown />) : null}
+                  {member.user.id == props.room?.ownerId && <FaCrown />}
                 </div>
-                {member.isTyping ? (<span>typing...</span>) : null}
+                {member.isTyping && <span>typing...</span>}
               </div>
-            </div> 
-            ))
-        ) : null}
+            </div>
+          );
+        })
+      ) : null}
       </div>
       {showModal && modalUser ? createPortal(
         <>

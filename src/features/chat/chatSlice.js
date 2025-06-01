@@ -13,7 +13,8 @@ const initialState = {
   messages: {}, // { roomId: [messages] }
   roomMembers: {}, // { roomId:  [users]} - Yes i wish i went with typescript....
   roomInfo: {}, // { roomId: {data}}
-  roomInvites: {} // { roomId: {data} }
+  roomInvites: {}, // { roomId: {data} }
+  roomPresence: {}
 };
 
 const chatSlice = createSlice({
@@ -81,6 +82,10 @@ const chatSlice = createSlice({
       if (roomMembers && roomMembers[user]) {
         roomMembers[user].isTyping = isTyping;
       }
+    },
+    updatePresence: (state, action) => {
+      const { room, users } = action.payload;
+      state.roomPresence[room] = users;
     }
   },
 });
@@ -95,7 +100,8 @@ export const {
   setRoomInvites,
   setUserTyping,
   pushInvite,
-  updateUserAvatar
+  updateUserAvatar,
+  updatePresence
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

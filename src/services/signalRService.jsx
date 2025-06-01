@@ -1,8 +1,14 @@
 import * as signalR from "@microsoft/signalr";
-import { pushMesage, setUserTyping, pushInvite, updateUserAvatar } from "../features/chat/chatSlice";
+import {
+  pushMesage,
+  setUserTyping,
+  pushInvite,
+  updateUserAvatar,
+  updatePresence
+} from "../features/chat/chatSlice";
 
-const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
-// const SIGNALR_URL = "http://localhost:8080/chatHub";
+// const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
+const SIGNALR_URL = "https://localapi.test/chatHub";
  
 class SignalRService {
   constructor() {
@@ -17,7 +23,12 @@ class SignalRService {
     }
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl(SIGNALR_URL)
+      .withUrl(SIGNALR_URL, { 
+        // transport: signalR.HttpTransportType.WebSockets,
+        // skipNegotiation: true,
+        withCredentials: true
+      })
+      // .configureLogging(signalR.LogLevel.Trace)
       .withAutomaticReconnect()
       .build();
 
@@ -66,6 +77,10 @@ class SignalRService {
 
     this.on("ReceiveChangedAvatar", (userId, imageName) => {
       dispatch(updateUserAvatar({ userId, imageName} ));
+    });
+
+    this.on("PresenceUpdated", (room, users) => {
+      dispatch(updatePresence({ room, users }))
     });
 
     this.listenersAttached = true;

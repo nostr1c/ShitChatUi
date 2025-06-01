@@ -13,10 +13,25 @@
         padding: 5px 10px;
         cursor: pointer;
 
-        & img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+        &--Avatar  {
+            position: relative;
+
+            img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+            }
+
+            &--Presence {
+                position: absolute;
+                background-color: rgb(64, 145, 75);
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                right: 0;
+                bottom: 0;
+                border: 4px solid #1a191b;
+            }
         }
 
         & svg {
