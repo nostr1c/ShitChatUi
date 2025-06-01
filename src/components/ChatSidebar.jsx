@@ -12,7 +12,8 @@ function ChatSidebar(props) {
   const [modalY, setModalY] = useState(0);
   const [modalUser, setModalUser] = useState(null);
   const params = useParams();
-  const { roomMembers, roomPresence } = useSelector((state) => state.chat)
+  const roomMembers = useSelector((state) => state.chat.roomMembers[params.id]);
+  const roomPresence = useSelector((state) => state.chat.roomPresence[params.id]);
 
   const setModalPosition = (element) => {
     let rect = element.getBoundingClientRect();
@@ -28,8 +29,10 @@ function ChatSidebar(props) {
   return (
     <>
       <div className="Members">
-      {roomMembers[params.id] ? (
-        Object.values(roomMembers[params.id]).map((member) => {
+      {roomMembers ? (
+        Object.values(roomMembers).map((member) => {
+          const isOnline = roomPresence?.includes(member.user.id);
+          
           return (
             <div
               key={member.user.id}
@@ -41,7 +44,7 @@ function ChatSidebar(props) {
             >
               <div className="Members--Child--Avatar">
                 <img src={GetImageUrl(member.user.avatar)} />
-                {roomPresence[params.id] && roomPresence[params.id].includes(member.user.id) && (
+                {isOnline && (
                   <div className="Members--Child--Avatar--Presence"></div>
                 )}
               </div>
