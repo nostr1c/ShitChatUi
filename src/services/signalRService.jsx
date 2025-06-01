@@ -7,8 +7,8 @@ import {
   updatePresence
 } from "../features/chat/chatSlice";
 
-// const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
-const SIGNALR_URL = "https://localapi.test/chatHub";
+const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
+// const SIGNALR_URL = "https://localapi.test/chatHub";
  
 class SignalRService {
   constructor() {
