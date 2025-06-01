@@ -23,6 +23,9 @@ function Login() {
       }
       setRedirect(true);
     } catch (error) {
+      if (error.message) {
+        dispatch(showToast("error", error.message))
+      }
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;
 
