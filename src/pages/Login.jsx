@@ -11,6 +11,7 @@ function Login() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [redirect, setRedirect] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -23,8 +24,16 @@ function Login() {
       }
       setRedirect(true);
     } catch (error) {
+      setError(error);
+
       if (error.message) {
         dispatch(showToast("error", error.message))
+      }
+      if (error.code) {
+        dispatch(showToast("error", error.code))
+      }
+      if (error.response.status) {
+        dispatch(showToast("error", error.response.status))
       }
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;
@@ -44,6 +53,7 @@ function Login() {
 
   return (
     <>
+    {error && JSON.stringify(error)}
       <div className="Form-Wrapper">
         <div className="Form">
           <h1>LOGIN</h1>
