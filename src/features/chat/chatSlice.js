@@ -49,6 +49,14 @@ const chatSlice = createSlice({
       const { room, members } = action.payload;
       state.roomMembers[room] = normalizeRoomMembers(members);
     },
+    pushMemberToRoom: (state, action) => {
+      const { room, member } = action.payload;
+      
+      state.roomMembers[room][member.user.id] = {
+        ...member,
+        roles: member.roles ?? []
+      };
+    },
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
       console.log(userId, imageName);
@@ -96,6 +104,7 @@ export const {
   addMessage,
   pushMesage,
   addMembersToRoom,
+  pushMemberToRoom,
   setRoomInfo,
   setRoomInvites,
   setUserTyping,

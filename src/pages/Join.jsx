@@ -19,14 +19,16 @@ function Join() {
   useEffect(() => {
     const joinRoom = async () => {
       try {
+        await signalRService.waitUntilConnected();
+
         const { data } = await api.post(`invite/join/${params.id}`);
 
-        await signalRService.waitUntilConnected();
         await signalRService.invoke("JoinGroup", data.data.group);
         console.log(`Joined room: ${data.data.group}`);  
 
         navigate(`/chat/${data.data.group}`);
       } catch (error) {
+        console.error(error);
         if (error.response.data.message) {
           dispatch(showToast("error", error.response.data.message));
 

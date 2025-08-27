@@ -4,7 +4,8 @@ import {
   setUserTyping,
   pushInvite,
   updateUserAvatar,
-  updatePresence
+  updatePresence,
+  pushMemberToRoom
 } from "../features/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -24,8 +25,6 @@ class SignalRService {
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(SIGNALR_URL, { 
-        // transport: signalR.HttpTransportType.WebSockets,
-        // skipNegotiation: true,
         withCredentials: true
       })
       // .configureLogging(signalR.LogLevel.Trace)
@@ -38,7 +37,6 @@ class SignalRService {
 
       rooms.forEach((group) => {
         this.invoke("JoinGroup", group.id)
-          .then(() => console.log(`Joined room: ${group.id}`))
           .catch((err) => console.error(`Failed to join room ${group.id}:`, err));
       });
 
@@ -82,6 +80,11 @@ class SignalRService {
     this.on("PresenceUpdated", (room, users) => {
       dispatch(updatePresence({ room, users }))
     });
+
+    this.on("ReceiveMember", (room, member) => {
+      console.log(`${room}: added ${member}`);
+      dispatch(pushMemberToRoom({ room, member }));
+    })
 
     this.listenersAttached = true;
   }
