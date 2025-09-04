@@ -5,8 +5,12 @@ import {
   pushInvite,
   updateUserAvatar,
   updatePresence,
-  pushMemberToRoom
-} from "../features/chat/chatSlice";
+  pushMemberToRoom,
+  addRoleToUser,
+  removeRoleFromUser,
+  pushRoomRole,
+  editRoomRole
+} from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
 // const SIGNALR_URL = "https://localapi.test/chatHub";
@@ -82,9 +86,25 @@ class SignalRService {
     });
 
     this.on("ReceiveMember", (room, member) => {
-      console.log(`${room}: added ${member}`);
       dispatch(pushMemberToRoom({ room, member }));
     })
+
+    this.on("UserAddedRole", (room, user, role) => {
+      dispatch(addRoleToUser({ room, user, role }));
+    })
+
+    this.on("UserRemovedRole", (room, user, role) => {
+      dispatch(removeRoleFromUser({ room, user, role }));
+    })
+
+    this.on("RoleCreated", (room, role) => {
+      dispatch(pushRoomRole( { room, role } ));
+    })
+    this.on("RoleEdited", (room, role) => {
+      dispatch(editRoomRole( { room, role } ));
+    })
+
+
 
     this.listenersAttached = true;
   }

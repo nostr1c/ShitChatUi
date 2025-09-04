@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 function ChatSidebar(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalY, setModalY] = useState(0);
-  const [modalUser, setModalUser] = useState(null);
+  const [modalUserId, setModalUserId] = useState(null);
   const params = useParams();
   const roomMembers = useSelector((state) => state.chat.roomMembers[params.id]);
   const roomPresence = useSelector((state) => state.chat.roomPresence[params.id]);
@@ -38,7 +38,7 @@ function ChatSidebar(props) {
               key={member.user.id}
               className="Members--Child"
               onClick={(e) => {
-                setModalUser(member)
+                setModalUserId(member.user.id)
                 toggleModal(e);
               }}
             >
@@ -60,7 +60,7 @@ function ChatSidebar(props) {
         })
       ) : null}
       </div>
-      {showModal && modalUser ? createPortal(
+      {showModal && modalUserId ? createPortal(
         <>
           <div
             className="SidebarOverlay"
@@ -68,7 +68,7 @@ function ChatSidebar(props) {
           />
           <SidebarUserModal
             modalPosition={modalY}
-            member={modalUser}
+            userId={modalUserId}
           />
         </>,
         document.getElementById("Chat-Content")

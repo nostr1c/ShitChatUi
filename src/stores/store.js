@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../features/auth/authSlice';
-import toastReducer from '../features/toast/toastSlice';
-import chatReducer from '../features/chat/chatSlice';
+import authReducer from '../redux/auth/authSlice';
+import toastReducer from '../redux/toast/toastSlice';
+import chatReducer from '../redux/chat/chatSlice';
 
 const store = configureStore({
   reducer: {

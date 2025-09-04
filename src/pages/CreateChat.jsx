@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useApi } from "../services/useApi";
-import { showToast } from "../features/toast/toastThunks";
-import { pushRoom } from "../features/chat/chatSlice";
+import { showToast } from "../redux/toast/toastThunks";
+import { pushRoom } from "../redux/chat/chatSlice";
 import { signalRService } from "../services/signalRService";
 import { useNavigate } from "react-router-dom";
 

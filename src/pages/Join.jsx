@@ -3,7 +3,7 @@ import { useApi } from "../services/useApi";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { signalRService } from "../services/signalRService";
 import { useDispatch } from "react-redux";
-import { showToast } from "../features/toast/toastThunks";
+import { showToast } from "../redux/toast/toastThunks";
 
 function Join() {
   const api = useApi();

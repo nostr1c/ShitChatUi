@@ -12,6 +12,15 @@
     // transform: translateX(calc(-100% - 5px));
     animation: SlideIn 0.2s;
 
+    &--Overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
     & .ModalHeader {
         background-color: rgb(70, 109, 226);
         position: relative;
@@ -43,6 +52,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+        position: relative;
 
         &--Roles {
             display: flex;
@@ -70,6 +80,84 @@
 
                 & p {
                     font-size: 12px;
+                }
+
+                &.Add {
+                    opacity: 0.6;
+                    color: inherit;
+                    border: inherit;
+
+                    &:hover {
+                        opacity: 1;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        &--UpdateRoles {
+            position: absolute;
+            width: 100%;
+            bottom: -1px;
+            left: 0;
+            transform: translateY(100%);
+            background-color: #2e2e31;
+            border-radius: 8px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 206px;
+            overflow-y: auto;
+
+            & .Role {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap:  6px;
+                padding: 10px 15px;
+                user-select: none;
+
+                &--Dot {
+                    border-radius: 50%;
+                    width: 12px;
+                    height: 12px;
+                }
+
+                & p {
+                    font-size: 13px;
+                }
+
+                &--CheckBox {
+                    margin-left: auto;
+                    background-color: #24242470;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 4px;
+                    border: 1px solid #94949427;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    color: #ffffff;
+
+                    &.Checked {
+                        background-color: #466de2;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: rgba(90, 90, 90, 0.158);
+                }
+
+                &.Empty {
+                    cursor: default;
+                    font-size: 14px;
+
+                    &:hover {
+                        background-color: unset;
+                    } 
                 }
             }
         }

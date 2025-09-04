@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { clearUser } from "../features/auth/authSlice";
+import { clearUser } from "../redux/auth/authSlice";
 import { useApi } from "../services/useApi";
 
 function Protected() {

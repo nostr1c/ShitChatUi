@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setRooms } from "../features/chat/chatSlice";
+import { setRooms } from "../redux/chat/chatSlice";
 import { Link } from "react-router-dom";
 import { BiMessageSquareAdd } from "react-icons/bi";
 import "./scss/GroupChats.scss"

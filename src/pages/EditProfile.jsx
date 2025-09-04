@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useApi } from "../services/useApi";
-import { showToast } from "../features/toast/toastThunks";
+import { showToast } from "../redux/toast/toastThunks";
 import { signalRService } from "../services/signalRService";
-import { updateAvatar } from "../features/auth/authSlice";
+import { updateAvatar } from "../redux/auth/authSlice";
 
 function EditProfile() {
     const api = useApi();

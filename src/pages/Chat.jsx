@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembersToRoom, addMessage, setRoomInfo } from "../features/chat/chatSlice";
+import { addMembersToRoom, addMessage, setRoomInfo, setRoomRoles } from "../redux/chat/chatSlice";
 import ChatSidebar from "../components/ChatSidebar";
 import { GetImageUrl } from "../utils/general";
 import "./scss/Chat.scss";
@@ -29,7 +29,8 @@ function Chat() {
   const { 
     messages,
     roomMembers,
-    roomInfo
+    roomInfo,
+    roomRoles
   } = useSelector((state) => state.chat)
 
 
@@ -66,10 +67,20 @@ function Chat() {
       }
     }
 
+    const fetchRoomRoles = async () => {
+      try {
+        const { data }  = await api.get(`group/${params.id}/roles`);
+        dispatch(setRoomRoles({ room: params.id, data: data.data }));
+      } catch (error) {
+        console.error("Error fetching room roles: ", error)
+      }
+    }
+
 
     if (params.id && !messages[params.id]) fetchMessages();
     if (params.id && !roomMembers[params.id]) fetchRoomMembers();
     if (params.id && !roomInfo[params.id]) fetchRoomInfo();
+    if (params.id && !roomRoles[params.id]) fetchRoomRoles();
   }, [params.id]);
 
   const fetchMoreMessages = async () => {

@@ -2,9 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetImageUrl } from "../utils/general";
 import "./scss/ChatSettingsInvites.scss"
 import { useApi } from "../services/useApi";
-import { setRoomInvites } from "../features/chat/chatSlice";
+import { setRoomInvites } from "../redux/chat/chatSlice";
 import { useRef } from "react";
-import { showToast } from "../features/toast/toastThunks";
+import { showToast } from "../redux/toast/toastThunks";
+import Button from "./Button";
+
 
 function ChatSettingsInvites({params}) {
   const { roomInvites } = useSelector((state) => state.chat)
@@ -15,7 +17,6 @@ function ChatSettingsInvites({params}) {
   const fetchRoomInvites = async () => {
     try {
       const { data }  = await api.get(`invite/${params.id}`);
-      console.log(data);
       if (data.data.length > 0) {
         dispatch(setRoomInvites({ room: params.id, data: data.data }));
       }
@@ -53,7 +54,6 @@ function ChatSettingsInvites({params}) {
 
   return (
     <div className="Invites">
-      <h4 className="Invites--Title">Invites</h4>
       <div className="Invites--New">
         <h4>Create invite</h4>
         <div className="Invites--New--Form">
@@ -63,11 +63,11 @@ function ChatSettingsInvites({params}) {
             ref={validThroughRef}
             min={new Date().toISOString().split("T")[0]}
           />
-          <button
+          <Button
             onClick={handleCreateInvite}
           >
             Create
-          </button>
+          </Button>
         </div>
 
       </div>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useApi } from "../services/useApi";
 import { CiLogout, CiEdit  } from "react-icons/ci";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { clearUser } from "../features/auth/authSlice";
+import { clearUser } from "../redux/auth/authSlice";
 import { GetImageUrl } from '../utils/general';
 import FriendsList from './FriendsList';
 import GroupChats from './GroupChats';

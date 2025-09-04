@@ -8,13 +8,22 @@ const normalizeRoomMembers = (members) => {
   return normalized;
 };
 
+const normalizeRoomRoles = (roles) => {
+  const normalized = {};
+  roles.forEach((role) => {
+    normalized[role.id] = role;
+  });
+  return normalized;
+}
+
 const initialState = {
-  rooms: [],  // []
-  messages: {}, // { roomId: [messages] }
-  roomMembers: {}, // { roomId:  [users]} - Yes i wish i went with typescript....
-  roomInfo: {}, // { roomId: {data}}
-  roomInvites: {}, // { roomId: {data} }
-  roomPresence: {}
+  rooms: [],
+  messages: {},
+  roomMembers: {},
+  roomInfo: {},
+  roomInvites: {},
+  roomPresence: {},
+  roomRoles: {}
 };
 
 const chatSlice = createSlice({
@@ -78,6 +87,20 @@ const chatSlice = createSlice({
       const { room, data } = action.payload;
       state.roomInvites[room] = (data);
     },
+    setRoomRoles: (state, action) => {
+      const { room, data } = action.payload;
+      state.roomRoles[room] = normalizeRoomRoles(data);
+    },
+    pushRoomRole: (state, action) => {
+      const { room, role } = action.payload;
+      if (!state.roomRoles[room]) state.roomRoles[room] = [];
+      state.roomRoles[room][role.id] = role;
+    },
+    editRoomRole: (state, action) => {
+      const { room, role } = action.payload;
+      state.roomRoles[room][role.id] = role;
+      console.log(state.roomRoles[room][role.id])
+    },
     pushInvite: (state, action) => {
       const { room, invite } = action.payload;
       if (!state.roomInvites[room]) state.roomInvites[room] = [];
@@ -94,6 +117,23 @@ const chatSlice = createSlice({
     updatePresence: (state, action) => {
       const { room, users } = action.payload;
       state.roomPresence[room] = users;
+    },
+    addRoleToUser: (state, action) => {
+      const { room, user, role } = action.payload;
+      console.log(room, user, role)
+      const member = state.roomMembers[room][user];
+      if (!member.roles.includes(role)) {
+        member.roles.push(role);
+      }
+    },
+    removeRoleFromUser: (state, action) => {
+      const { room, user, role } = action.payload;
+      console.log(room, user, role)
+
+      const member = state.roomMembers[room]?.[user];
+      if (!member) return;
+
+      member.roles = member.roles.filter((r) => r !== role);
     }
   },
 });
@@ -110,7 +150,12 @@ export const {
   setUserTyping,
   pushInvite,
   updateUserAvatar,
-  updatePresence
+  updatePresence,
+  setRoomRoles,
+  addRoleToUser,
+  removeRoleFromUser,
+  pushRoomRole,
+  editRoomRole
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

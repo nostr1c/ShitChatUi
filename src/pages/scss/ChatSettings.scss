@@ -4,12 +4,13 @@
     overflow-y: auto;
     opacity: 0;
     animation: fadeIn 0.1s ease forwards;
+    position: relative;
 
     @keyframes fadeIn {
         to {
           opacity: 1;
         }
-      }
+    }
 
     &--Header {
         padding: 20px 10px 0 10px;

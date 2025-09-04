@@ -8,7 +8,7 @@ import { useState } from "react";
 import "./scss/App.scss"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "./features/auth/authThunks";
+import { fetchUser } from "./redux/auth/authThunks";
 import EditProfile from "./pages/EditProfile";
 import ToastParent from "./components/ToastParent";
 import CreateChat from "./pages/CreateChat";
@@ -24,7 +24,7 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-     dispatch(fetchUser());
+    dispatch(fetchUser());
   }, [dispatch]);
 
 
