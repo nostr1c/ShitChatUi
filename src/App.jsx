@@ -25,8 +25,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUser());
-  }, [dispatch]);
-
+  }, []);
 
   useEffect(() => {
     setSidebarOpen(false);

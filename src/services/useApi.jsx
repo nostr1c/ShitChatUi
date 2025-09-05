@@ -34,19 +34,6 @@ api.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          subscribeTokenRefresh(
-            () => {
-              api(originalRequest).then(resolve).catch(reject);
-            },
-            reject
-          );
-        });
-      }
-
-      isRefreshing = true;
       const authStatus = error.response.headers["x-auth-status"];
 
       if (authStatus === "SessionExpired") {
@@ -58,10 +45,17 @@ api.interceptors.response.use(
         return Promise.reject(error);
       }
 
-      try {
-        await api.post("/auth/refresh");
-        console.log("Token refreshed");
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          subscribeTokenRefresh(() => {
+            api(originalRequest).then(resolve).catch(reject);
+          },reject);
+        });
+      }
 
+      try {
+        isRefreshing = true;
+        await api.post("/auth/refresh");
         isRefreshing = false;
         onRefreshed();
         return api(originalRequest);
