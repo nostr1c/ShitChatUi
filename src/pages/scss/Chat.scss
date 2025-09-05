@@ -121,6 +121,8 @@
                         &--Top {
                             display: flex;
                             flex-direction: row;
+                            gap: 13px;
+                            align-items: center;
 
                             &--Name {
                                 color: #e5e5e5;

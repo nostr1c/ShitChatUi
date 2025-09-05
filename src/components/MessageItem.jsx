@@ -1,0 +1,21 @@
+import { GetImageUrl } from "../utils/general";
+import "../pages/scss/Chat.scss";
+
+function MessageItem({ message, currentUser, member }) {
+
+  return (
+    <div className={`Message ${currentUser.id === message.userId ? "Self" : ""}`} key={message.id}>
+      <img className="Message--Avatar" src={GetImageUrl(member?.user?.avatar)} alt="avatar" />
+      <div className="Message--Content">
+        <div className="Message--Content--Top">
+          {currentUser.id !== message.userId && (
+            <p className="Message--Content--Top--Name">{member?.user?.username}</p>
+          )}
+          <p className="Message--Content--Top--Date">{new Date(message.createdAt).toLocaleString()}</p>
+        </div>
+        <div className="Message--Content--Text">{message.content}</div>
+      </div>
+    </div>
+  );
+}
+export default MessageItem;
