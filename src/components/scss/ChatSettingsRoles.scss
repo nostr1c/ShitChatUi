@@ -14,7 +14,7 @@
         flex-direction: column;
         
         &--Child {
-            padding: 10px 15px;
+            padding: 15px 15px;
             border: unset;
             border-bottom: 1px dashed #ffffff0d;
             user-select: none;
@@ -23,6 +23,10 @@
             background-color: unset;
             text-align: unset;
             color: #fff;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 14px;
 
             &:last-child {
                 border-bottom: unset;
@@ -30,6 +34,12 @@
     
             &:hover {
                 background-color: #49494907;
+            }
+
+            &--Dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
             }
         }
     }

@@ -64,6 +64,10 @@ function ChatSettingsRoles() {
                 key={role?.id}
                 onClick={() => openEditRole(role)}
               >
+                <div
+                  className="Roles--Child--Dot"
+                  style={{ backgroundColor: role?.color}}
+                />
                 <p>{role?.name}</p>
               </button>
             )
