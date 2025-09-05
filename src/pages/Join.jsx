@@ -19,6 +19,7 @@ function Join() {
   useEffect(() => {
     const joinRoom = async () => {
       try {
+        await signalRService.startConnection([]);
         await signalRService.waitUntilConnected();
 
         const { data } = await api.post(`invite/join/${params.id}`);

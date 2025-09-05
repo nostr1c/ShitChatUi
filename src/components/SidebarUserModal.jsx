@@ -5,16 +5,17 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useApi } from "../services/useApi";
+import { GiWalkingBoot, GiThorHammer } from "react-icons/gi";
+import PermissionGate from "./PermissionGate";
 
 function SidebarUserModal(props) {
-  const params = useParams();
+  const { id: roomId} = useParams();
   const api = useApi();
-
-  const member = useSelector((state) => state.chat.roomMembers[params.id][props?.userId]);
+  const member = useSelector((state) => state.chat.roomMembers[roomId][props?.userId]);
   const userRoles = member.roles;
-  
-  const roomRoles = useSelector((state) => state.chat.roomRoles[params.id]);
-
+  const roomRoles = useSelector((state) => state.chat.roomRoles[roomId]);
+  const roomInfo = useSelector((state) => state.chat.roomInfo[roomId]);
+  const user = useSelector((state) => state.auth.user);
   const [selectedRoles, setSelectedRoles] = useState(userRoles ?? []);
 
   const toggleRole = (roleId) => {
@@ -24,7 +25,7 @@ function SidebarUserModal(props) {
       if (hasRole) {
         const updated = prev.filter((id) => id !== roleId);
 
-        api.delete(`/group/${params.id}/user/${member.user.id}/roles`, {
+        api.delete(`/group/${roomId}/user/${member.user.id}/roles`, {
           data: { roleId: roleId }
         })
         .catch((error) => {
@@ -37,7 +38,7 @@ function SidebarUserModal(props) {
 
       const updated = [...prev, roleId];
       
-      api.post(`/group/${params.id}/user/${member.user.id}/roles`, { roleId: roleId })
+      api.post(`/group/${roomId}/user/${member.user.id}/roles`, { roleId: roleId })
       .catch((error) => {
         console.error("Error adding role:", error);
         setSelectedRoles((rollback) => rollback.filter((id) => id !== roleId));
@@ -87,14 +88,19 @@ function SidebarUserModal(props) {
                   )
                 })
               }
-              <button 
-                className="ModalContent--Roles--Child Add"
-                onClick={() => {setUpdateUserRoles(!showUpdateUserRoles)}}
+              <PermissionGate
+                roomId={roomId}
+                userId={user.id}
+                permissions={["manage_user_roles"]}
               >
-                <p>Edit roles</p>
-              </button>
+                <button 
+                  className="ModalContent--Roles--Child Add"
+                  onClick={() => {setUpdateUserRoles(!showUpdateUserRoles)}}
+                >
+                  <p>Edit roles</p>
+                </button>
+              </PermissionGate>
             </div>
-
             <div className="ModalContent--UpdateRoles">
               {showUpdateUserRoles && (
                 Object.values(roomRoles).length > 0 ? (
@@ -119,6 +125,36 @@ function SidebarUserModal(props) {
                 )
               )}
             </div>
+            {user.id !== member.user.id && member.user.id !== roomInfo.ownerId && (
+              <div
+                className="ModalContent--Actions"
+              >
+                <PermissionGate
+                  roomId={roomId}
+                  userId={user.id}
+                  permissions={["kick_user"]}
+                >
+                  <button
+                    className="ModalContent--Actions--Child"
+                  >
+                    <GiWalkingBoot />
+                    <p>Kick</p>
+                  </button>
+                </PermissionGate>
+                <PermissionGate
+                  roomId={roomId}
+                  userId={user.id}
+                permissions={["ban_user"]}
+                >
+                  <button
+                    className="ModalContent--Actions--Child"
+                  >
+                    <GiThorHammer />
+                    <p>Ban</p>
+                  </button>
+                </PermissionGate>
+              </div>
+            )}
         </div>
     </div>
   )

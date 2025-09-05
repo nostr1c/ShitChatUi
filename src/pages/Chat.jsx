@@ -10,6 +10,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoIosSettings, IoMdChatboxes } from "react-icons/io";
 import MessageItem from "../components/MessageItem";
 import { useRoomData } from "../services/useRoomData";
+import PermissionGate from "../components/PermissionGate";
 
 function Chat() {
   const api = useApi();
@@ -72,12 +73,18 @@ function Chat() {
   return (
     <div className="Chat">
       <div className="Chat--Top">
-        <Link
-          className="Chat--Top--Btn Settings"
-          to={"settings"}
+        <PermissionGate
+          roomId={roomId}
+          userId={user.id}
+          permissions={["manage_server", "manage_server_roles", "manage_invites"]}
         >
-          <IoIosSettings />
-        </Link>
+          <Link
+            className="Chat--Top--Btn Settings"
+            to={"settings"}
+          >
+            <IoIosSettings />
+          </Link>
+        </PermissionGate>
         <h1>
           {roomInfo[roomId] ? roomInfo[roomId].name : "Loading..."}
         </h1>

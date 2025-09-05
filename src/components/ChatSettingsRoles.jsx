@@ -11,8 +11,7 @@ import ManageRoleModal from "./ManageRoleModal";
 function ChatSettingsRoles() {
   const dispatch = useDispatch();
   const api = useApi();
-  const params = useParams();
-  const roomId = params.id
+  const { id: roomId } = useParams();
   const roles = useSelector((state) => state.chat.roomRoles[roomId]);
   const rolesArray = roles ? Object.values(roles) : [];
   const [showManageRole, setShowManageRole] = useState(false);

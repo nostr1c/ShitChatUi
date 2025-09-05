@@ -6,9 +6,11 @@ import { setRoomInvites } from "../redux/chat/chatSlice";
 import { useRef } from "react";
 import { showToast } from "../redux/toast/toastThunks";
 import Button from "./Button";
+import { useParams } from "react-router-dom";
 
 
-function ChatSettingsInvites({params}) {
+function ChatSettingsInvites() {
+  const { id: roomId} = useParams();
   const { roomInvites } = useSelector((state) => state.chat)
   const api = useApi();
   const validThroughRef = useRef();
@@ -16,22 +18,22 @@ function ChatSettingsInvites({params}) {
 
   const fetchRoomInvites = async () => {
     try {
-      const { data }  = await api.get(`invite/${params.id}`);
+      const { data }  = await api.get(`invite/${roomId}`);
       if (data.data.length > 0) {
-        dispatch(setRoomInvites({ room: params.id, data: data.data }));
+        dispatch(setRoomInvites({ room: roomId, data: data.data }));
       }
     } catch (error) {
       console.error("Error fetching room invites: ", error)
     }
   }
 
-  if (params.id && !roomInvites[params.id]) fetchRoomInvites();
+  if (roomId && !roomInvites[roomId]) fetchRoomInvites();
 
   const handleCreateInvite = async () => {
     const validThrough = validThroughRef.current.value
     if (validThrough) {
       try {
-        const result = await api.post(`/invite/${params.id}/`, { validThrough });
+        const result = await api.post(`/invite/${roomId}/`, { validThrough });
         validThroughRef.current.value = ""; 
 
         if (result.data.message) {
@@ -81,8 +83,8 @@ function ChatSettingsInvites({params}) {
         </thead>
         <tbody>
           {
-            roomInvites[params.id] && roomInvites[params.id].length > 0 ? (
-              roomInvites[params.id].map((invite) => (
+            roomInvites[roomId] && roomInvites[roomId].length > 0 ? (
+              roomInvites[roomId].map((invite) => (
               <tr key={invite.inviteString}>
                 <td className="Creator">
                   <img
