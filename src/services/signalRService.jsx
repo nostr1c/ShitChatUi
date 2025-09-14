@@ -6,11 +6,13 @@ import {
   updateUserAvatar,
   updatePresence,
   pushMemberToRoom,
+  removeMemberFromRoom,
   addRoleToUser,
   removeRoleFromUser,
   pushRoomRole,
   editRoomRole,
-  incrementUnread
+  incrementUnread,
+  removeRoomFromUser
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -68,12 +70,12 @@ class SignalRService {
     this.on("ReceiveMessage", (message, room) => {
       dispatch(pushMesage({ room, message }));
 
-    dispatch((dispatch, getState) => {
-      const currentRoom = getState().chat.currentRoom;
-      if (room !== currentRoom) {
-        dispatch(incrementUnread(room));
-      }
-    });
+      dispatch((dispatch, getState) => {
+        const currentRoom = getState().chat.currentRoom;
+        if (room !== currentRoom) {
+          dispatch(incrementUnread(room));
+        }
+      });
     });
 
     this.on("ReceiveUserTyping", (room, user, isTyping) => {
@@ -111,7 +113,17 @@ class SignalRService {
       dispatch(editRoomRole( { room, role } ));
     })
 
+    this.on("RemoveMember", (room, user) => {
+      dispatch((dispatch, getState) => {
+        const currentUser = getState().auth.user;
 
+        if (currentUser.id == user) {
+          dispatch(removeRoomFromUser({ room, user }))
+        }
+      });
+
+      dispatch(removeMemberFromRoom( { room, user } ));
+    })
 
     this.listenersAttached = true;
   }

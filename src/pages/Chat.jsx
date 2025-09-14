@@ -12,6 +12,7 @@ import MessageItem from "../components/MessageItem";
 import { useRoomData } from "../services/useRoomData";
 import PermissionGate from "../components/PermissionGate";
 import { use } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Chat() {
   const api = useApi();
@@ -23,8 +24,9 @@ function Chat() {
   const [typing, setTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const { rooms } = useSelector((state) => state.chat);
   const { messages, roomMembers, roomInfo } = useRoomData(roomId);
-  
+  const navigate = useNavigate();
   const messagesEndRef = useRef(null);  
 
   useEffect(() => {
@@ -35,6 +37,12 @@ function Chat() {
       dispatch(setCurrentRoom(null));
     };
   }, [roomId, dispatch]);
+
+  useEffect(() => {
+    if (Object.keys(rooms).length > 0 && !rooms[roomId]) {
+      navigate("/")
+    }
+  }, [rooms, roomId, navigate])
 
   const fetchMoreMessages = async () => {
     try {

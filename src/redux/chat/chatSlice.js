@@ -84,6 +84,20 @@ const chatSlice = createSlice({
         roles: member.roles ?? []
       };
     },
+    removeMemberFromRoom: (state, action) => {
+      const { room, user } = action.payload;
+
+      if (state.roomMembers[room]) {
+        delete state.roomMembers[room][user];
+      }
+    },
+    removeRoomFromUser: (state, action) => {
+      const { room } = action.payload;
+
+      if (state.rooms[room]) {
+        delete state.rooms[room];
+      }
+    },
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
 
@@ -172,6 +186,7 @@ export const {
   pushMesage,
   addMembersToRoom,
   pushMemberToRoom,
+  removeMemberFromRoom,
   setRoomInfo,
   setRoomInvites,
   setUserTyping,
@@ -183,7 +198,8 @@ export const {
   removeRoleFromUser,
   pushRoomRole,
   editRoomRole,
-  incrementUnread
+  incrementUnread,
+  removeRoomFromUser
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

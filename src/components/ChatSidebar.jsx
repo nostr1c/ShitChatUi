@@ -69,6 +69,7 @@ function ChatSidebar(props) {
           <SidebarUserModal
             modalPosition={modalY}
             userId={modalUserId}
+            setShowModal={setShowModal}
           />
         </>,
         document.getElementById("Chat-Content")

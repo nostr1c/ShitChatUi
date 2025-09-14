@@ -8,14 +8,16 @@ import { useApi } from "../services/useApi";
 import { GiWalkingBoot, GiThorHammer } from "react-icons/gi";
 import PermissionGate from "./PermissionGate";
 
-function SidebarUserModal(props) {
+function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   const { id: roomId} = useParams();
   const api = useApi();
-  const member = useSelector((state) => state.chat.roomMembers[roomId][props?.userId]);
-  const userRoles = member.roles;
+
+  const member = useSelector((state) => state.chat.roomMembers[roomId][userId]);
   const roomRoles = useSelector((state) => state.chat.roomRoles[roomId]);
   const roomInfo = useSelector((state) => state.chat.roomInfo[roomId]);
   const user = useSelector((state) => state.auth.user);
+  
+  const userRoles = member?.roles ?? [];
   const [selectedRoles, setSelectedRoles] = useState(userRoles ?? []);
 
   const toggleRole = (roleId) => {
@@ -48,13 +50,24 @@ function SidebarUserModal(props) {
     });
   };
 
+  const handleKick = () => {
+    setShowModal(false);
+    api.post(`/group/${roomId}/members/${member.user.id}/kick`)
+    .then((response) => {
+      // console.log(response);
+    })
+    .catch((error) => {
+      console.error("Error kicking user:", error);
+    });
+  }
+
   const [showUpdateUserRoles, setUpdateUserRoles] = useState(false);
 
   return (
       <div
         className="MemberModal"
         style={{ 
-          top: `${props.modalPosition}px`
+          top: `${modalPosition}px`
         }}
       >
       {showUpdateUserRoles && (
@@ -136,6 +149,7 @@ function SidebarUserModal(props) {
                 >
                   <button
                     className="ModalContent--Actions--Child"
+                    onClick={handleKick}
                   >
                     <GiWalkingBoot />
                     <p>Kick</p>

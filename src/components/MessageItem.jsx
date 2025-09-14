@@ -5,11 +5,11 @@ function MessageItem({ message, currentUser, member }) {
 
   return (
     <div className={`Message ${currentUser.id === message.userId ? "Self" : ""}`} key={message.id}>
-      <img className="Message--Avatar" src={GetImageUrl(member?.user?.avatar)} alt="avatar" />
+      <img className="Message--Avatar" src={GetImageUrl(member?.user?.avatar ?? message.userName)} alt="avatar" />
       <div className="Message--Content">
         <div className="Message--Content--Top">
           {currentUser.id !== message.userId && (
-            <p className="Message--Content--Top--Name">{member?.user?.username}</p>
+            <p className="Message--Content--Top--Name">{member?.user?.username ?? message.userName}</p>
           )}
           <p className="Message--Content--Top--Date">{new Date(message.createdAt).toLocaleString()}</p>
         </div>
