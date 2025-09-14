@@ -32,8 +32,9 @@ function App() {
   }, [location])
 
   useEffect(() => {
-    if (rooms && rooms.length > 0) {
-      signalRService.startConnection(rooms).then(() => {
+    const roomsArray = rooms ? Object.values(rooms) : [];
+    if (roomsArray.length > 0) {
+      signalRService.startConnection(roomsArray).then(() => {
         if (signalRService.connection.state === "Connected") {
           signalRService.attachListeners(dispatch);
         }

@@ -16,14 +16,23 @@ const normalizeRoomRoles = (roles) => {
   return normalized;
 }
 
+const normalizeRooms = (rooms) => {
+  const normalized = {};
+  rooms.forEach((room) => {
+    normalized[room.id] = room;
+  });
+  return normalized;
+}
+
 const initialState = {
-  rooms: [],
+  rooms: {},
   messages: {},
   roomMembers: {},
   roomInfo: {},
   roomInvites: {},
   roomPresence: {},
-  roomRoles: {}
+  roomRoles: {},
+  currentRoom: null
 };
 
 const chatSlice = createSlice({
@@ -31,10 +40,19 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setRooms: (state, action) => {
-      state.rooms = action.payload;
+      state.rooms = normalizeRooms(action.payload);
     },
     pushRoom: (state, action) => {
-      state.rooms.unshift(action.payload);
+      const room = action.payload;
+      state.rooms[room.id] = room;
+    },
+    setCurrentRoom: (state, action) => {
+      const roomId = action.payload;
+      state.currentRoom = roomId;
+
+      if (state.rooms[roomId]) {
+        state.rooms[roomId].unreadCount = 0;
+      }
     },
     addMessage: (state, action) => {
       const { room, message } = action.payload;
@@ -68,13 +86,11 @@ const chatSlice = createSlice({
     },
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
-      console.log(userId, imageName);
 
       for (const room of Object.values(state.roomMembers)) {
         for (const member of Object.values(room)) {
           if (member.user.id === userId) {
             member.user.avatar = imageName;
-            console.log("updated 1")
           }
         }
       }
@@ -99,7 +115,6 @@ const chatSlice = createSlice({
     editRoomRole: (state, action) => {
       const { room, role } = action.payload;
       state.roomRoles[room][role.id] = role;
-      console.log(state.roomRoles[room][role.id])
     },
     pushInvite: (state, action) => {
       const { room, invite } = action.payload;
@@ -120,7 +135,6 @@ const chatSlice = createSlice({
     },
     addRoleToUser: (state, action) => {
       const { room, user, role } = action.payload;
-      console.log(room, user, role)
       const member = state.roomMembers[room][user];
       if (!member.roles.includes(role)) {
         member.roles.push(role);
@@ -134,6 +148,18 @@ const chatSlice = createSlice({
       if (!member) return;
 
       member.roles = member.roles.filter((r) => r !== role);
+    },
+    incrementUnread: (state, action) => {
+      const roomId = action.payload;
+
+      if (!state.rooms[roomId])
+        return
+
+      if (!state.rooms[roomId].unreadCount) {
+        state.rooms[roomId].unreadCount = 0;
+      }
+
+      state.rooms[roomId].unreadCount += 1;
     }
   },
 });
@@ -141,6 +167,7 @@ const chatSlice = createSlice({
 export const { 
   setRooms,
   pushRoom,
+  setCurrentRoom,
   addMessage,
   pushMesage,
   addMembersToRoom,
@@ -155,7 +182,8 @@ export const {
   addRoleToUser,
   removeRoleFromUser,
   pushRoomRole,
-  editRoomRole
+  editRoomRole,
+  incrementUnread
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

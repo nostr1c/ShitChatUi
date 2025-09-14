@@ -5,6 +5,7 @@ import { showToast } from "../redux/toast/toastThunks";
 import { pushRoom } from "../redux/chat/chatSlice";
 import { signalRService } from "../services/signalRService";
 import { useNavigate } from "react-router-dom";
+import { handleApiErrors } from "../utils/general";
 
 function CreateChat() {
   const [formBody, setFormBody] = useState({ name: "" });
@@ -32,11 +33,7 @@ function CreateChat() {
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;
 
-        Object.entries(errors).forEach(([key, messages]) => {
-          messages.forEach((message) => {
-            dispatch(showToast("error", message))
-          });
-        });
+        if (errors) handleApiErrors(dispatch, errors);
       }
     }
   };

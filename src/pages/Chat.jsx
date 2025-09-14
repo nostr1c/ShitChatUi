@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../redux/chat/chatSlice";
+import { addMessage, setCurrentRoom, setRoomInfo } from "../redux/chat/chatSlice";
 import ChatSidebar from "../components/ChatSidebar";
 import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
@@ -11,19 +11,30 @@ import { IoIosSettings, IoMdChatboxes } from "react-icons/io";
 import MessageItem from "../components/MessageItem";
 import { useRoomData } from "../services/useRoomData";
 import PermissionGate from "../components/PermissionGate";
+import { use } from "react";
 
 function Chat() {
   const api = useApi();
   const dispatch = useDispatch();
   const { id: roomId } = useParams();
   const messageRef = useRef();
-  const messagesEndRef = useRef(null);  
   const typingTimeoutRef = useRef(null);
   const [hasMore, setHasMore] = useState(true);
   const [typing, setTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { messages, roomMembers, roomInfo } = useRoomData(roomId);
+  
+  const messagesEndRef = useRef(null);  
+
+  useEffect(() => {
+    if (roomId) 
+      dispatch(setCurrentRoom(roomId));
+
+    return () => {
+      dispatch(setCurrentRoom(null));
+    };
+  }, [roomId, dispatch]);
 
   const fetchMoreMessages = async () => {
     try {
@@ -69,6 +80,30 @@ function Chat() {
   const sendTypingSignal = (isTyping) => {
     signalRService.invoke("TypeIndicator", roomId, user?.id, isTyping);
   };
+
+    useEffect(() => {
+      if (!roomId || !messages[roomId]?.length) return;
+
+      const lastMessage = messages[roomId][0];
+      console.log(lastMessage);
+
+      const markRoomAsRead = async () => {
+        try {
+          await api.post(`group/${roomId}/read`, { lastMessageId: lastMessage.id });
+          dispatch(setRoomInfo({ 
+            room: roomId,
+            data: { ...roomInfo[roomId],
+              lastReadMessageId: lastMessage.id 
+            }
+          }));
+        } catch (error) {
+          console.error("Error marking messages as read:", error);
+        }
+      };
+
+      markRoomAsRead();
+
+    }, [roomId, messages[roomId]]);
 
   return (
     <div className="Chat">

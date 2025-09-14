@@ -40,7 +40,7 @@ function ChatSettingsInvites() {
           dispatch(showToast("success", result.data.message))
         }
       } catch (error) {
-        console.error("Error creating invite:", error);
+        console.error("Error creating invite:", error.response.data);
       }
     }
   }

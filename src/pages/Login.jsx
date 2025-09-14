@@ -5,13 +5,13 @@ import { Link, Navigate } from "react-router-dom";
 import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
 import { showToast } from "../redux/toast/toastThunks";
+import { handleApiErrors } from "../utils/general";
 
 function Login() {
   const api = useApi();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [redirect, setRedirect] = useState(false);
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -24,26 +24,10 @@ function Login() {
       }
       setRedirect(true);
     } catch (error) {
-      setError(error);
+      dispatch(showToast("error", error?.response?.data?.message))
 
-      if (error.message) {
-        dispatch(showToast("error", error.message))
-      }
-      if (error.code) {
-        dispatch(showToast("error", error.code))
-      }
-      if (error.response.status) {
-        dispatch(showToast("error", error.response.status))
-      }
-      if (error.response.data.hasErrors) {
-        const errors = error.response.data.errors;
-
-        Object.entries(errors).forEach(([key, messages]) => {
-          messages.forEach((message) => {
-            dispatch(showToast("error", message))
-          });
-        });
-      }
+      const errors = error.response.data.errors;
+      if (errors) handleApiErrors(dispatch, errors);
     }
   };
 
@@ -53,7 +37,6 @@ function Login() {
 
   return (
     <>
-    {error && JSON.stringify(error)}
       <div className="Form-Wrapper">
         <div className="Form">
           <h1>LOGIN</h1>

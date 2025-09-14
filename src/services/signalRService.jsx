@@ -9,7 +9,8 @@ import {
   addRoleToUser,
   removeRoleFromUser,
   pushRoomRole,
-  editRoomRole
+  editRoomRole,
+  incrementUnread
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -38,9 +39,8 @@ class SignalRService {
     try {
       await this.connection.start();
       console.log("SignalR Connected");
-
       rooms.forEach((group) => {
-        this.invoke("JoinGroup", group.id)
+        this.invoke("JoinGroup", group.id).then(() => console.log(`Joined room: ${group.id}`))
           .catch((err) => console.error(`Failed to join room ${group.id}:`, err));
       });
 
@@ -67,6 +67,13 @@ class SignalRService {
 
     this.on("ReceiveMessage", (message, room) => {
       dispatch(pushMesage({ room, message }));
+
+    dispatch((dispatch, getState) => {
+      const currentRoom = getState().chat.currentRoom;
+      if (room !== currentRoom) {
+        dispatch(incrementUnread(room));
+      }
+    });
     });
 
     this.on("ReceiveUserTyping", (room, user, isTyping) => {

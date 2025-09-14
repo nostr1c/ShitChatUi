@@ -56,6 +56,7 @@
         display: flex;
         flex-direction: row;
         gap: 10px;
+        position: relative;
 
         &--Avatar {
             background-color: rgb(26, 26, 26);
@@ -79,6 +80,25 @@
 
             & .Latest {
                 color: #949494;
+            }
+        }
+
+        &--Unread {
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            background-color: #fd9d9d41;
+            border-radius: 50%;
+            min-height: 30px;
+            width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & p {
+                color: #fff;
+                font-size: 12px;
+                font-weight: bold;
             }
         }
     }

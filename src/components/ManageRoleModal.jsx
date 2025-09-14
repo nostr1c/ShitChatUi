@@ -6,6 +6,7 @@ import Button from "./Button";
 import RoleSwitch from "./RoleSwitch";
 import { useApi } from "../services/useApi";
 import { showToast } from "../redux/toast/toastThunks";
+import { handleApiErrors } from "../utils/general";
 
 const availableColors = [
   "#A3BFFA", "#90CDF4", "#63B3ED", "#76E4F7", "#68D391",
@@ -23,7 +24,7 @@ function ManageRoleModal({ closeModal, mode, role }) {
 
   const [formData, setFormData] = useState({
     name: role?.name || "",
-    color: role?.color || "#3636368c",
+    color: role?.color || "",
     permissions: role?.permissions || []
   });
 
@@ -51,8 +52,9 @@ function ManageRoleModal({ closeModal, mode, role }) {
         dispatch(showToast("success", result.data.message))
         closeModal();
       } catch (error) {
-        dispatch(showToast("error", error.response.data.errors[0] || "An error occurred"))
-        console.log(error.response.data.errors);
+        if (error.response.data.errors) {
+          handleApiErrors(dispatch, error.response.data.errors)
+        }
       }
     } else {
       try {
@@ -60,8 +62,9 @@ function ManageRoleModal({ closeModal, mode, role }) {
         dispatch(showToast("success", result.data.message))
         closeModal();
       } catch (error) {
-        dispatch(showToast("error", error.response.data.errors[0] || "An error occurred"))
-        console.log(error.response.data.errors);
+        if (error.response.data.errors) {
+          handleApiErrors(dispatch, error.response.data.errors)
+        }
       }
     }
   }
