@@ -6,6 +6,7 @@ export const GetImageUrl = (avatarUri) => {
   return avatarUri ? `${baseUrl}/${avatarUri}` : `${baseUrl}/default.png`;
 };
 
+// Show toast for each error message.
 export const handleApiErrors = (dispatch, errors) => {
   if (!errors) return;
 

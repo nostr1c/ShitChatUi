@@ -15,6 +15,7 @@ function ChatSidebar(props) {
   const roomMembers = useSelector((state) => state.chat.roomMembers[params.id]);
   const roomPresence = useSelector((state) => state.chat.roomPresence[params.id]);
 
+  // Set SiderbarUserModal y position
   const setModalPosition = (element) => {
     let rect = element.getBoundingClientRect();
     setModalY(rect.top)

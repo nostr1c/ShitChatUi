@@ -8,9 +8,13 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Refreshing token in progress
 let isRefreshing = false;
+
+// Queue for requests with 401
 let refreshSubscribers = [];
 
+// When refreshing token is complete and no error, let them continue
 function onRefreshed(error) {
   refreshSubscribers.forEach(({ resolve, reject }) => {
     if (error) reject(error);
@@ -19,6 +23,7 @@ function onRefreshed(error) {
   refreshSubscribers = [];
 }
 
+// Add promises for requests that got 401
 function subscribeTokenRefresh(resolve, reject) {
   refreshSubscribers.push({ resolve, reject });
 }
@@ -36,6 +41,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       const authStatus = error.response.headers["x-auth-status"];
 
+      // Logout if backend says so
       if (authStatus === "SessionExpired") {
         try {
           await api.post("/auth/logout");
@@ -45,6 +51,7 @@ api.interceptors.response.use(
         return Promise.reject(error);
       }
 
+      // If already refreshing token, add new promise for the 401:s
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           subscribeTokenRefresh(() => {
@@ -53,6 +60,7 @@ api.interceptors.response.use(
         });
       }
 
+      // Do the actual refreshing
       try {
         isRefreshing = true;
         await api.post("/auth/refresh");

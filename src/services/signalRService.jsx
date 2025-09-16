@@ -39,8 +39,11 @@ class SignalRService {
       .build();
 
     try {
+      // Connect to signalr
       await this.connection.start();
       console.log("SignalR Connected");
+
+      // Join groups based on rooms.
       rooms.forEach((group) => {
         this.invoke("JoinGroup", group.id).then(() => console.log(`Joined room: ${group.id}`))
           .catch((err) => console.error(`Failed to join room ${group.id}:`, err));

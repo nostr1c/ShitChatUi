@@ -37,6 +37,7 @@ function FriendsList() {
 
     const buttonRect = e.currentTarget.getBoundingClientRect();
 
+    // For responsiveness
     if (window.innerWidth >= 780) {
       setModalPosition({
         top: (buttonRect.y - buttonRect.height) + window.scrollY - 25,

@@ -23,14 +23,17 @@ function App() {
   const rooms = useSelector((state) => state.chat.rooms);
   const location = useLocation();
 
+  // Initially fetch the user.
   useEffect(() => {
     dispatch(fetchUser());
   }, []);
 
+  // Close sidebar when change room.
   useEffect(() => {
     setSidebarOpen(false);
   }, [location])
 
+  // Start signalr connection, join groups, attach listeners
   useEffect(() => {
     const roomsArray = rooms ? Object.values(rooms) : [];
     if (roomsArray.length > 0) {
@@ -48,19 +51,20 @@ function App() {
     setSidebarOpen(prevState => !prevState);
   }
 
+  // Because mobile is weird
   useEffect(() => {
-  const setVh = () => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  };
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
 
-  setVh();
-  window.addEventListener('resize', setVh);
+    setVh();
+    window.addEventListener('resize', setVh);
 
-  return () => {
-    window.removeEventListener('resize', setVh);
-  };
-}, []);
+    return () => {
+      window.removeEventListener('resize', setVh);
+    };
+  }, []);
 
   return (
     <>

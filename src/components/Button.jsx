@@ -1,6 +1,5 @@
 import "./scss/Button.scss";
 
-
 function Button({ onClick, children, isCreate, ...props }) {
 
   const classes = ["Button"]

@@ -16,22 +16,24 @@ const availableColors = [
 
 function ManageRoleModal({ closeModal, mode, role }) {
   const { id: roomId } = useParams();
-  const user = useSelector((state) => state.auth.user);
   const api = useApi();
   const dispatch = useDispatch();
   
   const isCreate = mode === "create";
 
+  // If not role set = create
   const [formData, setFormData] = useState({
     name: role?.name || "",
     color: role?.color || "",
     permissions: role?.permissions || []
   });
 
+  // handle inputs and formdata
   const handleChange = (key, value) => {
     setFormData((prev) => ({...prev, [key]: value}))
   }
 
+  // handle formdata for permissions
   const handlePermissionChange = (permission) => {
     setFormData((prev) => {
       const hasPermission = prev.permissions.includes(permission);
@@ -69,6 +71,7 @@ function ManageRoleModal({ closeModal, mode, role }) {
     }
   }
 
+  // Space instead of "_" and uppercased
   const formatPermissionLabel = (key) => {
     return key
       .replace(/_/g, " ")
@@ -83,7 +86,7 @@ function ManageRoleModal({ closeModal, mode, role }) {
     "manage_user_roles",
     "manage_server_roles",
     "manage_server"
-    ];
+  ];
 
   return (
     <div

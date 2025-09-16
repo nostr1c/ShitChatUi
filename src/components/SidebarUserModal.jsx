@@ -24,6 +24,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     setSelectedRoles((prev) => {
       const hasRole = prev.includes(roleId);
 
+      // Remove role if user has it.
       if (hasRole) {
         const updated = prev.filter((id) => id !== roleId);
 
@@ -38,6 +39,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
         return updated;
       }
 
+      // Else add it to user.
       const updated = [...prev, roleId];
       
       api.post(`/group/${roomId}/user/${member.user.id}/roles`, { roleId: roleId })
@@ -54,7 +56,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     setShowModal(false);
     api.post(`/group/${roomId}/members/${member.user.id}/kick`)
     .then((response) => {
-      // console.log(response);
+      // console.log(response); Show toast? Confetti?
     })
     .catch((error) => {
       console.error("Error kicking user:", error);

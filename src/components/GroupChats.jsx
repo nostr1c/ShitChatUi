@@ -8,15 +8,13 @@ import "./scss/GroupChats.scss"
 
 function GroupChats() {
   const api = useApi();
-  const [groupChats, setGroupChats] = useState(null);
-  const {messages, rooms, roomMembers} = useSelector((state) => state.chat)
+  const { messages, rooms } = useSelector((state) => state.chat)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchGroupChats = async () => {
       try {
         const { data } = await api.get("user/groups");
-        setGroupChats(data.data);
         dispatch(setRooms(data.data))
       } catch (error) {
         console.error("Error fetching groups:", error);

@@ -27,6 +27,7 @@ function ChatSettingsInvites() {
     }
   }
 
+  // Only fetch if not already
   if (roomId && !roomInvites[roomId]) fetchRoomInvites();
 
   const handleCreateInvite = async () => {
@@ -45,6 +46,7 @@ function ChatSettingsInvites() {
     }
   }
 
+  // Date to days
   const formatDay = (date) => {
     const now = new Date();
     const target = new Date(date);

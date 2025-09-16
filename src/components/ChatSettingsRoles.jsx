@@ -27,6 +27,7 @@ function ChatSettingsRoles() {
     }
   }
 
+  // Only fetch if not already
   if (roomId && !roles) fetchRoomRoles();
 
   const closeCreateRole = () => {
