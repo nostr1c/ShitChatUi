@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useApi } from "../services/useApi";
-import { useDispatch, useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { setRooms } from "../redux/chat/chatSlice";
 import { Link } from "react-router-dom";
 import { BiMessageSquareAdd } from "react-icons/bi";
@@ -8,8 +8,8 @@ import "./scss/GroupChats.scss"
 
 function GroupChats() {
   const api = useApi();
-  const { messages, rooms } = useSelector((state) => state.chat)
-  const dispatch = useDispatch()
+  const { messages, rooms, currentRoom } = useSelector((state) => state.chat)
+   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchGroupChats = async () => {
@@ -45,7 +45,7 @@ function GroupChats() {
             return (
               <Link
               to={`chat/${group.id}`}
-              className="GroupChats--Child"
+              className={`GroupChats--Child ${currentRoom == group?.id ? "Active" : ""}`}
               key={group.id}
               >
                 <div className="GroupChats--Child--Avatar">
@@ -53,7 +53,7 @@ function GroupChats() {
                 </div>
                 <div className="GroupChats--Child--Content">
                   <p>{group.name}</p>
-                  <p className="Latest">
+                  <p className={`Latest ${unreadCount > 0 ? "Unread" : ""}`}>
                     {messages[group.id] && messages[group.id].length > 0 ? 
                       messages[group.id][0].content : 
                       group.latestMessage ? `${group.latestMessage}` :

@@ -71,6 +71,22 @@ const chatSlice = createSlice({
       const { room, message } = action.payload;
       if (!state.messages[room]) state.messages[room] = [];
       state.messages[room].unshift(message);
+
+      if (state.rooms[room]) {
+        state.rooms[room].lastActivity = message.createdAt;
+      }
+    },
+    updateRoomActivity: (state, action) => {
+      const { room, message } = action.payload;
+      if (!state.rooms[room]) return;
+
+      state.rooms[room].lastActivity = message.createdAt;
+
+      const newRooms = { [room]: state.rooms[room]};
+      Object.entries(state.rooms).forEach(([id, room]) => {
+        if (id !== room) newRooms[id] = room;
+      })
+      state.rooms = newRooms;
     },
     addMembersToRoom: (state, action) => {
       const { room, members } = action.payload;
@@ -184,6 +200,7 @@ export const {
   setCurrentRoom,
   addMessage,
   pushMesage,
+  updateRoomActivity,
   addMembersToRoom,
   pushMemberToRoom,
   removeMemberFromRoom,

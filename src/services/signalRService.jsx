@@ -1,6 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import {
   pushMesage,
+  updateRoomActivity,
   setUserTyping,
   pushInvite,
   updateUserAvatar,
@@ -79,6 +80,8 @@ class SignalRService {
           dispatch(incrementUnread(room));
         }
       });
+
+      dispatch(updateRoomActivity({ room, message }));
     });
 
     this.on("ReceiveUserTyping", (room, user, isTyping) => {

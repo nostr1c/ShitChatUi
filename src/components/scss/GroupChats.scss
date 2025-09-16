@@ -5,8 +5,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.0509803922);
     position: relative;
 
-
-
     &--Header {
         position: relative;
         // background-color: blue;
@@ -50,7 +48,9 @@
     }
 
     &--Child {
-        background-color: $main;
+        // background-color: $main;
+        border: 1px dashed #6464644f;
+        border-radius: 10px;
         padding: 10px;
         text-decoration: none;
         display: flex;
@@ -58,10 +58,13 @@
         gap: 10px;
         position: relative;
 
+        &.Active {
+            border-left: 2px solid #636363;
+        }
+
         &--Avatar {
             background-color: rgb(26, 26, 26);
-            border: 1px solid #ffffff09;
-            color: $light;
+            border: 1px dashed #6464644f;            color: $light;
             min-width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -77,26 +80,34 @@
             color: #fff;
             overflow: hidden;
             text-wrap: nowrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
             & .Latest {
                 color: #949494;
+                font-size: 14px;
+
+                &.Unread {
+                    font-weight: bold;
+                    color: #fff;
+                }
             }
         }
 
         &--Unread {
-            position: absolute;
-            right: -5px;
-            top: -5px;
-            background-color: #fd9d9d41;
+            background-color: #3684c471;
             border-radius: 50%;
             min-height: 30px;
-            width: 30px;
+            min-width: 30px;
             display: flex;
+            align-self: center;
             align-items: center;
             justify-content: center;
+            margin-left: auto;
 
             & p {
-                color: #fff;
+                color: #dadada;
                 font-size: 12px;
                 font-weight: bold;
             }
