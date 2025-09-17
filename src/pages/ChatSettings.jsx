@@ -20,7 +20,7 @@ function ChatSettings() {
 
   const allowed = usePermission(roomId, user.id, [
     "manage_server",
-    "manage_roles",
+    "manage_server_roles",
     "manage_invites"
   ]);
 
