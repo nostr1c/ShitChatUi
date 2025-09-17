@@ -6,7 +6,7 @@ ShitShat is a messaging platform that allows users to create groups, send messag
 
 - **User Authentication:** Register and login with JWT-based authentication.
 - **Groups:** Create groups, manage group members, and send messages within groups.
-- **Connections:** Send, accept, and delete connection requests between users.
+- **Connections:** Send, accept, and delete connection requests between users. (WIP)
 - **Messages:** Send and receive messages in groups with rich user information (username, avatar).
 - **Invites:** Create and manage invites.
 - **Group roles:** Create and manage group roles.
@@ -23,7 +23,6 @@ ShitShat is a messaging platform that allows users to create groups, send messag
 
 ## TODO
 
-- Add logic for roles
 - Add logic for connections
 - Fix profile page
 - Refactor redux logic
