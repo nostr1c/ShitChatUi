@@ -1,12 +1,15 @@
 .Invites {
     width: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;;
     
     &--New {
-        background-color: rgba(20, 20, 20, 0.349);
         padding: 20px;
-        border-bottom: 1px solid #ffffff0d;
-        border-top: 1px solid #ffffff0d;
+        border: 1px dashed #ffffff0d;
+        border-radius: 8px;
+        background-color: #15151873;
 
         &--Form {
             display: flex;
@@ -34,14 +37,17 @@
         border-spacing: 0px;;
         border-collapse: seperate;
         width: 100%;
+        border: 1px dashed #ffffff0d;
+        border-radius: 8px;
+        padding: 10px;
     
         thead  {
             tr {
                 th {
                     text-align: left;
-                    border-bottom: 1px solid #ffffff0d;;
                     padding: 10px;
-                    background-color: rgba(20, 20, 20, 0.349);
+                    background-color: #15151873;
+                    border-bottom: 1px dashed #ffffff0d;
     
                     // &.Creator {
                     //     width: 200px;
@@ -61,8 +67,7 @@
     
         tbody {
             tr {
-                background-color: #7e7e7e14;        
-    
+                background-color: #17161a;
                 
                 td {
                     padding: 10px;
@@ -87,12 +92,8 @@
                     }
                 }
     
-                &:nth-child(even) {
-                    background-color: #ffffff05 !important;
-                }
-    
                 &:hover  {
-                    filter: brightness(0.7);
+                    filter: brightness(0.93);
                 }
             }
         }

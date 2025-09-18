@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
 import { showToast } from "../redux/toast/toastThunks";
+import { IoChatboxOutline } from "react-icons/io5";
 
 function Register() {
   const api = useApi();
@@ -42,8 +43,20 @@ function Register() {
   return (
     <>
       <div className="Form-Wrapper">
+        <div className="Header">
+          <div className="Name">
+            <div className="Icon">
+              <IoChatboxOutline />
+            </div>
+            <h1>ShitChat</h1>
+          </div>
+          <p>Welcome to ShitChat!</p>
+        </div>
         <div className="Form">
-          <h1>Register</h1>
+          <div className="Title">
+            <h2>Register</h2>
+            <p>Enter account details</p>
+          </div>
           <form onSubmit={handleSubmit} autoComplete="off">
             <input
               type="text"

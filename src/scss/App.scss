@@ -6,7 +6,7 @@
     height: 100dvh;
 
     .Sidebar-Wrapper {
-        background-color: $secondary;
+        background-color: #121214;
         min-width: 350px;
         max-width: 350px;
         transition: all 0.3s;
@@ -17,12 +17,12 @@
 
     .Content {
         flex-grow: 1;
-        background: linear-gradient(to right, #17161a, #242124 50%, #17161a);
+        background: #1A1A1E;
     }
 
     .Mobile-Top {
         display: none;
-        background-color: #17161a;
+        background-color: #121214;
         border-bottom: 1px solid #ffffff0d;
         padding: 15px 0 10px 20px;
 
@@ -39,6 +39,22 @@
 
 }
 
+input:-webkit-autofill {
+  background-color: #26262c !important; 
+  transition: background-color 0.3s ease;
+}
+
+input:-moz-autofill {
+  background-color: #26262c !important;
+  transition: background-color 0.3s ease;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #26262c inset !important;
+  box-shadow: 0 0 0px 1000px #26262c inset !important;
+}
+
 @media (max-width: 780px) {
     .Main {
         flex-direction: column;
@@ -50,7 +66,6 @@
             padding-top: 50px;
             transform: translateX(-100%);
             max-width: unset;
-            background-color: $sidebar;
 
             &.open {
                 transform: translateX(0);

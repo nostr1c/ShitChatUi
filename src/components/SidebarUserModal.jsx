@@ -19,6 +19,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   
   const userRoles = member?.roles ?? [];
   const [selectedRoles, setSelectedRoles] = useState(userRoles ?? []);
+  const [showUpdateUserRoles, setShowUpdateUserRoles] = useState(false);
 
   const toggleRole = (roleId) => {
     setSelectedRoles((prev) => {
@@ -63,8 +64,6 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     });
   }
 
-  const [showUpdateUserRoles, setUpdateUserRoles] = useState(false);
-
   return (
       <div
         className="MemberModal"
@@ -75,7 +74,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
       {showUpdateUserRoles && (
         <div 
           className="MemberModal--Overlay"
-          onClick={() => {setUpdateUserRoles(false)}}
+          onClick={() => {setShowUpdateUserRoles(false)}}
         ></div>
       )}
         <div className="ModalHeader">
@@ -109,8 +108,8 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
                 permissions={["manage_user_roles"]}
               >
                 <button 
-                  className="ModalContent--Roles--Child Add"
-                  onClick={() => {setUpdateUserRoles(!showUpdateUserRoles)}}
+                  className={`ModalContent--Roles--Child Add ${showUpdateUserRoles ? "Selected" : ""}`}
+                  onClick={() => {setShowUpdateUserRoles(!showUpdateUserRoles)}}
                 >
                   <p>Edit roles</p>
                 </button>

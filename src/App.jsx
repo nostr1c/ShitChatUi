@@ -21,6 +21,7 @@ import Register from "./pages/Register";
 function App() {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.chat.rooms);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const location = useLocation();
 
   // Initially fetch the user.
@@ -70,18 +71,23 @@ function App() {
     <>
       <ToastParent />
       <div className="Main">
-        <div className={`Sidebar-Wrapper ${sidebarOpen ? 'open' : ''}`}>
-          <Sidebar />
-        </div>
-        <div className="Mobile-Top">
-          <button 
-            className="Sidebar-toggle" 
-            onClick={toggleSidebar}
-            aria-label="Toggle Sidebar"
-          >
-            <RxHamburgerMenu />
-          </button>
-          </div>
+        {isAuthenticated && (
+          <>
+            <div className={`Sidebar-Wrapper ${sidebarOpen ? 'open' : ''}`}>
+              <Sidebar />
+            </div>
+            <div className="Mobile-Top">
+              <button 
+                className="Sidebar-toggle"
+                onClick={toggleSidebar}
+                aria-label="Toggle Sidebar"
+              >
+                <RxHamburgerMenu />
+              </button>
+            </div>
+          </>
+        )}
+
         <main className="Content">
           <Routes>
             <Route path="/" element={

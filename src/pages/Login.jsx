@@ -6,6 +6,7 @@ import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
 import { showToast } from "../redux/toast/toastThunks";
 import { handleApiErrors } from "../utils/general";
+import { IoChatboxOutline } from "react-icons/io5";
 
 function Login() {
   const api = useApi();
@@ -38,8 +39,20 @@ function Login() {
   return (
     <>
       <div className="Form-Wrapper">
+      <div className="Header">
+        <div className="Name">
+          <div className="Icon">
+            <IoChatboxOutline />
+          </div>
+          <h1>ShitChat</h1>
+        </div>
+        <p>Welcome to ShitChat!</p>
+      </div>
         <div className="Form">
-          <h1>LOGIN</h1>
+          <div className="Title">
+            <h1>Login</h1>
+            <p>Enter your credentials</p>
+          </div>
           <form onSubmit={handleSubmit}>
             <input
               type="text"

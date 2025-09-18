@@ -7,7 +7,7 @@
     flex-direction: column;
 
     &--Top {
-        background-color: $secondary;
+        background-color: #17171a;
         border-bottom: 1px solid #ffffff0d;
         height: 40px;
         display: flex;
@@ -76,9 +76,8 @@
                 position: relative;
 
                 .Load-More {
-                    margin-bottom: 10px;
-                    background-color: #1d1d1d71;
-                    border: 1px solid #ffffff0d;
+                    background-color: transparent;
+                    border: 1px dashed #64646479;
                     padding: 10px 0;
                     color: #e4e4e4;
                     cursor: pointer;
@@ -169,7 +168,7 @@
                 }
             }
             & .Chat--Send {
-                background-color: $secondary;
+                background-color: #121214;
                 border-top: 1px solid #ffffff0d;
                 height: 75px;
                 display: flex;
@@ -185,7 +184,7 @@
 
                     & input {
                         width: 100%;
-                        background-color: #ffffff0b;
+                        background-color: #17171a;
                         border: none;
                         outline: none;
                         height: 40px;
@@ -215,7 +214,7 @@
         }
     
         &--Sidebar {
-            background-color: $secondary;
+            background-color: #17171a;
             width: 250px;
             border-left: 1px solid #ffffff0d;
             transition: all 0.3s;

@@ -59,7 +59,7 @@ function ChatSettingsInvites() {
   return (
     <div className="Invites">
       <div className="Invites--New">
-        <h4>Create invite</h4>
+        <h4>New invite </h4>
         <div className="Invites--New--Form">
           <label htmlFor="">Valid through</label>
           <input

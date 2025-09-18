@@ -2,25 +2,24 @@
 .Roles-Wrapper {
     border: 1px dashed #ffffff0d;
     padding: 20px;
-    background-color: #14141459;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border-radius: 8px;
 
     .Roles {
-        background-color: #14141459;
-        border: 1px solid #ffffff0d;
         display: flex;
         flex-direction: column;
+        gap: 5px;
         
         &--Child {
+            border-radius: 6px;
+            background-color: #15151873;
+            border: 1px dashed #ffffff0d;
             padding: 15px 15px;
-            border: unset;
-            border-bottom: 1px dashed #ffffff0d;
             user-select: none;
             transition: all 0.3s;
             cursor: pointer;
-            background-color: unset;
             text-align: unset;
             color: #fff;
             display: flex;
@@ -28,10 +27,6 @@
             align-items: center;
             font-size: 14px;
 
-            &:last-child {
-                border-bottom: unset;
-            }
-    
             &:hover {
                 background-color: #49494907;
             }
