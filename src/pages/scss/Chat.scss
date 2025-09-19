@@ -91,7 +91,7 @@
                 & .Message {
                     display: flex;
                     gap: 10px;
-                    padding: 10px 20px;
+                    padding: 10px 20px 0 20px;
                     align-items: center;
 
                     &.Self {
@@ -103,6 +103,19 @@
 
                         & .Message--Content--Text {
                             margin-left: auto;
+                        }
+
+                        &.Same {
+                            padding-right: 75px;
+                            padding: 0 75px 0 0;
+                        }
+                    }
+
+                    &.Same {
+                        padding: 0 0 0 75px;
+
+                        & .Message--Content--Top--Date {
+                            display: none;
                         }
                     }
 

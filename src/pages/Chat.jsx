@@ -142,14 +142,26 @@ function Chat() {
         <div className="Chat--Content--Main">
           <div className="Chat--Messages">
             {messages[roomId]?.length > 0 ? (
-              messages[roomId].map((m) => (
-                <MessageItem
-                  key={m.id}
-                  message={m}
-                  currentUser={user}
-                  member={roomMembers[roomId]?.[m.userId]}
-                />
-              ))
+              messages[roomId].map((m, i) => {
+                const nextMsg = messages[roomId][i + 1];
+
+                const isDifferentUser = !nextMsg || nextMsg.userId !== m.userId;
+                const timeGap =
+                  !nextMsg ||
+                  Math.abs(new Date(m.createdAt) - new Date(nextMsg.createdAt)) > 2 * 60 * 1000;
+                  
+                const isMessageStart = isDifferentUser || timeGap;
+
+                return (
+                  <MessageItem
+                    key={m.id}
+                    message={m}
+                    currentUser={user}
+                    isMessageStart={isMessageStart}
+                    member={roomMembers[roomId]?.[m.userId]}
+                  />
+                )
+              })
             ) : (
               <div className="Messages--Not-Found">
                 <IoMdChatboxes />
