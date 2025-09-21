@@ -28,7 +28,6 @@ const initialState = {
   rooms: {},
   messages: {},
   roomMembers: {},
-  roomInfo: {},
   roomInvites: {},
   roomPresence: {},
   roomRoles: {},
@@ -45,6 +44,13 @@ const chatSlice = createSlice({
     pushRoom: (state, action) => {
       const room = action.payload;
       state.rooms[room.id] = room;
+    },
+    setRoom: (state, action) => {
+      const { room, data } = action.payload;
+      state.rooms[room] = {
+        ...state.rooms[room],
+        ...data,
+      }
     },
     setCurrentRoom: (state, action) => {
       const roomId = action.payload;
@@ -125,10 +131,6 @@ const chatSlice = createSlice({
         }
       }
     },
-    setRoomInfo: (state, action) => {
-      const { room, data } = action.payload;
-      state.roomInfo[room] = (data);
-    },
     setRoomInvites: (state, action) => {
       const { room, data } = action.payload;
       state.roomInvites[room] = (data);
@@ -197,6 +199,7 @@ const chatSlice = createSlice({
 export const { 
   setRooms,
   pushRoom,
+  setRoom,
   setCurrentRoom,
   addMessage,
   pushMesage,
@@ -204,7 +207,6 @@ export const {
   addMembersToRoom,
   pushMemberToRoom,
   removeMemberFromRoom,
-  setRoomInfo,
   setRoomInvites,
   setUserTyping,
   pushInvite,

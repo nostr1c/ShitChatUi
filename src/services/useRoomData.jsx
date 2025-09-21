@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMembersToRoom, addMessage, setRoomInfo, setRoomRoles } from "../redux/chat/chatSlice";
+import { addMembersToRoom, addMessage, setRoom, setRoomRoles } from "../redux/chat/chatSlice";
 import { useApi } from "../services/useApi";
 
 export const useRoomData = (roomId) => {
   const api = useApi();
   const dispatch = useDispatch();
-  const { messages, roomMembers, roomInfo, roomRoles } = useSelector((state) => state.chat);
+  const { messages, roomMembers, roomRoles } = useSelector((state) => state.chat);
 
   useEffect(() => {
     if (!roomId) return;
@@ -21,10 +21,6 @@ export const useRoomData = (roomId) => {
           const { data } = await api.get(`group/${roomId}/members`);
           dispatch(addMembersToRoom({ room: roomId, members: data.data }));
         }
-        if (!roomInfo[roomId]) {
-          const { data } = await api.get(`group/${roomId}`);
-          dispatch(setRoomInfo({ room: roomId, data: data.data }));
-        }
         if (!roomRoles[roomId]) {
           const { data } = await api.get(`group/${roomId}/roles`);
           dispatch(setRoomRoles({ room: roomId, data: data.data }));
@@ -37,5 +33,5 @@ export const useRoomData = (roomId) => {
     fetchData();
   }, [roomId]);
 
-  return { messages, roomMembers, roomInfo, roomRoles };
+  return { messages, roomMembers, roomRoles };
 };

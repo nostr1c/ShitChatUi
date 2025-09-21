@@ -12,10 +12,10 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   const { id: roomId} = useParams();
   const api = useApi();
 
+  const user = useSelector((state) => state.auth.user);
   const member = useSelector((state) => state.chat.roomMembers[roomId][userId]);
   const roomRoles = useSelector((state) => state.chat.roomRoles[roomId]);
-  const roomInfo = useSelector((state) => state.chat.roomInfo[roomId]);
-  const user = useSelector((state) => state.auth.user);
+  const room = useSelector((state) => state.chat.rooms[roomId]);
   
   const userRoles = member?.roles ?? [];
   const [selectedRoles, setSelectedRoles] = useState(userRoles ?? []);
@@ -139,7 +139,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
                 )
               )}
             </div>
-            {user.id !== member.user.id && member.user.id !== roomInfo.ownerId && (
+            {user.id !== member.user.id && member.user.id !== room.ownerId && (
               <div
                 className="ModalContent--Actions"
               >

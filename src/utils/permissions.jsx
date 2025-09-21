@@ -1,5 +1,4 @@
-export function userHasPermission(roomRoles, roomMembers, roomInfo, roomId, userId, permissions = []) {
-  const room = roomInfo?.[roomId];
+export function userHasPermission(roomRoles, roomMembers, room, roomId, userId, permissions = []) {
 
   // If room owner, always return true
   if (room && room.ownerId === userId) return true;

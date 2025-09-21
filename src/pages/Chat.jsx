@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useApi } from "../services/useApi";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage, setCurrentRoom, setRoomInfo } from "../redux/chat/chatSlice";
+import { addMessage, setCurrentRoom, setRoom } from "../redux/chat/chatSlice";
 import ChatSidebar from "../components/ChatSidebar";
 import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
@@ -25,7 +25,7 @@ function Chat() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { rooms } = useSelector((state) => state.chat);
-  const { messages, roomMembers, roomInfo } = useRoomData(roomId);
+  const { messages, roomMembers } = useRoomData(roomId);
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);  
 
@@ -90,17 +90,15 @@ function Chat() {
   };
 
     useEffect(() => {
-      if (!roomId || !messages[roomId]?.length) return;
+      if (!roomId || !messages[roomId]?.length) return; 
 
       const lastMessage = messages[roomId][0];
-      console.log(lastMessage);
-
       const markRoomAsRead = async () => {
         try {
           await api.post(`group/${roomId}/read`, { lastMessageId: lastMessage.id });
-          dispatch(setRoomInfo({ 
+          dispatch(setRoom({ 
             room: roomId,
-            data: { ...roomInfo[roomId],
+            data: { ...rooms[roomId],
               lastReadMessageId: lastMessage.id 
             }
           }));
@@ -129,7 +127,7 @@ function Chat() {
           </Link>
         </PermissionGate>
         <h1>
-          {roomInfo[roomId] ? roomInfo[roomId].name : "Loading..."}
+          {rooms[roomId] ? rooms[roomId].name : "Loading..."}
         </h1>
         <button
           className="Chat--Top--Btn Sidebar"
@@ -199,7 +197,7 @@ function Chat() {
         <div className={`Chat--Content--Sidebar ${sidebarOpen ? "Open" : null}`}>
           <ChatSidebar
             members={roomMembers[roomId]}
-            room={roomInfo[roomId]}
+            room={rooms[roomId]} //FIX
           />
         </div>
       </div>
