@@ -7,11 +7,13 @@ import "./scss/Login.scss"
 import { showToast } from "../redux/toast/toastThunks";
 import { handleApiErrors } from "../utils/general";
 import { IoChatboxOutline } from "react-icons/io5";
+import ValidationErrorList from "../components/ValidationErrorList";
 
 function Login() {
   const api = useApi();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState(null);
   const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
 
@@ -25,10 +27,14 @@ function Login() {
       }
       setRedirect(true);
     } catch (error) {
-      dispatch(showToast("error", error?.response?.data?.message))
-
-      const errors = error.response.data.errors;
-      if (errors) handleApiErrors(dispatch, errors);
+      var response = error.response.data;
+      if (response.hasErrors) {
+        setErrors(response.errors);
+        dispatch(showToast("error", response.message))
+      }
+      if (response.message == "ErrorInvalidEmailOrPassword") {
+        dispatch(showToast("error", response.message))
+      }
     }
   };
 
@@ -54,18 +60,33 @@ function Login() {
             <p>Enter your credentials</p>
           </div>
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Email"
-              value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-            />
+            <div className="Child">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="text"
+                placeholder="john.doe@example.com"
+                value={credentials.email}
+                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              />
+              <ValidationErrorList
+                errors={errors?.Email}
+              />
+            </div>
+            <div className="Child">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Supersecret123"
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              />
+              <ValidationErrorList
+                errors={errors?.Password}
+              />
+            </div>
+
             <button type="submit">Login</button>
           </form>
           <Link to="/register">No account? Click here to register.</Link>

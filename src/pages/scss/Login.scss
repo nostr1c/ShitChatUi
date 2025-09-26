@@ -58,16 +58,22 @@
         & form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
             width: 100%;
+
+            & .Child {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
             
             input {
                 background-color: rgba(255,255,255,0.05);
                 padding: 10px;
                 outline: none;
                 border: none;
-                color: #fff;
-                font-size: 16px;
+                color: #d4d4d4;
+                font-size: 14px;
                 border-radius: 5px;
             }
 
@@ -89,6 +95,12 @@
                     filter: opacity(0.8);
                     cursor: pointer;
                 }
+            }
+
+            & .Errors {
+                margin-left: 20px;
+                color: #db7070;
+                font-size: 15px;
             }
         }
 

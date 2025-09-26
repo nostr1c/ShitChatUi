@@ -6,11 +6,13 @@ import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
 import { showToast } from "../redux/toast/toastThunks";
 import { IoChatboxOutline } from "react-icons/io5";
+import ValidationErrorList from "../components/ValidationErrorList";
 
 function Register() {
   const api = useApi();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({ username: "", email: "", password: "" });
+  const [errors, setErrors] = useState(null);
   const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
 
@@ -24,14 +26,10 @@ function Register() {
       }
       setRedirect(true);
     } catch (error) {
-      if (error.response.data.hasErrors) {
-        const errors = error.response.data.errors;
-
-        Object.entries(errors).forEach(([key, messages]) => {
-          messages.forEach((message) => {
-            dispatch(showToast("error", message))
-          });
-        });
+      var response = error.response.data;
+      if (response.hasErrors) {
+        setErrors(response.errors);
+        dispatch(showToast("error", response.message))
       }
     }
   };
@@ -58,26 +56,47 @@ function Register() {
             <p>Enter account details</p>
           </div>
           <form onSubmit={handleSubmit} autoComplete="off">
-            <input
-              type="text"
-              placeholder="Username"
-              value={credentials.username}
-              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-              autoComplete="new-password"
-            />
-            <input
-              type="text"
-              placeholder="Email"
-              value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-              autocomplete="new-password"
-            />
+            <div className="Child">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="AwesomeCat23"
+                value={credentials.username}
+                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                autoComplete="new-password"
+              />
+              <ValidationErrorList
+                errors={errors?.Username}
+              />
+            </div>
+            <div className="Child">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="text"
+                placeholder="john.doe@example.com"
+                value={credentials.email}
+                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              />
+              <ValidationErrorList
+                errors={errors?.Email}
+              />
+            </div>
+            <div className="Child">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Supersecret123"
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                autoComplete="new-password"
+              />
+              <ValidationErrorList
+                errors={errors?.Password}
+              />
+            </div>
             <button type="submit">Register</button>
           </form>
           <Link to="/login">Already registrered? Click here to login.</Link>
