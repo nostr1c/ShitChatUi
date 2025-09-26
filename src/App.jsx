@@ -10,13 +10,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./redux/auth/authThunks";
 import EditProfile from "./pages/EditProfile";
-import ToastParent from "./components/ToastParent";
 import CreateChat from "./pages/CreateChat";
 import Chat from "./pages/Chat";
 import { signalRService } from "./services/signalRService";
 import ChatSettings from "./pages/ChatSettings";
 import Join from "./pages/Join";
 import Register from "./pages/Register";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
@@ -69,7 +69,17 @@ function App() {
 
   return (
     <>
-      <ToastParent />
+      <ToastContainer
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="Main">
         {isAuthenticated && (
           <>

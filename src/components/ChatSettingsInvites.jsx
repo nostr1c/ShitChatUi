@@ -3,17 +3,16 @@ import { GetImageUrl } from "../utils/general";
 import "./scss/ChatSettingsInvites.scss"
 import { useApi } from "../services/useApi";
 import { setRoomInvites } from "../redux/chat/chatSlice";
-import { useRef } from "react";
-import { showToast } from "../redux/toast/toastThunks";
+import { useState } from "react";
 import Button from "./Button";
 import { useParams } from "react-router-dom";
-
+import { toast } from "react-toastify";
 
 function ChatSettingsInvites() {
   const { id: roomId} = useParams();
   const { roomInvites } = useSelector((state) => state.chat)
   const api = useApi();
-  const validThroughRef = useRef();
+  const [validThrough, setValidThrough] = useState("");
   const dispatch = useDispatch();
 
   const fetchRoomInvites = async () => {
@@ -31,14 +30,13 @@ function ChatSettingsInvites() {
   if (roomId && !roomInvites[roomId]) fetchRoomInvites();
 
   const handleCreateInvite = async () => {
-    const validThrough = validThroughRef.current.value
     if (validThrough) {
       try {
         const result = await api.post(`/invite/${roomId}/`, { validThrough });
-        validThroughRef.current.value = ""; 
+        setValidThrough("");
 
         if (result.data.message) {
-          dispatch(showToast("success", result.data.message))
+          toast.success(result.data.message)
         }
       } catch (error) {
         console.error("Error creating invite:", error.response.data);
@@ -64,11 +62,13 @@ function ChatSettingsInvites() {
           <label htmlFor="">Valid through</label>
           <input
             type="date"
-            ref={validThroughRef}
+            value={validThrough}
             min={new Date().toISOString().split("T")[0]}
+            onChange={e => setValidThrough(e.target.value)}
           />
           <Button
             onClick={handleCreateInvite}
+            disabled={!validThrough}
           >
             Create
           </Button>

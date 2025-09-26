@@ -1,4 +1,4 @@
-import { showToast } from "../redux/toast/toastThunks";
+import { toast } from "react-toastify";
 
 export const GetImageUrl = (avatarUri) => {
   const baseUrl = "https://api.filipsiri.se/api/v1/user/avatar";
@@ -7,12 +7,12 @@ export const GetImageUrl = (avatarUri) => {
 };
 
 // Show toast for each error message.
-export const handleApiErrors = (dispatch, errors) => {
+export const handleApiErrors = (errors) => {
   if (!errors) return;
 
   Object.entries(errors).forEach(([_, messages]) => {
     messages.forEach((message) => {
-      dispatch(showToast("error", message));
+      toast.error(message)
     });
   });
 };

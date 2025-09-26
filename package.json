@@ -22,6 +22,7 @@
     "react-router-dom": "^7.1.2",
     "react-signalr": "^0.2.24",
     "react-switch": "^7.1.0",
+    "react-toastify": "^11.0.5",
     "sass": "^1.83.4"
   },
   "devDependencies": {

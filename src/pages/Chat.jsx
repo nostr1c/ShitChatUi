@@ -11,7 +11,6 @@ import { IoIosSettings, IoMdChatboxes } from "react-icons/io";
 import MessageItem from "../components/MessageItem";
 import { useRoomData } from "../services/useRoomData";
 import PermissionGate from "../components/PermissionGate";
-import { use } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Chat() {
@@ -36,7 +35,7 @@ function Chat() {
     return () => {
       dispatch(setCurrentRoom(null));
     };
-  }, [roomId, dispatch]);
+  }, [roomId]);
 
   useEffect(() => {
     if (Object.keys(rooms).length > 0 && !rooms[roomId]) {

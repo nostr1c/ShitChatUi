@@ -3,7 +3,6 @@ import { useApi } from "../services/useApi";
 import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
 import { signalRService } from "../services/signalRService";
 import { useDispatch } from "react-redux";
-import { showToast } from "../redux/toast/toastThunks";
 import { pushRoom } from "../redux/chat/chatSlice";
 
 function Join() {
@@ -32,10 +31,11 @@ function Join() {
         navigate(`/chat/${response.data.data.group.id}`);
       } catch (error) {
         console.error(error);
-        if (error.response.data.message) {
-          dispatch(showToast("error", error.response.data.message));
+        var message = error.response.data.message;
+        if (message) {
+          toast.error(message)
 
-          if (error.response.data.message == "ErrorAlreadyInGroup") {
+          if (message == "ErrorAlreadyInGroup") {
             navigate(`/chat/${error.response.data.data.group}`);
             return;
           }

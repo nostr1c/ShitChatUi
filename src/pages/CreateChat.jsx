@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useApi } from "../services/useApi";
-import { showToast } from "../redux/toast/toastThunks";
 import { pushRoom } from "../redux/chat/chatSlice";
 import { signalRService } from "../services/signalRService";
 import { useNavigate } from "react-router-dom";
 import { handleApiErrors } from "../utils/general";
+import { toast } from "react-toastify";
 
 function CreateChat() {
   const [formBody, setFormBody] = useState({ name: "" });
@@ -24,7 +24,7 @@ function CreateChat() {
       console.log(`Joined room: ${newRoom.id}`);  
       
       if (result.data.message) {
-        dispatch(showToast("success", result.data.message))
+        toast.success(result.data.message);
       }
 
       navigate(`/chat/${newRoom.id}`);
@@ -33,7 +33,7 @@ function CreateChat() {
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;
 
-        if (errors) handleApiErrors(dispatch, errors);
+        if (errors) handleApiErrors(errors);
       }
     }
   };

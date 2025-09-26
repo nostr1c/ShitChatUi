@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useApi } from "../services/useApi";
-import { showToast } from "../redux/toast/toastThunks";
 import { signalRService } from "../services/signalRService";
 import { updateAvatar } from "../redux/auth/authSlice";
+import { toast } from "react-toastify";
 
 function EditProfile() {
     const api = useApi();
@@ -10,7 +10,7 @@ function EditProfile() {
     const { user } = useSelector((state) => state.auth);
     
     const triggerToast = () => {
-      dispatch(showToast("success", "This is a success message!"));
+      dispatch(toast.success("This is a success message!"));
     };
 
     const uploadAvatar = async (e) => {
@@ -24,11 +24,11 @@ function EditProfile() {
 
           dispatch(updateAvatar(result?.data?.data));
           await signalRService.invoke("ChangeAvatar", user?.id, result?.data?.data);
-          dispatch(showToast("success", result.data.message));
+          toast.success(result.data.message)
         }
       } catch (error) {
-        console.log(error)
-        dispatch(showToast("error", error.response.data));
+        console.log(error);
+        toast.error(error.response.data);
       }
     };
 

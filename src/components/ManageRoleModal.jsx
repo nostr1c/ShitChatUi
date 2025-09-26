@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import "./scss/ManageRoleModal.scss";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import Button from "./Button";
 import RoleSwitch from "./RoleSwitch";
 import { useApi } from "../services/useApi";
-import { showToast } from "../redux/toast/toastThunks";
+import { toast } from "react-toastify";
 import { handleApiErrors } from "../utils/general";
+import ValidationErrorList from "./ValidationErrorList";
 
 const availableColors = [
   "#A3BFFA", "#90CDF4", "#63B3ED", "#76E4F7", "#68D391",
@@ -17,9 +17,8 @@ const availableColors = [
 function ManageRoleModal({ closeModal, mode, role }) {
   const { id: roomId } = useParams();
   const api = useApi();
-  const dispatch = useDispatch();
-  
   const isCreate = mode === "create";
+  const [errors, setErrors] = useState(null);
 
   // If not role set = create
   const [formData, setFormData] = useState({
@@ -51,21 +50,25 @@ function ManageRoleModal({ closeModal, mode, role }) {
     if (isCreate) {
       try {
         let result = await api.post(`/group/${roomId}/roles`, formData)
-        dispatch(showToast("success", result.data.message))
+        toast.success(result.data.message);
         closeModal();
       } catch (error) {
-        if (error.response.data.errors) {
-          handleApiErrors(dispatch, error.response.data.errors)
+        const response = error.response.data;
+        if (response.hasErrors) {
+          setErrors(response.errors)
+          toast.error(response.message)
         }
       }
     } else {
       try {
         let result = await api.put(`/group/${roomId}/roles/${role.id}`, formData)
-        dispatch(showToast("success", result.data.message))
+        toast.success(result.data.message);
         closeModal();
       } catch (error) {
-        if (error.response.data.errors) {
-          handleApiErrors(dispatch, error.response.data.errors)
+        const response = error.response.data;
+        if (response.hasErrors) {
+          setErrors(response.errors)
+          toast.error(response.message)
         }
       }
     }
@@ -108,6 +111,9 @@ function ManageRoleModal({ closeModal, mode, role }) {
             value={formData.name}
             onChange={(e) => handleChange("name", e.target.value)}
           />
+          <ValidationErrorList
+            errors={errors?.Name}
+          />
           <div className="Color">
             <div
               className="Preview"
@@ -124,6 +130,9 @@ function ManageRoleModal({ closeModal, mode, role }) {
               ))}
             </div>
           </div>
+          <ValidationErrorList
+            errors={errors?.Color}
+          />
           <div className="Permissions">
             {allPermissions.map((perm) => (
               <div className="Permissions--Child" key={perm}>

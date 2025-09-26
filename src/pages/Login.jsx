@@ -4,10 +4,9 @@ import { useApi } from "../services/useApi";
 import { Link, Navigate } from "react-router-dom";
 import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
-import { showToast } from "../redux/toast/toastThunks";
-import { handleApiErrors } from "../utils/general";
 import { IoChatboxOutline } from "react-icons/io5";
 import ValidationErrorList from "../components/ValidationErrorList";
+import { toast } from "react-toastify";
 
 function Login() {
   const api = useApi();
@@ -23,17 +22,17 @@ function Login() {
       var result = await api.post("/auth/login", credentials);
       dispatch(fetchUser());
       if (result.data.message) {
-        dispatch(showToast("success", result.data.message))
+        toast.success(result.data.message)
       }
       setRedirect(true);
     } catch (error) {
       var response = error.response.data;
       if (response.hasErrors) {
         setErrors(response.errors);
-        dispatch(showToast("error", response.message))
+        toast.error(response.message)
       }
       if (response.message == "ErrorInvalidEmailOrPassword") {
-        dispatch(showToast("error", response.message))
+        toast.error(response.message)
       }
     }
   };
