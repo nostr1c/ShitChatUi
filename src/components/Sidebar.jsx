@@ -67,7 +67,7 @@ function Sidebar() {
             </div>
           </div>
           <GroupChats closeModal={() => setModalOpen(false)} /> 
-          <FriendsList />
+          {/* <FriendsList /> Uncomment when friends implemented */}
         </>
         )
       }

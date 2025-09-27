@@ -6,6 +6,7 @@ import { fetchUser } from "../redux/auth/authThunks";
 import "./scss/Login.scss"
 import { IoChatboxOutline } from "react-icons/io5";
 import ValidationErrorList from "../components/ValidationErrorList";
+import { toast } from "react-toastify";
 
 function Register() {
   const api = useApi();

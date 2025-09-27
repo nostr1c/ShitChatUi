@@ -67,12 +67,16 @@
             display: flex;
             flex-direction: column;
 
+            & .Chat-Messages-Wrapper {
+                position: relative;
+            }
+
             & .Chat--Messages {
                 overflow: auto;
                 display: flex;
                 flex-direction: column-reverse;
                 // height: calc(100vh - 137px);
-                height: calc(var(--vh, 1vh) * 100 - 120px);
+                height: calc(var(--vh, 1vh) * 100 - 114px);
                 position: relative;
 
                 .Load-More {
@@ -102,6 +106,10 @@
                         }
 
                         & .Message--Content--Text {
+                            margin-left: auto;
+                        }
+
+                        & .Message--Content--Image {
                             margin-left: auto;
                         }
 
@@ -157,6 +165,14 @@
                             color: #e5e5e5;
                             border: 1px solid #ffffff0d;
                         }
+
+                        &--Image {
+                            width: 60%;
+                            height: 100%;
+                            border-radius: 7px;
+                            border: 1px solid #ffffff0d;
+                            cursor: pointer;
+                        }
                     }
 
                     &:hover {
@@ -183,44 +199,68 @@
             & .Chat--Send {
                 background-color: #121214;
                 border-top: 1px solid #ffffff0d;
-                height: 75px;
+                height: 70px;
                 display: flex;
                 align-content: center;
-                justify-content: center;                    
+                justify-content: center;     
 
                 & .Send {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     gap: 10px;
-                    width: 80%;
+                    width: 100%;
+
+                    & .Image-Preview {
+                        width: 140px;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+
+                        & .Delete-Image {
+                            background: rgba(36, 36, 36, 0.767);
+                            position: absolute;
+                            border: none;
+                            padding: 4px;
+                            outline: none;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            top: 5px;
+                            right: 5px;
+                            border-radius: 5px;
+
+                            & svg {
+                                color: #e06c6c;
+                                font-size: 20px;
+                            }
+
+                            &:hover {
+                                filter: brightness(80%);
+                            }
+                        }
+
+                        & .Img {
+                            max-height: 45px;
+                            max-width: 100px;;
+                            border-radius: 7px;
+                            object-fit: cover;
+                        }
+
+                    }
 
                     & input {
                         width: 100%;
-                        background-color: #17171a;
+                        background-color: #121214;
                         border: none;
                         outline: none;
-                        height: 40px;
-                        border-radius: 50px;
-                        padding: 0 15px;
+                        height: 100%;
                         color: #e5e5e5;
                         font-size: 16px;
-                    }
-
-                    & button {
-                        height: 40px;
-                        padding: 0 20px;
-                        background-color: #ffffff0b;
-
-                        border: none;
-                        outline: none;
-                        color: #a1a1a1;
-                        border-radius: 20px;
-
-                        &:hover {
-                            filter: opacity(0.7);
-                            cursor: pointer;
-                        }
+                        padding: 0 15px;
                     }
                 }
             }
@@ -254,7 +294,7 @@
     height: calc(var(--vh, 1vh) * 100 - 57px);
 
     & .Chat--Messages {
-      height: calc(var(--vh, 1vh) * 100 - 176px) !important;
+      height: calc(var(--vh, 1vh) * 100 - 167px) !important;
     }
 
     &--Content--Sidebar {

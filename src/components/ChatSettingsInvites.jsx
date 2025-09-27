@@ -7,12 +7,14 @@ import { useState } from "react";
 import Button from "./Button";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ValidationErrorList from "./ValidationErrorList";
 
 function ChatSettingsInvites() {
   const { id: roomId} = useParams();
   const { roomInvites } = useSelector((state) => state.chat)
   const api = useApi();
   const [validThrough, setValidThrough] = useState("");
+  const [errors, setErrors] = useState(null);
   const dispatch = useDispatch();
 
   const fetchRoomInvites = async () => {
@@ -34,25 +36,39 @@ function ChatSettingsInvites() {
       try {
         const result = await api.post(`/invite/${roomId}/`, { validThrough });
         setValidThrough("");
+        setErrors(null);
 
         if (result.data.message) {
           toast.success(result.data.message)
         }
       } catch (error) {
-        console.error("Error creating invite:", error.response.data);
+        const response = error.response.data;
+        console.error("Error creating invite:", response.data);
+        if (response.hasErrors) {
+          setErrors(response.errors);
+          toast.error(response.message || "Error creating invite");
+        }
       }
     }
   }
 
   // Date to days
-  const formatDay = (date) => {
-    const now = new Date();
-    const target = new Date(date);
-    const diff = target - now;
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    if (days < 0) return "Invalid";
-    return days + " d";
-  }
+const formatDay = (date) => {
+  const now = new Date();
+  const target = new Date(date);
+  const diff = target - now;
+
+  if (diff < 0) return "Invalid";
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+  let result = "";
+  if (days > 0) result += days + "d ";
+  if (hours > 0) result += hours + "h";
+
+  return result.trim() || "0h";
+};
 
   return (
     <div className="Invites">
@@ -65,6 +81,9 @@ function ChatSettingsInvites() {
             value={validThrough}
             min={new Date().toISOString().split("T")[0]}
             onChange={e => setValidThrough(e.target.value)}
+          />
+          <ValidationErrorList
+            errors={errors?.ValidThrough}
           />
           <Button
             onClick={handleCreateInvite}

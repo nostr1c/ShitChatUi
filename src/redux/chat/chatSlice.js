@@ -174,8 +174,6 @@ const chatSlice = createSlice({
     },
     removeRoleFromUser: (state, action) => {
       const { room, user, role } = action.payload;
-      console.log(room, user, role)
-
       const member = state.roomMembers[room]?.[user];
       if (!member) return;
 

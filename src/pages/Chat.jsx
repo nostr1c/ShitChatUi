@@ -1,35 +1,78 @@
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useApi } from "../services/useApi";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useApi } from "../services/useApi";
 import { addMessage, setCurrentRoom, setRoom } from "../redux/chat/chatSlice";
-import ChatSidebar from "../components/ChatSidebar";
-import "./scss/Chat.scss";
 import { signalRService } from "../services/signalRService";
-import { FaUserFriends } from "react-icons/fa";
-import { IoIosSettings, IoMdChatboxes } from "react-icons/io";
-import MessageItem from "../components/MessageItem";
+import ChatTopBar from "../components/ChatTopBar";
+import ChatMessages from "../components/ChatMessages";
+import ChatInput from "../components/ChatInput";
+import ChatSidebar from "../components/ChatSidebar";
+import DropZone from "../components/DropZone";
 import { useRoomData } from "../services/useRoomData";
-import PermissionGate from "../components/PermissionGate";
-import { useNavigate } from "react-router-dom";
+import "./scss/Chat.scss";
+import { toast } from "react-toastify";
+import ChatImagePreview from "../components/ChatImagePreview";
 
-function Chat() {
-  const api = useApi();
-  const dispatch = useDispatch();
+export default function Chat() {
   const { id: roomId } = useParams();
-  const messageRef = useRef();
-  const typingTimeoutRef = useRef(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [typing, setTyping] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
+  const api = useApi();
+  const navigate = useNavigate();
+
   const { user } = useSelector((state) => state.auth);
   const { rooms } = useSelector((state) => state.chat);
   const { messages, roomMembers } = useRoomData(roomId);
-  const navigate = useNavigate();
-  const messagesEndRef = useRef(null);  
+
+  const [hasMore, setHasMore] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [showImagePreview, setShowImagePreview] = useState(false);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDraggingFile(true);
+  }
+
+  const handleDragLeave = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      setIsDraggingFile(false);
+    }
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setIsDraggingFile(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    if (!files.length) return;
+
+    if (files.length > 1) {
+      toast.error("Only one image can be sent at a time");
+      return;
+    }
+
+    const file = files[0];
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed");
+      return;
+    }
+
+    setImage(file);
+  };
 
   useEffect(() => {
     if (roomId) 
+      setHasMore(true);
       dispatch(setCurrentRoom(roomId));
 
     return () => {
@@ -38,170 +81,96 @@ function Chat() {
   }, [roomId]);
 
   useEffect(() => {
-    if (Object.keys(rooms).length > 0 && !rooms[roomId]) {
-      navigate("/")
-    }
-  }, [rooms, roomId, navigate])
+    if (Object.keys(rooms).length > 0 && !rooms[roomId]) navigate("/");
+  }, [rooms, roomId, navigate]);
 
   const fetchMoreMessages = async () => {
     try {
       const lastMessage = messages[roomId]?.[messages[roomId].length - 1];
       const { data } = await api.get(`group/${roomId}/messages?lastMessageId=${lastMessage.id}`);
       if (data.data.length < 40) setHasMore(false);
-      dispatch(addMessage({ room: roomId, message: data.data }));  
-      
+      dispatch(addMessage({ room: roomId, message: data.data }));
     } catch (error) {
-      setError(error.message);
       console.error("Error fetching messages:", error);
     }
   };
 
-  const handleSend = async () => {
-    const content = messageRef.current.value
-    if (content.trim()) {
-      await api.post(`/group/${roomId}/messages`, { content });
-      messageRef.current.value = "";
-      setTyping(false);
-      sendTypingSignal(false);
+  const handleSend = async (formData) => {
+    try {
+      await api.post(`/group/${roomId}/messages`, formData);
+    } catch (error) {
+      console.error("Error sending message:", error.response.data);
     }
   };
 
-  const handleInputChange = () => {
-    if (!typing) {
-      setTyping(true);
-      sendTypingSignal(true);
-    }
-    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(() => {
-      setTyping(false);
-      sendTypingSignal(false);
-    }, 2000);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-    };
-  }, []);
-
-  const sendTypingSignal = (isTyping) => {
+  const handleTyping = (isTyping) => {
     signalRService.invoke("TypeIndicator", roomId, user?.id, isTyping);
   };
 
-    useEffect(() => {
-      if (!roomId || !messages[roomId]?.length) return; 
+  const handlePreviewImage = (img) => {
+    setPreviewImage(img);
+    setShowImagePreview(true);
+  }
 
-      const lastMessage = messages[roomId][0];
-      const markRoomAsRead = async () => {
-        try {
-          await api.post(`group/${roomId}/read`, { lastMessageId: lastMessage.id });
-          dispatch(setRoom({ 
+  // Mark messages as read
+  useEffect(() => {
+    if (!roomId || !messages[roomId]?.length) return;
+    const lastMessage = messages[roomId][0];
+    const markRoomAsRead = async () => {
+      try {
+        await api.post(`group/${roomId}/read`, { lastMessageId: lastMessage.id });
+        dispatch(
+          setRoom({
             room: roomId,
-            data: { ...rooms[roomId],
-              lastReadMessageId: lastMessage.id 
-            }
-          }));
-        } catch (error) {
-          console.error("Error marking messages as read:", error);
-        }
-      };
-
-      markRoomAsRead();
-
-    }, [roomId, messages[roomId]]);
+            data: { ...rooms[roomId], lastReadMessageId: lastMessage.id }
+          })
+        );
+      } catch (error) {
+        console.error("Error marking messages as read:", error);
+      }
+    };
+    markRoomAsRead();
+  }, [roomId, messages[roomId]]);
 
   return (
     <div className="Chat">
-      <div className="Chat--Top">
-        <PermissionGate
-          roomId={roomId}
-          userId={user.id}
-          permissions={["manage_server", "manage_server_roles", "manage_invites"]}
-        >
-          <Link
-            className="Chat--Top--Btn Settings"
-            to={"settings"}
-          >
-            <IoIosSettings />
-          </Link>
-        </PermissionGate>
-        <h1>
-          {rooms[roomId] ? rooms[roomId].name : "Loading..."}
-        </h1>
-        <button
-          className="Chat--Top--Btn Sidebar"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          <FaUserFriends />
-        </button>
-      </div>
-      <div className="Chat--Content" id="Chat-Content">
+      <ChatTopBar room={rooms[roomId]} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} userId={user.id} />
+      <div id="Chat-Content" className="Chat--Content">
         <div className="Chat--Content--Main">
-          <div className="Chat--Messages">
-            {messages[roomId]?.length > 0 ? (
-              messages[roomId].map((m, i) => {
-                const nextMsg = messages[roomId][i + 1];
-
-                const isDifferentUser = !nextMsg || nextMsg.userId !== m.userId;
-                const timeGap =
-                  !nextMsg ||
-                  Math.abs(new Date(m.createdAt) - new Date(nextMsg.createdAt)) > 2 * 60 * 1000;
-                  
-                const isMessageStart = isDifferentUser || timeGap;
-
-                return (
-                  <MessageItem
-                    key={m.id}
-                    message={m}
-                    currentUser={user}
-                    isMessageStart={isMessageStart}
-                    member={roomMembers[roomId]?.[m.userId]}
-                  />
-                )
-              })
-            ) : (
-              <div className="Messages--Not-Found">
-                <IoMdChatboxes />
-                <h4>No messages.</h4>
-                <p>Be the first one to be social.</p>
-              </div>
-            )}
-            {messages[roomId] && messages[roomId].length >= 40 && hasMore ? (
-              <button className="Load-More" onClick={() => {fetchMoreMessages()}}>Ladda mer</button>
-            ) : null}
-            <div ref={messagesEndRef} />
+          {showImagePreview && (
+            <ChatImagePreview 
+              image={previewImage}
+              closeModal={() => setShowImagePreview(false)}
+            />
+          )}
+          <div
+            className="Chat-Messages-Wrapper"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {isDraggingFile && <DropZone />}
+            <ChatMessages
+              messages={messages[roomId]}
+              currentUser={user}
+              roomMembers={roomMembers[roomId]}
+              onLoadMore={fetchMoreMessages}
+              hasMore={hasMore}
+              previewImage={handlePreviewImage}
+            />
           </div>
-          <div className="Chat--Send">
-            <div className="Send">
-              <input
-                type="text"
-                ref={messageRef}
-                onChange={handleInputChange}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }} 
-                placeholder="Type a message..." 
-              />
-              <button
-                onClick={handleSend}
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className={`Chat--Content--Sidebar ${sidebarOpen ? "Open" : null}`}>
-          <ChatSidebar
-            members={roomMembers[roomId]}
-            room={rooms[roomId]} //FIX
+          <ChatInput
+            onSend={handleSend}
+            onTyping={handleTyping}
+            image={image}
+            setImage={setImage}
+            roomId={roomId}
           />
+        </div>
+        <div className={`Chat--Content--Sidebar ${sidebarOpen ? "Open" : ""}`}>
+          <ChatSidebar members={roomMembers[roomId]} room={rooms[roomId]} />
         </div>
       </div>
     </div>
   );
 }
-
-export default Chat;
