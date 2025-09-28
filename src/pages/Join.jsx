@@ -36,10 +36,10 @@ function Join() {
         if (message) {
           toast.error(message)
 
-          if (message == "ErrorAlreadyInGroup") {
-            navigate(`/chat/${error.response.data.data.group}`);
-            return;
-          }
+          // if (message == "ErrorAlreadyInGroup") {
+          //   navigate(`/chat/${error.response.data.data.group}`);
+          //   return;
+          // }
 
           navigate("/");
         }

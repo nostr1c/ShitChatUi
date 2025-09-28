@@ -64,6 +64,20 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     });
   }
 
+    const handleBan = () => {
+      setShowModal(false);
+      api.post(`/group/${roomId}/members/${member.user.id}/ban`, {
+        reason: "BANNED",
+        ExpiresAt: "2025-10-05T14:30:00Z"
+      })
+      .then((response) => {
+        console.log(response); //Show toast? Confetti?
+      })
+      .catch((error) => {
+        console.error("Error banning user:", error);
+      });
+    }
+
   return (
       <div
         className="MemberModal"
@@ -163,6 +177,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
                 >
                   <button
                     className="ModalContent--Actions--Child"
+                    onClick={handleBan}
                   >
                     <GiThorHammer />
                     <p>Ban</p>

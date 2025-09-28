@@ -116,9 +116,12 @@ const chatSlice = createSlice({
     removeRoomFromUser: (state, action) => {
       const { room } = action.payload;
 
-      if (state.rooms[room]) {
-        delete state.rooms[room];
-      }
+      delete state.rooms[room];
+      delete state.messages[room];
+      delete state.roomMembers[room];
+      delete state.roomRoles[room];
+      delete state.roomInvites[room];
+      delete state.roomPresence[room];
     },
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
