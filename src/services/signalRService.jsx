@@ -13,7 +13,8 @@ import {
   pushRoomRole,
   editRoomRole,
   incrementUnread,
-  removeRoomFromUser
+  removeRoomFromUser,
+  editRoom
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -129,6 +130,10 @@ class SignalRService {
       });
 
       dispatch(removeMemberFromRoom( { room, user } ));
+    })
+
+      this.on("EditedRoom", (roomId, room) => {
+      dispatch(editRoom( { roomId, room } ));
     })
 
     this.listenersAttached = true;

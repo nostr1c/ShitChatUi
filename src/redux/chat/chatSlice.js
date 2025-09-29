@@ -193,6 +193,12 @@ const chatSlice = createSlice({
       }
 
       state.rooms[roomId].unreadCount += 1;
+    },
+    editRoom: (state, action) => {
+      const { roomId, room } = action.payload;
+      if (state.rooms[roomId]) {
+        state.rooms[roomId] = room;
+      }
     }
   },
 });
@@ -219,7 +225,8 @@ export const {
   pushRoomRole,
   editRoomRole,
   incrementUnread,
-  removeRoomFromUser
+  removeRoomFromUser,
+  editRoom
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

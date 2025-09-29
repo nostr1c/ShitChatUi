@@ -57,7 +57,7 @@ function GroupChats() {
               key={group.id}
               >
                 <div className="GroupChats--Child--Avatar">
-                  {group.name[0]}
+                  {group?.name[0]}
                 </div>
                 <div className="GroupChats--Child--Content">
                   <p>{group.name}</p>
