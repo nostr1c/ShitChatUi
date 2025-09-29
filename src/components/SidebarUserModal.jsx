@@ -7,6 +7,9 @@ import { FaCheck } from "react-icons/fa";
 import { useApi } from "../services/useApi";
 import { GiWalkingBoot, GiThorHammer } from "react-icons/gi";
 import PermissionGate from "./PermissionGate";
+import Modal from "./Modal";
+import ConfirmationModal from "./ConfirmationModal";
+import BanForm from "./BanForm";
 
 function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   const { id: roomId} = useParams();
@@ -20,6 +23,9 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   const userRoles = member?.roles ?? [];
   const [selectedRoles, setSelectedRoles] = useState(userRoles ?? []);
   const [showUpdateUserRoles, setShowUpdateUserRoles] = useState(false);
+  const [showConfirmKickModal, setShowConfirmKickModal] = useState(false);
+  const [showConfirmBanModal, setShowConfirmBanModal] = useState(false);
+  const [banReason, setBanReason] = useState("");
 
   const toggleRole = (roleId) => {
     setSelectedRoles((prev) => {
@@ -64,19 +70,18 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     });
   }
 
-    const handleBan = () => {
-      setShowModal(false);
-      api.post(`/group/${roomId}/members/${member.user.id}/ban`, {
-        reason: "BANNED",
-        ExpiresAt: "2025-10-05T14:30:00Z"
-      })
-      .then((response) => {
-        console.log(response); //Show toast? Confetti?
-      })
-      .catch((error) => {
-        console.error("Error banning user:", error);
-      });
-    }
+  const handleBan = () => {
+    setShowModal(false);
+    api.post(`/group/${roomId}/members/${member.user.id}/ban`, {
+      Reason: banReason,
+    })
+    .then((response) => {
+      console.log(response); //Show toast? Confetti?
+    })
+    .catch((error) => {
+      console.error("Error banning user:", error);
+    });
+  }
 
   return (
       <div
@@ -162,26 +167,55 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
                   userId={user.id}
                   permissions={["kick_user"]}
                 >
-                  <button
-                    className="ModalContent--Actions--Child"
-                    onClick={handleKick}
-                  >
-                    <GiWalkingBoot />
-                    <p>Kick</p>
-                  </button>
+                <button
+                  className="ModalContent--Actions--Child"
+                  onClick={() => setShowConfirmKickModal(true)}
+                >
+                  <GiWalkingBoot />
+                  <p>Kick</p>
+                </button>
+                {showConfirmKickModal && (
+                  <Modal onClose={() => setShowConfirmKickModal(false)}>
+                    <ConfirmationModal
+                      title={`Are you sure you want to kick ${member.user.username}?`} 
+                      subTitle="User can still rejoin the room with an invite link."
+                      yesText="Kick"
+                      noText="Cancel"
+                      onConfirm={handleKick}
+                      onCancel={() => setShowConfirmKickModal(false)}
+                    />
+                  </Modal>
+                )}
                 </PermissionGate>
                 <PermissionGate
                   roomId={roomId}
                   userId={user.id}
-                permissions={["ban_user"]}
+                  permissions={["ban_user"]}
                 >
                   <button
                     className="ModalContent--Actions--Child"
-                    onClick={handleBan}
+                    onClick={() => setShowConfirmBanModal(true)}
                   >
                     <GiThorHammer />
                     <p>Ban</p>
                   </button>
+                  {showConfirmBanModal && (
+                    <Modal onClose={() => setShowConfirmBanModal(false)}>
+                      <ConfirmationModal
+                        title={`Are you sure you want to ban ${member.user.username}?`} 
+                        subTitle="User wont be able to join server, unless unbanned."
+                        yesText="Ban"
+                        noText="Cancel"
+                        onConfirm={handleBan}
+                        onCancel={() => setShowConfirmBanModal(false)}
+                      >
+                        <BanForm
+                          onChange={setBanReason}
+                        />
+                      </ConfirmationModal>
+                    </Modal>
+                  )}
+
                 </PermissionGate>
               </div>
             )}

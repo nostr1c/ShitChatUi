@@ -1,0 +1,32 @@
+.Modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+
+    &--Overlay {
+        position: absolute;
+        inset: 0;
+        background: #00000070;
+        cursor: pointer;
+        z-index: 1;
+        backdrop-filter: blur(4px);
+    }
+
+    &--Content {
+        position: relative;
+        background: #00000042;
+        padding: 20px 25px;
+        border-radius: 7px;
+        z-index: 2;
+        border: 1px dashed #ffffff25;
+        color: #ffffff;
+        backdrop-filter: blur(10px);
+        margin: 0 20px;
+    }
+}
+
+
+

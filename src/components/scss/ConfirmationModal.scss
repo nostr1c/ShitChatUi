@@ -1,0 +1,46 @@
+.Confirm {
+
+    & h3 {
+        font-size: 19px;
+    }
+
+    & p {
+        font-size: 14px;
+        color: #bbbbbb;
+    }
+
+    &--Actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+
+        &--Yes {
+            background: #ac4a47;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &:hover {
+                background: #86211e;
+            }
+        }
+
+        &--No {
+            background: #6c757d;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &:hover {
+                background: #5a6268;
+            }
+        }
+    }
+}

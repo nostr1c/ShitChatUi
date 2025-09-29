@@ -1,0 +1,21 @@
+.BanForm {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #ffffff41;;
+
+    label {
+        display: flex;
+        flex-direction: column;
+        font-size: 15px;
+        gap: 5px;
+
+        input {
+            background: none;
+            outline: none;
+            border: 1px dashed #ffffff41;
+            border-radius: 5px;
+            padding: 8px 10px;
+            color: #fff;
+        }
+    }
+}
