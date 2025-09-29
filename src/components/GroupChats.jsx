@@ -3,7 +3,10 @@ import { useApi } from "../services/useApi";
 import {  useDispatch, useSelector } from "react-redux";
 import { setRooms } from "../redux/chat/chatSlice";
 import { Link } from "react-router-dom";
-import { BiMessageSquareAdd } from "react-icons/bi";
+import { RiChatNewFill } from "react-icons/ri";
+import { IoMdAddCircleOutline } from "react-icons/io";
+
+
 import "./scss/GroupChats.scss"
 
 function GroupChats() {
@@ -29,13 +32,18 @@ function GroupChats() {
   return (
     <div className="GroupChats">
       <div className="GroupChats--Header">
-        <h3>Conversations</h3>
+        <div></div>
+        <div>
+          <h3>Conversations</h3>
+        </div>
+        <div>
         <Link
           className="GroupChats--Header--Link"
           to={"/chat/create"}
         >
-          <BiMessageSquareAdd/>
+          <IoMdAddCircleOutline/>
         </Link>
+        </div>
       </div>
       {roomsArray.length > 0 ? (
         <div className="GroupChats--Parent">

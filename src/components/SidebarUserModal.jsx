@@ -10,6 +10,7 @@ import PermissionGate from "./PermissionGate";
 import Modal from "./Modal";
 import ConfirmationModal from "./ConfirmationModal";
 import BanForm from "./BanForm";
+import { toast } from "react-toastify";
 
 function SidebarUserModal({ modalPosition, userId, setShowModal }) {
   const { id: roomId} = useParams();
@@ -63,7 +64,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
     setShowModal(false);
     api.post(`/group/${roomId}/members/${member.user.id}/kick`)
     .then((response) => {
-      // console.log(response); Show toast? Confetti?
+      toast.success(response.data.message);
     })
     .catch((error) => {
       console.error("Error kicking user:", error);
@@ -76,7 +77,7 @@ function SidebarUserModal({ modalPosition, userId, setShowModal }) {
       Reason: banReason,
     })
     .then((response) => {
-      console.log(response); //Show toast? Confetti?
+      toast.success(response.data.message);
     })
     .catch((error) => {
       console.error("Error banning user:", error);

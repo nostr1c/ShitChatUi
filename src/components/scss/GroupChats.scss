@@ -5,12 +5,16 @@
     position: relative;
 
     &--Header {
-        position: relative;
-        // background-color: blue;
-        height: 45px;
+        padding: 10px 0;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: row;
+
+        div {
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
 
         h3 {
             text-align: center;
@@ -18,16 +22,11 @@
         }
 
         &--Link {
-            position: absolute;
-            right: 15px;
-            cursor: pointer;
-            background: none;
-            outline: none;
-            border: none;
+            display: flex;
 
             & svg {
-                font-size: 20px;
-                color: #fff;
+                font-size: 27px;
+                color: #ffffff;
                 transition: all 0.3s;
 
                 &:hover {
