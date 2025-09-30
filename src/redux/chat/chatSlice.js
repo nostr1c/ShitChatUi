@@ -123,6 +123,16 @@ const chatSlice = createSlice({
       delete state.roomInvites[room];
       delete state.roomPresence[room];
     },
+    deleteRoom: (state, action) => {
+      const { roomId } = action.payload;
+
+      delete state.rooms[roomId];
+      delete state.messages[roomId];
+      delete state.roomMembers[roomId];
+      delete state.roomRoles[roomId];
+      delete state.roomInvites[roomId];
+      delete state.roomPresence[roomId];
+    },
     updateUserAvatar: (state, action) => {
       const { userId, imageName } = action.payload;
 
@@ -226,7 +236,8 @@ export const {
   editRoomRole,
   incrementUnread,
   removeRoomFromUser,
-  editRoom
+  editRoom,
+  deleteRoom
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

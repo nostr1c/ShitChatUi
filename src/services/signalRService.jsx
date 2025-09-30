@@ -14,7 +14,8 @@ import {
   editRoomRole,
   incrementUnread,
   removeRoomFromUser,
-  editRoom
+  editRoom,
+  deleteRoom
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -132,8 +133,12 @@ class SignalRService {
       dispatch(removeMemberFromRoom( { room, user } ));
     })
 
-      this.on("EditedRoom", (roomId, room) => {
+    this.on("EditedGroup", (roomId, room) => {
       dispatch(editRoom( { roomId, room } ));
+    })
+    
+    this.on("DeletedGroup", (roomId) => {
+      dispatch(deleteRoom({ roomId }));
     })
 
     this.listenersAttached = true;

@@ -1,11 +1,14 @@
 import "./scss/Button.scss";
 
-function Button({ onClick, children, isCreate, ...props }) {
+function Button({ onClick, children, isCreate, isDelete, ...props }) {
 
   const classes = ["Button"]
 
   if (isCreate)
     classes.push("Create")
+
+  if (isDelete)
+    classes.push ("Delete")
 
   return (
     <button

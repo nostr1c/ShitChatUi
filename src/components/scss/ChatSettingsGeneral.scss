@@ -4,6 +4,13 @@
     border: 1px dashed #ffffff0d;
     padding: 20px;
     border-radius: 8px;
+    gap: 10px;
+
+    &--Settings {
+        padding: 20px;
+        border: 1px dashed #77777781;
+        border-radius: 7px;;
+    }
 
     h4 {
         margin-bottom: 10px;
@@ -21,12 +28,27 @@
             background: none;
             outline: none;
             color: #fff;
-            border: 1px solid #ffffff0d;
+            border: 1px solid #ffffff2a;
             margin-bottom: 5px;
         }
     }
 
     button {
         margin-top: 15px;;
+    }
+
+    &--Dangerous {
+        margin-top: 20px;
+        border: 1px dashed #ff00004b;
+        padding: 20px;
+        border-radius: 7px;
+
+        label {
+            width: max-content;
+        }
+
+        h4 {
+            color: #9e3b3b;
+        }
     }
 }
