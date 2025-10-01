@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useApi } from "../services/useApi";
-import { useNavigate, useParams, useRouteLoaderData } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { signalRService } from "../services/signalRService";
 import { useDispatch } from "react-redux";
 import { pushRoom } from "../redux/chat/chatSlice";
@@ -23,7 +23,7 @@ function Join() {
         await signalRService.startConnection([]);
         await signalRService.waitUntilConnected();
 
-        const response = await api.post(`invite/join/${params.id}`);
+        const response = await api.post(`invite/${params.id}/join`);
         dispatch(pushRoom(response.data.data.group));
 
         await signalRService.invoke("JoinGroup", response.data.data.group.id);

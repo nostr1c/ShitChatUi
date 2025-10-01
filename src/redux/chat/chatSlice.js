@@ -24,6 +24,15 @@ const normalizeRooms = (rooms) => {
   return normalized;
 }
 
+const normalizeRoomInvites = (invites) => {
+  const normalized = {};
+  invites.forEach((invite) => {
+    normalized[invite.id] = invite;
+  }
+  );
+  return normalized;
+}
+
 const initialState = {
   rooms: {},
   messages: {},
@@ -146,11 +155,11 @@ const chatSlice = createSlice({
     },
     setRoomInvites: (state, action) => {
       const { room, data } = action.payload;
-      state.roomInvites[room] = (data);
+      state.roomInvites[room] = normalizeRoomInvites(data);
     },
     setRoomRoles: (state, action) => {
       const { room, data } = action.payload;
-      state.roomRoles[room] = normalizeRoomRoles(data);
+      state.roomRoles[room] = normalizeRoomInvites(data);
     },
     pushRoomRole: (state, action) => {
       const { room, role } = action.payload;
@@ -163,8 +172,7 @@ const chatSlice = createSlice({
     },
     pushInvite: (state, action) => {
       const { room, invite } = action.payload;
-      if (!state.roomInvites[room]) state.roomInvites[room] = [];
-      state.roomInvites[room].unshift(invite);
+      state.roomInvites[room][invite.id] = invite;
     },
     setUserTyping: (state, action) => {
       const {room, user, isTyping} = action.payload;
@@ -209,6 +217,10 @@ const chatSlice = createSlice({
       if (state.rooms[roomId]) {
         state.rooms[roomId] = room;
       }
+    },
+    deleteInvite: (state, action) => {
+      const {roomId, inviteId} = action.payload;
+      delete state.roomInvites[roomId][inviteId];
     }
   },
 });
@@ -237,7 +249,8 @@ export const {
   incrementUnread,
   removeRoomFromUser,
   editRoom,
-  deleteRoom
+  deleteRoom,
+  deleteInvite
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

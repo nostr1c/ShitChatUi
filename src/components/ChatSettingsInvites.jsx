@@ -8,6 +8,9 @@ import Button from "./Button";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ValidationErrorList from "./ValidationErrorList";
+import { MdDeleteOutline } from "react-icons/md";
+import Modal from "./Modal";
+import ConfirmationModal from "./ConfirmationModal";
 
 function ChatSettingsInvites() {
   const { id: roomId} = useParams();
@@ -16,10 +19,12 @@ function ChatSettingsInvites() {
   const [validThrough, setValidThrough] = useState("");
   const [errors, setErrors] = useState(null);
   const dispatch = useDispatch();
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  const [inviteToDelete, setInviteToDelete] = useState(null);
 
   const fetchRoomInvites = async () => {
     try {
-      const { data }  = await api.get(`invite/${roomId}`);
+      const { data } = await api.get(`group/${roomId}/invites`);
       if (data.data.length > 0) {
         dispatch(setRoomInvites({ room: roomId, data: data.data }));
       }
@@ -34,7 +39,7 @@ function ChatSettingsInvites() {
   const handleCreateInvite = async () => {
     if (validThrough) {
       try {
-        const result = await api.post(`/invite/${roomId}/`, { validThrough });
+        const result = await api.post(`group/${roomId}/invites`, { validThrough });
         setValidThrough("");
         setErrors(null);
 
@@ -52,23 +57,42 @@ function ChatSettingsInvites() {
     }
   }
 
+  const handleDeleteInvite = async (invite) => {
+    setShowConfirmDeleteModal(false);
+
+    try {
+      const result = await api.delete(`group/${roomId}/invites/${invite.id}`);
+      if (result.data.message) {
+        toast.success(result.data.message)
+      }
+    } catch (error) {
+      if (response.hasErrors) 
+        toast.error(response.message || "Error deleting invite");
+    }
+  }
+
   // Date to days
-const formatDay = (date) => {
-  const now = new Date();
-  const target = new Date(date);
-  const diff = target - now;
+  const formatDay = (date) => {
+    const now = new Date();
+    const target = new Date(date);
+    const diff = target - now;
 
-  if (diff < 0) return "Invalid";
+    if (diff < 0) return "Invalid";
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-  let result = "";
-  if (days > 0) result += days + "d ";
-  if (hours > 0) result += hours + "h";
+    let result = "";
+    if (days > 0) result += days + "d ";
+    if (hours > 0) result += hours + "h";
 
-  return result.trim() || "0h";
-};
+    return result.trim() || "0h";
+  };
+
+  function handleClickInviteCode(code) {
+    navigator.clipboard.writeText(`${window.location.origin}/${code}`);
+    toast.success("Copied to clipboard")
+  }
 
   return (
     <div className="Invites">
@@ -100,12 +124,13 @@ const formatDay = (date) => {
             <th className="Creator">Creator</th>
             <th className="Code">Code</th>
             <th className="Valid">Valid</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {
-            roomInvites[roomId] && roomInvites[roomId].length > 0 ? (
-              roomInvites[roomId].map((invite) => (
+            roomInvites[roomId] ? (
+              Object.values(roomInvites[roomId]).map((invite) => (
               <tr key={invite.inviteString}>
                 <td className="Creator">
                   <img
@@ -114,12 +139,26 @@ const formatDay = (date) => {
                   <p>{invite.creator.username}</p>
                 </td>
                 <td>
-                  <div className="Code">
-                    https://filipsiri.se/{invite.inviteString}
+                  <div
+                    className="Code"
+                    onClick={() => handleClickInviteCode(invite.inviteString)}
+                  >
+                    {invite.inviteString}
                   </div>
                 </td>
                 <td>
                   {formatDay(invite.validThrough)}
+                </td>
+                <td>
+                  <button
+                    className="Delete"
+                    onClick={() => {
+                      setInviteToDelete(invite)
+                      setShowConfirmDeleteModal(true)
+                    }}
+                  >
+                    <MdDeleteOutline />
+                  </button>
                 </td>
               </tr>
               ))
@@ -130,6 +169,18 @@ const formatDay = (date) => {
             )
           }
         </tbody>
+        {showConfirmDeleteModal && (
+          <Modal onClose={() => setShowConfirmDeleteModal(false)}>
+            <ConfirmationModal
+              title="Are you sure you want to delete this invite?"
+              subTitle="Once deleted, the invite code will no longer be valid."
+              onConfirm={() => handleDeleteInvite(inviteToDelete)}
+              onCancel={() => setShowConfirmDeleteModal(false)}
+              yesText="Delete"
+              noText="Cancel"
+            />
+          </Modal>
+        )}
       </table>
     </div>
   )

@@ -88,7 +88,17 @@
                         width: min-content;
                         padding: 2px 5px;
                         border: 1px solid #ffffff0d;
-                        user-select: all;
+                        cursor: pointer;
+                    }
+
+                    & .Delete {
+                        background: none;
+                        border: none;
+                        padding: 5px;
+                        cursor: pointer;
+                        color: #af4747;
+                        display: flex;
+                        font-size: 20px;
                     }
                 }
     

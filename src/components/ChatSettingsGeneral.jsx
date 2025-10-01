@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useApi } from "../services/useApi";
 import "./scss/ChatSettingsGeneral.scss";
 import Button from "./Button";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ValidationErrorList from "./ValidationErrorList";

@@ -15,7 +15,8 @@ import {
   incrementUnread,
   removeRoomFromUser,
   editRoom,
-  deleteRoom
+  deleteRoom,
+  deleteInvite
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -139,6 +140,10 @@ class SignalRService {
     
     this.on("DeletedGroup", (roomId) => {
       dispatch(deleteRoom({ roomId }));
+    })
+
+    this.on("DeletedInvite", (roomId, inviteId) => {
+      dispatch(deleteInvite({ roomId, inviteId }));
     })
 
     this.listenersAttached = true;
