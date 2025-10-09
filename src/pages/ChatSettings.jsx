@@ -4,14 +4,16 @@ import { useState } from "react";
 import ChatSettingsGeneral from "../components/ChatSettingsGeneral";
 import ChatSettingsInvites from "../components/ChatSettingsInvites";
 import ChatSettingsRoles from "../components/ChatSettingsRoles";
+import ChatSettingsBans from "../components/ChatSettingsBans";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { usePermission } from "../services/usePermission";
 
 const tabs = [
   { component: ChatSettingsGeneral, name: "General", key: "general", requiredPermissions: ["manage_server"] },
+  { component: ChatSettingsBans, name: "Bans", key: "bans", requiredPermissions: ["ban_user"] },
   { component: ChatSettingsInvites, name: "Invites", key: "invites", requiredPermissions: ["manage_invites"] },
-  { component: ChatSettingsRoles, name: "Roles", key: "roles", requiredPermissions: ["manage_server_roles"] }
+  { component: ChatSettingsRoles, name: "Roles", key: "roles", requiredPermissions: ["manage_server_roles"] },
 ];
 
 function ChatSettings() {
@@ -21,14 +23,13 @@ function ChatSettings() {
   const allowed = usePermission(roomId, user.id, [
     "manage_server",
     "manage_server_roles",
-    "manage_invites"
+    "manage_invites",
+    "ban_user"
   ]);
 
   if (!allowed) return <Navigate to={`/chat/${roomId}`} replace />
 
-
   const [currentTabKey, setCurrentTabKey] = useState("general");
-
 
   const availableTabs = tabs.filter(tab => {
     if (!tab.requiredPermissions) return true;
