@@ -27,8 +27,6 @@ function Join() {
         dispatch(pushRoom(response.data.data.group));
 
         await signalRService.invoke("JoinGroup", response.data.data.group.id);
-        console.log(`(Invite) Joined room: ${response.data.data.group.id}`);  
-
         navigate(`/chat/${response.data.data.group.id}`);
       } catch (error) {
         console.error(error);
