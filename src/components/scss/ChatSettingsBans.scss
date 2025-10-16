@@ -1,0 +1,31 @@
+.Bans {
+    border: 1px dashed #ffffff0d;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    &--Child {
+        background-color: #15151873;
+        border: 1px dashed #ffffff0d;
+        border-radius: 6px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: max-content;
+        transition: all 0.3s;
+
+        &--Avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(0.9);
+        }
+    }
+}

@@ -33,6 +33,15 @@ const normalizeRoomInvites = (invites) => {
   return normalized;
 }
 
+const normalizeRoomBans = (bans) => {
+  const normalized = {};
+  bans.forEach((ban) => {
+    normalized[ban.id] = ban;
+  }
+  );
+  return normalized;
+}
+
 const initialState = {
   rooms: {},
   messages: {},
@@ -40,6 +49,7 @@ const initialState = {
   roomInvites: {},
   roomPresence: {},
   roomRoles: {},
+  roomBans: {},
   currentRoom: null
 };
 
@@ -159,7 +169,7 @@ const chatSlice = createSlice({
     },
     setRoomRoles: (state, action) => {
       const { room, data } = action.payload;
-      state.roomRoles[room] = normalizeRoomInvites(data);
+      state.roomRoles[room] = normalizeRoomRoles(data);
     },
     pushRoomRole: (state, action) => {
       const { room, role } = action.payload;
@@ -221,6 +231,16 @@ const chatSlice = createSlice({
     deleteInvite: (state, action) => {
       const {roomId, inviteId} = action.payload;
       delete state.roomInvites[roomId][inviteId];
+    },
+    setRoomBans: (state, action) => {
+      const { roomId, bans } = action.payload;
+      console.log(roomId)
+      state.roomBans[roomId] = normalizeRoomBans(bans);
+    },
+    deleteBan: (state, action) => {
+      const { roomId, banId } = action.payload;
+      console.log(roomId, banId)
+      delete state.roomBans[roomId][banId];
     }
   },
 });
@@ -250,7 +270,9 @@ export const {
   removeRoomFromUser,
   editRoom,
   deleteRoom,
-  deleteInvite
+  deleteInvite,
+  setRoomBans,
+  deleteBan
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

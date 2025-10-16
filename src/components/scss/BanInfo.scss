@@ -1,0 +1,19 @@
+.BanInfo {
+    margin-top: 10px;
+
+    &--Child {
+        & p {
+            color: #fff;
+        }
+
+        & p:last-child {
+            color: red !important;
+        }
+        display: flex;
+        gap: 5px;
+
+        &.Date p:last-child {
+            color: #b6b6b6 !important;
+        }
+    }
+}
