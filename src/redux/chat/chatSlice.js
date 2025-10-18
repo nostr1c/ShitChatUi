@@ -234,13 +234,15 @@ const chatSlice = createSlice({
     },
     setRoomBans: (state, action) => {
       const { roomId, bans } = action.payload;
-      console.log(roomId)
       state.roomBans[roomId] = normalizeRoomBans(bans);
     },
     deleteBan: (state, action) => {
       const { roomId, banId } = action.payload;
-      console.log(roomId, banId)
       delete state.roomBans[roomId][banId];
+    },
+    pushBanToRoom: (state, action) => {
+      const { roomId, ban } = action.payload;
+      state.roomBans[roomId][ban.id] = ban;
     }
   },
 });
@@ -272,7 +274,8 @@ export const {
   deleteRoom,
   deleteInvite,
   setRoomBans,
-  deleteBan
+  deleteBan,
+  pushBanToRoom
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

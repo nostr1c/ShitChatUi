@@ -17,7 +17,8 @@ import {
   editRoom,
   deleteRoom,
   deleteInvite,
-  deleteBan
+  deleteBan,
+  pushBanToRoom
 } from "../redux/chat/chatSlice";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
@@ -149,6 +150,10 @@ class SignalRService {
 
     this.on("DeletedBan", (roomId, banId) => {
       dispatch(deleteBan({ roomId, banId }));
+    })
+
+    this.on("UserBanned", (roomId, ban) => {
+      dispatch(pushBanToRoom({roomId, ban}));
     })
 
     this.listenersAttached = true;
