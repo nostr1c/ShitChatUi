@@ -69,7 +69,7 @@ function Login() {
                 onChange={(e) => setCredentials({ ...credentials, emailOrUsername: e.target.value })}
               />
               <ValidationErrorList
-                errors={errors?.Email}
+                errors={errors?.EmailOrUsername}
               />
             </div>
             <div className="Child">
