@@ -17,6 +17,9 @@ import ChatSettings from "./pages/ChatSettings";
 import Join from "./pages/Join";
 import Register from "./pages/Register";
 import { ToastContainer } from "react-toastify";
+import { fetchTranslations } from "./redux/translations/translationThunk";
+import Topbar from "./components/TopBar";
+import Friends from "./pages/Friends";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +30,7 @@ function App() {
   // Initially fetch the user.
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(fetchTranslations());
   }, []);
 
   // Close sidebar when change room.
@@ -77,12 +81,14 @@ function App() {
         rtl={false}
         pauseOnFocusLoss
         draggable
+        draggablePercent={20}
         pauseOnHover
         theme="dark"
       />
       <div className="Main">
         {isAuthenticated && (
           <>
+            {/* <Topbar /> */}
             <div className={`Sidebar-Wrapper ${sidebarOpen ? 'open' : ''}`}>
               <Sidebar />
             </div>
@@ -128,6 +134,11 @@ function App() {
             <Route path="/:id" element={
               <ProtectedRoute>
                 <Join />
+              </ProtectedRoute>
+            } />
+            <Route path="/friends" element={
+              <ProtectedRoute>
+                <Friends />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />

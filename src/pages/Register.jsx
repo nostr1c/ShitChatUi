@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 function Register() {
   const api = useApi();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const translations = useSelector((state) => state.translations.english);
   const [credentials, setCredentials] = useState({ username: "", email: "", password: "" });
   const [errors, setErrors] = useState(null);
   const [redirect, setRedirect] = useState(false);
@@ -22,14 +23,14 @@ function Register() {
       var result = await api.post("/auth/register", credentials);
       dispatch(fetchUser());
       if (result.data.message) {
-        toast.success(result.data.message);
+        toast.success(translations[result.data.message]);
       }
       setRedirect(true);
     } catch (error) {
       var response = error.response.data;
       if (response.hasErrors) {
         setErrors(response.errors);
-        toast.error(response.message);
+        toast.error(translations[response.message]);
       }
     }
   };

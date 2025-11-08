@@ -1,0 +1,114 @@
+.TopBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(31, 31, 31);
+    z-index: 1000;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    height: 50%;
+
+    &:hover {
+        transform: translateY(0%);
+
+        & .TopBar--Content {
+            border-bottom: 1px solid rgb(51, 51, 51);
+        }
+    }
+
+    &--Content {
+        position: relative;
+        height: 100%;
+        color: #cdcdcd;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        box-sizing: border-box;
+
+        &::before {
+            position: absolute;
+            content: "▼";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #848484a1;
+            width: 100px;
+            height: 20px;
+            border-radius: 0 0 6px 6px;
+            top: 100%;
+            background-color: rgba(77, 77, 77, 0.712);
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: unset;
+            backdrop-filter: blur(4px);
+        }
+
+        .Connections {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            gap: 5px;
+
+            &--Child {
+                background-color: rgb(41, 41, 41);
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+                border: 1px dashed #ffffff1f;
+                padding: 15px 20px;
+                border-radius: 8px;
+                align-items: center;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                }
+
+                &--Content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+
+                    p {
+                        line-height: 1;
+                    }
+
+                    &--Actions {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 5px;
+
+                        button {
+                            border: none;
+                            outline: none;
+                            padding: 5px 10px;
+                            transition: all 0.3s;
+                            cursor: pointer;
+                            color: #fff;
+                            border-radius: 4px;
+
+                            &:hover {
+                                filter: brightness(0.8) !important;
+                            }
+
+                            &:nth-child(1) {
+                                background-color: #5f8d5f;
+                            }
+                            &:nth-child(2) {
+                                background-color: #7e4141;
+                            }
+                        }
+
+                        &.Revoke button {
+                            background-color: #7e4141;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

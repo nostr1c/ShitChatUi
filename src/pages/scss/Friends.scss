@@ -1,0 +1,115 @@
+.Friends {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &--Content {
+    background-color: #1e1e22;
+    border: 1px dashed #ffffff21;
+    border-radius: 7px;
+    padding: 20px;
+    width: 80%;
+    height: 70%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .SearchBtn {
+    width: max-content;
+    background-color: #ffffff0f;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #dfdfdf;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        filter: brightness(0.7);
+    }
+  }
+
+  .EmptyText {
+    color: #888;
+    font-style: italic;
+  }
+
+  .FriendSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    h4 {
+      color: #dddddd;
+      margin: 0;
+    }
+
+    .FriendList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+  }
+
+  .FriendCard {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 10px 17px;
+    border-radius: 7px;
+    color: #d3d3d3;
+    flex: 1;
+
+    img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &--Info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    &--Actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    &--Btn {
+      padding: 4px 10px;
+      border: none;
+      border-radius: 3px;
+      color: #fff;
+      cursor: pointer;
+      transition: filter 0.3s ease;
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+
+      &.Revoke, &.Deny {
+        background-color: #703b3b;
+      }
+
+      &.Accept {
+        background-color: #3d723d;
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+.FriendToast {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%
+    }
+    
+    &--Info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        h4 {
+            font-weight: 100;
+            color: #8b8989;
+        }
+
+        p {
+            color: #d3d3d3;
+            
+            span {
+                font-weight: bolder;
+                color: #fff;
+            }
+        }
+
+        &--Btns {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+
+            button {
+                padding: 4px 8px;
+                outline: none;
+                border: none;
+                color: #fff;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: all 0.3s;
+
+                &:hover {
+                    filter: brightness(0.7);
+                }
+
+                &:nth-child(1) {
+                    background-color: #548158;
+                }
+
+                &:nth-child(2) {
+                    background-color: #815454;
+                }
+            }
+        }
+    }
+
+
+}

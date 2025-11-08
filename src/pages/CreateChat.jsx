@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useApi } from "../services/useApi";
 import { pushRoom } from "../redux/chat/chatSlice";
 import { signalRService } from "../services/signalRService";
 import { useNavigate } from "react-router-dom";
-import { handleApiErrors } from "../utils/general";
 import { toast } from "react-toastify";
+import ValidationErrorList from "../components/ValidationErrorList";
 
 function CreateChat() {
   const [formBody, setFormBody] = useState({ name: "" });
+  const translations = useSelector((state) => state.translations.english);
   const dispatch = useDispatch()
   const api = useApi();
   const navigate = useNavigate();
+  const [errors, setErrors] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ function CreateChat() {
       console.log(`Joined room: ${newRoom.id}`);  
       
       if (result.data.message) {
-        toast.success(result.data.message);
+        toast.success(translations[result.data.message]);
       }
 
       navigate(`/chat/${newRoom.id}`);
@@ -32,8 +34,7 @@ function CreateChat() {
     } catch (error) {
       if (error.response.data.hasErrors) {
         const errors = error.response.data.errors;
-
-        if (errors) handleApiErrors(errors);
+        setErrors(errors);
       }
     }
   };
@@ -44,12 +45,20 @@ function CreateChat() {
         <div className="Form">
           <h1>Create a new room</h1>
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Room name"
-              value={formBody.name}
-              onChange={(e) => setFormBody({ ...formBody, name: e.target.value })}
-            />
+            <label>
+              Room name
+              <input
+                type="text"
+                placeholder="My awesome room"
+                value={formBody.name}
+                onChange={(e) => setFormBody({ ...formBody, name: e.target.value })}
+              />
+            </label>
+
+            {errors && <ValidationErrorList
+              errors={errors.Name}
+            />}
+            
             <button type="submit">Create</button>
           </form>
         </div>

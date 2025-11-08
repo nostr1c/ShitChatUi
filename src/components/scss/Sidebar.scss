@@ -15,9 +15,9 @@
         display: flex;
         align-items: center;
         gap: 15px;
-        padding: 10px;
-        border-top: 1px solid #ffffff0d;
-        border-bottom: 1px solid #ffffff0d;
+        padding: 15px 20px;
+        // border-top: 1px solid #ffffff0d;
+        // border-bottom: 1px solid #ffffff0d;
         user-select: none;
         transition: all 0.3s;
         
@@ -43,54 +43,37 @@
             }
         }
 
-        &--Btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            outline: none;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
 
-            & svg {
-                font-size: 25px;
+        &--Edit {
+            background-color: #2020208e;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            margin-left: auto;
+
+            &.active {
+                background-color: #4b4b4ba6;
             }
 
-            &--Modal {
-                display: none;
-                position: absolute;
-                right: 100%;
-                top: 0;
-                height: 100%;
-                height: max-content;
-                width: max-content;
-                box-shadow: 0 0 4px rgba(131, 130, 130, 0.112);
-                border: 1px solid #ffffff0d;
-                background-color: #1a181a;
-                z-index: 100000;
+            &.Logout {
+                margin-right: auto;
+                border: none;
+                outline: none;
+                cursor: pointer;
+            }
 
-                & a {
-                    color: #fff;
-                    text-decoration: none;
-                }
-                
-                &--Link {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px 15px;
-                    gap: 10px;
-                    transition: all 0.3s;
-                    
+            
+            svg {
+                font-size: 22px;
+                color: #fff;
+            }
 
-                    &:hover {
-                        background-color: rgb(255,255,255,0.02);
-                    }
-                }
-
-                &.Active {
-                    display: block;
-                }
+            &:hover:not(.active) {
+                background-color: #4b4b4ba6;
             }
         }
     }

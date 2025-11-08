@@ -1,0 +1,81 @@
+.SearchWrapper {
+    height: 400px;
+
+    .SearchUsers {
+        position: relative;
+        width: 400px;
+
+        &--Input {
+            width: 100%;
+            box-sizing: border-box;
+            left: 0;
+            padding: 10px 30px;
+            border-radius: 7px;
+            z-index: 1;
+            outline: none;
+            border: none;
+            color: #fff;
+            background: #181818;
+        }
+
+        svg {
+            color: rgb(189, 189, 189);
+            top: 50%;
+            font-size: 22px;
+            z-index: 2;
+            position: absolute;
+            top: 7px;
+        }
+        
+        &--Glass {
+            left: 5px;
+        }
+
+        &--Close {
+            right: 5px;
+        }
+    }
+
+    .SearchResult {
+        width: 100%;
+        margin-top: 15px;
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
+
+        tr th {
+            text-align: left;
+        }
+
+        .Add-th {
+            text-align: right;
+        }
+
+        .Add-td {
+            text-align: right;
+
+            button {
+                padding: 8px 10px;
+                background-color: rgb(26, 26, 26);
+                outline: none;
+                border: none;
+                color: #c7c6c6;
+                border-radius: 4px;
+                transition: all 0.3s;
+                cursor: pointer;
+
+                &:hover {
+                    filter: brightness(0.8);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+ .SearchUsers {
+    width: 100% !important;
+ }
+}

@@ -11,7 +11,9 @@ import { toast } from "react-toastify";
 function Login() {
   const api = useApi();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const translations = useSelector((state) => state.translations.english);
+  
+  const [credentials, setCredentials] = useState({ emailOrUsername: "", password: "" });
   const [errors, setErrors] = useState(null);
   const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
@@ -19,20 +21,18 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(credentials)
       var result = await api.post("/auth/login", credentials);
       dispatch(fetchUser());
       if (result.data.message) {
-        toast.success(result.data.message)
+        toast.success(translations[result.data.message])
       }
       setRedirect(true);
     } catch (error) {
       var response = error.response.data;
       if (response.hasErrors) {
         setErrors(response.errors);
-        toast.error(response.message)
-      }
-      if (response.message == "ErrorInvalidEmailOrPassword") {
-        toast.error(response.message)
+        toast.error(translations[response.message])
       }
     }
   };
@@ -60,13 +60,13 @@ function Login() {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="Child">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">Email/Username</label>
               <input
                 id="email"
                 type="text"
-                placeholder="john.doe@example.com"
+                placeholder="johndoe | john.doe@example.com"
                 value={credentials.email}
-                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                onChange={(e) => setCredentials({ ...credentials, emailOrUsername: e.target.value })}
               />
               <ValidationErrorList
                 errors={errors?.Email}

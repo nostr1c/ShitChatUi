@@ -9,10 +9,6 @@ function EditProfile() {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     
-    const triggerToast = () => {
-      dispatch(toast.success("This is a success message!"));
-    };
-
     const uploadAvatar = async (e) => {
       e.preventDefault();
       try {
@@ -34,11 +30,11 @@ function EditProfile() {
 
   return (
     <div>
+      <h2>This page is still not implemented</h2>
+      <h4>But you can change your avatar:</h4><br />
       <form>
         <input type="file" accept=".jpg, .jpeg, .png" onChange={uploadAvatar} />
       </form>
-
-      <button onClick={triggerToast}>Show Toast</button>
     </div>
   )
 }

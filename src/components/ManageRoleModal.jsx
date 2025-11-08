@@ -5,7 +5,6 @@ import Button from "./Button";
 import RoleSwitch from "./RoleSwitch";
 import { useApi } from "../services/useApi";
 import { toast } from "react-toastify";
-import { handleApiErrors } from "../utils/general";
 import ValidationErrorList from "./ValidationErrorList";
 
 const availableColors = [

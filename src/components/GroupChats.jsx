@@ -2,17 +2,13 @@ import { useEffect } from "react";
 import { useApi } from "../services/useApi";
 import {  useDispatch, useSelector } from "react-redux";
 import { setRooms } from "../redux/chat/chatSlice";
-import { Link } from "react-router-dom";
-import { RiChatNewFill } from "react-icons/ri";
-import { IoMdAddCircleOutline } from "react-icons/io";
-
-
+import { NavLink } from "react-router-dom";
 import "./scss/GroupChats.scss"
 
 function GroupChats() {
   const api = useApi();
   const { messages, rooms, currentRoom } = useSelector((state) => state.chat)
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchGroupChats = async () => {
@@ -31,29 +27,16 @@ function GroupChats() {
 
   return (
     <div className="GroupChats">
-      <div className="GroupChats--Header">
-        <div></div>
-        <div>
-          <h3>Conversations</h3>
-        </div>
-        <div>
-        <Link
-          className="GroupChats--Header--Link"
-          to={"/chat/create"}
-        >
-          <IoMdAddCircleOutline/>
-        </Link>
-        </div>
-      </div>
       {roomsArray.length > 0 ? (
         <div className="GroupChats--Parent">
           {roomsArray.map((group) => {
             const unreadCount = group.unreadCount || 0;
+            const hasUnread = unreadCount > 0;
 
             return (
-              <Link
+              <NavLink
               to={`chat/${group.id}`}
-              className={`GroupChats--Child ${currentRoom == group?.id ? "Active" : ""}`}
+              className="GroupChats--Child"
               key={group.id}
               >
                 <div className="GroupChats--Child--Avatar">
@@ -61,7 +44,7 @@ function GroupChats() {
                 </div>
                 <div className="GroupChats--Child--Content">
                   <p>{group.name}</p>
-                  <p className={`Latest ${unreadCount > 0 ? "Unread" : ""}`}>
+                  <p className={`Latest ${hasUnread ? "Unread" : ""}`}>
                     {messages[group.id] && messages[group.id].length > 0 ? 
                       messages[group.id][0].content : 
                       group.latestMessage ? `${group.latestMessage}` :
@@ -69,12 +52,12 @@ function GroupChats() {
                     }
                   </p>
                 </div>
-                {unreadCount > 0 && (
+                {hasUnread && (
                   <div className="GroupChats--Child--Unread">
                     <p>{unreadCount}</p>
                   </div>
                 )}
-              </Link>
+              </NavLink>
             )
           })}
         </div>

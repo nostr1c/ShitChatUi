@@ -242,6 +242,7 @@ const chatSlice = createSlice({
     },
     pushBanToRoom: (state, action) => {
       const { roomId, ban } = action.payload;
+      console.log(roomId, ban);
       state.roomBans[roomId][ban.id] = ban;
     }
   },

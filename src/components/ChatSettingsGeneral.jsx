@@ -13,6 +13,7 @@ function ChatSettingsGeneral() {
   const api = useApi();
   const { id: roomId } = useParams();
   const room = useSelector((state) => state.chat.rooms[roomId]);
+  const translations = useSelector((state) => state.translations.english);
   const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
 
@@ -36,14 +37,14 @@ function ChatSettingsGeneral() {
 
     try {
       let result = await api.put(`/group/${roomId}`, formData)
-      toast.success(result.data.message);
+      toast.success(translations[result.data.message]);
       setErrors(null);
     } catch (error) {
       console.log(error)
       const response = error.response.data;
       if (response.hasErrors) {
         setErrors(response.errors)
-        toast.error(response.message)
+        toast.error(translations[response.message])
       }
     }
   }
@@ -53,7 +54,7 @@ function ChatSettingsGeneral() {
     
     try {
       let result = await api.delete(`/group/${roomId}`)
-      toast.success(result.data.message);
+      toast.success(translations[result.data.message]);
     } catch (error) {
       console.log(error)
     }

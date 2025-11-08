@@ -20,9 +20,12 @@ import {
   deleteBan,
   pushBanToRoom
 } from "../redux/chat/chatSlice";
+import { pushReceivedConnection, pushAcceptedConnection, deleteConnection } from "../redux/connection/connectionSlice";
+import { toast } from "react-toastify";
+import FriendRequestToast from "../components/Friends/FriendRequestToast";
 
 const SIGNALR_URL = "https://api.filipsiri.se/chatHub";
-// const SIGNALR_URL = "https://localapi.test/chatHub";
+// const SIGNALR_URL = "http://localhost:8080/chatHub";
  
 class SignalRService {
   constructor() {
@@ -153,7 +156,31 @@ class SignalRService {
     })
 
     this.on("UserBanned", (roomId, ban) => {
+      console.log(roomId, ban);
       dispatch(pushBanToRoom({roomId, ban}));
+    })
+
+
+    this.on("ReceiveFriendRequest", (connection) => {
+      console.log(connection)
+      toast(
+        ({ closeToast }) => (
+          <FriendRequestToast
+            user={connection.user}
+            closeToast={closeToast}
+          />
+        ),
+        { autoClose: 5000 }
+      );
+      dispatch(pushReceivedConnection({connection}))
+    })
+
+    this.on("ReceiveFriendRequestAccepted", (connection) => {
+      dispatch(pushAcceptedConnection({connection}))
+    })
+
+    this.on("ReceiveFriendRequestDeleted", (connection) => {
+      dispatch(deleteConnection({connection}))
     })
 
     this.listenersAttached = true;

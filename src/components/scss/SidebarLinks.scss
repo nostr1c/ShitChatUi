@@ -1,0 +1,42 @@
+.SidebarLinks {
+    
+        &--Header {
+        // background-color: red;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: right;
+        gap: 10px;
+
+        &--Link {
+            background-color: #2020208e;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+
+            &.active {
+                background-color: #4b4b4ba6;
+            }
+
+            &.Logout {
+                margin-right: auto;
+                border: none;
+                outline: none;
+                cursor: pointer;
+            }
+
+            
+            svg {
+                font-size: 22px;
+                color: #fff;
+            }
+
+            &:hover:not(.active) {
+                background-color: #4b4b4ba6;
+            }
+        }
+    }
+}
