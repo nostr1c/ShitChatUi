@@ -27,7 +27,7 @@ function GroupChats() {
 
   return (
     <div className="GroupChats">
-      {roomsArray.length > 0 ? (
+      {roomsArray.length > 0 && (
         <div className="GroupChats--Parent">
           {roomsArray.map((group) => {
             const unreadCount = group.unreadCount || 0;
@@ -61,8 +61,6 @@ function GroupChats() {
             )
           })}
         </div>
-      ) : (
-        <p className="Friends--None">No friends found.</p>
       )}
     </div>
   )
