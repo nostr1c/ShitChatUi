@@ -7,9 +7,3 @@ services:
       NODE_ENV: production
     ports:
       - 3000
-    networks:
-      - webproxy
-
-networks:
-  webproxy:
-    external: true
